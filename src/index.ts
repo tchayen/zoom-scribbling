@@ -2,10 +2,9 @@ import { screenToCameraSpace, translate, zoom } from "./helpers";
 import { redo, undo } from "./scene";
 import { Shape } from "./types";
 
-const size = 600;
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-canvas.width = size;
-canvas.height = size;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 const ctx = canvas.getContext("2d");
 
 const buffer = document.createElement("canvas");
@@ -24,14 +23,12 @@ if (bufferCtx === null) {
 bufferCtx.drawImage(canvas, 0, 0);
 ctx.drawImage(buffer, 0, 0);
 
-const box = document.getElementById("box");
-
-if (box === null) {
-  throw new Error("HTML is missing #box.");
-}
-
-box.style.width = `${size}px`;
-box.style.height = `${size}px`;
+const resetSizes = () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  buffer.width = canvas.width;
+  buffer.height = canvas.height;
+};
 
 const scaleElement = document.getElementById("scale");
 
@@ -53,7 +50,7 @@ const updateText = () => {
 const reset = () => {
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.fillStyle = "rgba(255, 255, 255, 1)";
-  ctx.fillRect(0, 0, size, size);
+  ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
   ctx.translate(-camera.x, -camera.y);
   ctx.scale(scale, scale);
@@ -139,8 +136,10 @@ const handleKeyPress = (event: KeyboardEvent) => {
   }
 };
 
-const handleResize = (event: any) => {
-  // TODO
+const handleResize = () => {
+  // TODO: throttling.
+  resetSizes();
+  render();
 };
 
 render();
