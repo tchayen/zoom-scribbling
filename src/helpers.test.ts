@@ -3,7 +3,7 @@ import {
   clamp,
   screenToCameraSpace,
   translate,
-  zoom
+  zoom,
 } from "./helpers";
 
 describe("clamp", () => {
@@ -33,16 +33,16 @@ describe("zoom", () => {
       scale: 1.2,
       camera: {
         x: -52,
-        y: -52
-      }
+        y: -52,
+      },
     });
   });
 });
 
 describe("translate", () => {
   it("works", () => {
-    const result = translate({ x: 0, y: 0 }, { x: -5, y: -5 });
-    expect(result).toStrictEqual({ x: -5, y: -5 });
+    const result = translate({ x: 0, y: 0 }, { x: -5, y: -5 }, 2);
+    expect(result).toStrictEqual({ x: -50, y: -50 });
   });
 });
 

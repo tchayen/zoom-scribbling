@@ -13,7 +13,7 @@ export const screenToCameraSpace = (
 ) => {
   return {
     x: (point.x + camera.x) / scale,
-    y: (point.y + camera.y) / scale
+    y: (point.y + camera.y) / scale,
   };
 };
 
@@ -34,16 +34,20 @@ export const zoom = (
   return { scale, camera };
 };
 
-export const translate = (camera: Point, delta: Point) => {
+export const translate = (camera: Point, delta: Point, scale: number) => {
+  const factor = 25;
+  const x = delta.x !== 0 ? Math.sign(delta.x) * scale * factor : 0;
+  const y = delta.y !== 0 ? Math.sign(delta.y) * scale * factor : 0;
+
   return {
-    x: camera.x + delta.x,
-    y: camera.y + delta.y
+    x: camera.x + x,
+    y: camera.y + y,
   };
 };
 
 export const cameraSpaceToTile = (point: Point) => {
   return {
     x: Math.floor(point.x / TILE_SIZE),
-    y: Math.floor(point.y / TILE_SIZE)
+    y: Math.floor(point.y / TILE_SIZE),
   };
 };

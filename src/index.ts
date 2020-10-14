@@ -1,4 +1,5 @@
 import { screenToCameraSpace, translate, zoom } from "./helpers";
+import { redo, undo } from "./scene";
 import { Shape } from "./types";
 
 const size = 600;
@@ -11,12 +12,32 @@ const buffer = document.createElement("canvas");
 buffer.width = canvas.width;
 buffer.height = canvas.height;
 const bufferCtx = buffer.getContext("2d");
+
+if (ctx === null) {
+  throw new Error("Failed to create canvas context.");
+}
+
+if (bufferCtx === null) {
+  throw new Error("Failed to create buffer canvas context.");
+}
+
 bufferCtx.drawImage(canvas, 0, 0);
 ctx.drawImage(buffer, 0, 0);
 
 const box = document.getElementById("box");
+
+if (box === null) {
+  throw new Error("HTML is missing #box.");
+}
+
 box.style.width = `${size}px`;
 box.style.height = `${size}px`;
+
+const scaleElement = document.getElementById("scale");
+
+if (scaleElement === null) {
+  throw new Error("HTML is missing #box.");
+}
 
 let scale = 1;
 let camera = { x: 0, y: 0 };
@@ -26,7 +47,7 @@ const shapes: Shape[] = [];
 
 const updateText = () => {
   const value = (scale * 100).toFixed(0);
-  document.getElementById("scale").innerHTML = `${value}%`;
+  scaleElement.innerHTML = `${value}%`;
 };
 
 const reset = () => {
@@ -69,7 +90,7 @@ const handlePointerDown = (event: PointerEvent) => {
   );
 
   shapes.push({
-    points: [point]
+    points: [point],
   });
 };
 
@@ -101,14 +122,32 @@ const handleWheel = (event: WheelEvent) => {
     camera = zoomed.camera;
     scale = zoomed.scale;
   } else {
-    camera = translate(camera, { x: event.deltaX, y: event.deltaY });
+    camera = translate(camera, { x: event.deltaX, y: event.deltaY }, scale);
   }
   render();
 };
 
+const handleKeyPress = (event: KeyboardEvent) => {
+  if (event.key.toLowerCase() === "z") {
+    if (event.metaKey || event.ctrlKey) {
+      if (event.shiftKey) {
+        redo();
+      } else {
+        undo();
+      }
+    }
+  }
+};
+
+const handleResize = (event: any) => {
+  // TODO
+};
+
 render();
 
-document.addEventListener("pointermove", handlePointerMove);
-document.addEventListener("pointerdown", handlePointerDown);
-document.addEventListener("pointerup", handlePointerUp);
-document.addEventListener("wheel", handleWheel);
+window.addEventListener("pointermove", handlePointerMove);
+window.addEventListener("pointerdown", handlePointerDown);
+window.addEventListener("pointerup", handlePointerUp);
+window.addEventListener("wheel", handleWheel);
+window.addEventListener("keypress", handleKeyPress);
+window.addEventListener("resize", handleResize);

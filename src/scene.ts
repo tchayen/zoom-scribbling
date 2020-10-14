@@ -13,9 +13,9 @@ export const finishShape = (point: Point) => {
 };
 
 export const undo = () => {
-  // TODO
+  console.log("undo");
 };
 
 export const redo = () => {
-  // TODO
+  console.log("redo");
 };
