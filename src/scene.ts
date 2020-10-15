@@ -63,6 +63,8 @@ export const appendErase = (point: Point) => {
       }
     }
   }
+
+  lastPoint = point;
 };
 
 export const finishErase = () => {
