@@ -14,10 +14,7 @@
         overflow: hidden;
       }
 
-      #scale {
-        position: absolute;
-        right: 0px;
-        bottom: 0px;
+      .text {
         color: #777;
         padding: 5px;
         font-weight: 400;
@@ -25,22 +22,16 @@
         user-select: none;
       }
 
-      #mode {
+      #scale {
         position: absolute;
         right: 0px;
-        top: 0px;
-        color: #777;
-        padding: 5px;
-        font-weight: 400;
-        font-size: 15px;
-        user-select: none;
+        bottom: 0px;
       }
     </style>
   </head>
   <body>
       <canvas id="canvas"></canvas>
-      <span id="scale"></span>
-      <span id="mode"></span>
+      <span id="scale" class="text"></span>
     <script src="src/index.ts"></script>
   </body>
 </html>

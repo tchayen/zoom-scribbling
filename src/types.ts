@@ -5,6 +5,8 @@ export type Point = {
   y: number;
 };
 
+export type Line = [Point, Point];
+
 export type Shape = {
   id: number;
   visible: boolean;
@@ -17,7 +19,12 @@ export type Tile = {
   shapeIndices: number[];
 };
 
-export type Action = {
-  type: "draw" | "erase";
-  shapeIndex: number;
-};
+export type Action =
+  | {
+      type: "draw";
+      shapeIndex: number;
+    }
+  | {
+      type: "erase";
+      shapeIndices: number[];
+    };

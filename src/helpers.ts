@@ -1,4 +1,5 @@
-import { Point } from "./types";
+import { redo } from "./scene";
+import { Line, Point } from "./types";
 
 export const TILE_SIZE = 1000;
 
@@ -71,4 +72,16 @@ export const cameraSpaceToTile = (point: Point) => {
     x: Math.floor(point.x / TILE_SIZE),
     y: Math.floor(point.y / TILE_SIZE),
   };
+};
+
+export const intersect = ([a, b]: Line, [c, d]: Line) => {
+  let det = (b.x - a.x) * (d.y - c.y) - (d.x - c.x) * (b.y - a.y);
+  if (det === 0) {
+    return false;
+  } else {
+    const lambda =
+      ((d.y - c.y) * (d.x - a.x) + (c.x - d.x) * (d.y - a.y)) / det;
+    const gamma = ((a.y - b.y) * (d.x - a.x) + (b.x - a.x) * (d.y - a.y)) / det;
+    return 0 < lambda && lambda < 1 && 0 < gamma && gamma < 1;
+  }
 };

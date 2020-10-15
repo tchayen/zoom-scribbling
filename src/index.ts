@@ -1,6 +1,6 @@
 // TODO
+// - Add unit tests to fix bugs with undo/redo and erasing.
 // - Fix bug with undoing during drawing.
-// - Erase mode.
 // - Resize throttling.
 
 import { screenToCameraSpace, translate, zoom, zoomTo } from "./helpers";
@@ -11,6 +11,9 @@ import {
   startShape,
   finishShape,
   appendLine,
+  appendErase,
+  finishErase,
+  startErase,
 } from "./scene";
 import { Mode, Shape } from "./types";
 
@@ -43,14 +46,9 @@ const resetSizes = () => {
 };
 
 const scaleElement = document.getElementById("scale");
-const modeElement = document.getElementById("mode");
 
 if (scaleElement === null) {
   throw new Error("HTML is missing #scale.");
-}
-
-if (modeElement === null) {
-  throw new Error("HTML is missing #mode.");
 }
 
 let scale = 1;
@@ -60,11 +58,9 @@ let mode: Mode = "draw";
 
 const updateText = () => {
   const value = (scale * 100).toFixed(0);
-  scaleElement.innerHTML = `${value}%`;
-};
-
-const updateMode = () => {
-  modeElement.innerHTML = mode;
+  const cameraX = camera.x.toFixed(0);
+  const cameraY = camera.y.toFixed(0);
+  scaleElement.innerHTML = `(${cameraX}, ${cameraY}) · ${value}% · ${mode} mode`;
 };
 
 const reset = () => {
@@ -101,7 +97,6 @@ const render = () => {
   }
 
   updateText();
-  updateMode();
 };
 
 const handlePointerDown = (event: PointerEvent) => {
@@ -116,6 +111,7 @@ const handlePointerDown = (event: PointerEvent) => {
   if (mode === "draw") {
     startShape(point);
   } else if (mode === "erase") {
+    startErase(point);
   }
 };
 
@@ -125,7 +121,9 @@ const handlePointerUp = (event: PointerEvent) => {
   if (mode === "draw") {
     finishShape();
   } else if (mode === "erase") {
+    finishErase();
   }
+  render();
 };
 
 const handlePointerMove = (event: PointerEvent) => {
@@ -139,6 +137,7 @@ const handlePointerMove = (event: PointerEvent) => {
     if (mode === "draw") {
       appendLine(point);
     } else if (mode === "erase") {
+      appendErase(point);
     }
   }
 
