@@ -4,12 +4,20 @@ import {
   screenToCameraSpace,
   translate,
   zoom,
+  zoomTo,
 } from "./helpers";
 
 describe("clamp", () => {
-  it("works", () => {
+  it("truncates to the specified range", () => {
     expect(clamp(120, 0, 1)).toBe(1);
+  });
+
+  it("works for close but out-of-range values", () => {
     expect(clamp(-0.0001, 0, 1)).toBe(0);
+  });
+
+  it("preserves values within the range", () => {
+    expect(clamp(0.5, 0, 1)).toBe(0.5);
   });
 });
 
@@ -36,6 +44,13 @@ describe("zoom", () => {
         y: -52,
       },
     });
+  });
+});
+
+describe("zoomTo", () => {
+  it("works", () => {
+    const result = zoomTo(2, 1, { x: 100, y: 100 });
+    expect(result).toStrictEqual({ scale: 1, camera: { x: 712, y: 584 } });
   });
 });
 

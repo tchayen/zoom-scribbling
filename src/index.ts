@@ -1,6 +1,6 @@
-import { screenToCameraSpace, translate, zoom } from "./helpers";
+import { screenToCameraSpace, translate, zoom, zoomTo } from "./helpers";
 import { redo, undo } from "./scene";
-import { Shape } from "./types";
+import { Shape, Tile } from "./types";
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 canvas.width = window.innerWidth;
@@ -19,6 +19,8 @@ if (ctx === null) {
 if (bufferCtx === null) {
   throw new Error("Failed to create buffer canvas context.");
 }
+
+const cache: Tile[][] = [];
 
 bufferCtx.drawImage(canvas, 0, 0);
 ctx.drawImage(buffer, 0, 0);
@@ -133,6 +135,15 @@ const handleKeyPress = (event: KeyboardEvent) => {
         undo();
       }
     }
+  }
+
+  console.log(event.key);
+
+  if (event.key === ")" && event.shiftKey) {
+    const zoomed = zoomTo(1, scale, camera);
+    camera = zoomed.camera;
+    scale = zoomed.scale;
+    render();
   }
 };
 

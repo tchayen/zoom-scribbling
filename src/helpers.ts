@@ -34,6 +34,27 @@ export const zoom = (
   return { scale, camera };
 };
 
+export const zoomTo = (
+  targetScale: number,
+  currentScale: number,
+  camera: Point
+) => {
+  const previous = currentScale;
+  const delta = targetScale - previous;
+  const center = {
+    x: window.innerWidth / 2,
+    y: window.innerHeight / 2,
+  };
+
+  camera.x = camera.x + ((camera.x + center.x) * delta) / previous;
+  camera.y = camera.y + ((camera.y + center.y) * delta) / previous;
+
+  return {
+    scale: 1,
+    camera,
+  };
+};
+
 export const translate = (camera: Point, delta: Point, scale: number) => {
   const factor = 25;
   const x = delta.x !== 0 ? Math.sign(delta.x) * scale * factor : 0;

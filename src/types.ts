@@ -6,3 +6,8 @@ export type Point = {
 export type Shape = {
   points: Point[];
 };
+
+export type Tile = {
+  position: Point;
+  shapeIndices: number[];
+};
