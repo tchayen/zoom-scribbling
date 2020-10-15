@@ -1,14 +1,18 @@
+// TODO
+// - Fix bug with undoing during drawing.
+// - Erase mode.
+// - Resize throttling.
+
 import { screenToCameraSpace, translate, zoom, zoomTo } from "./helpers";
 import {
   redo,
   undo,
   shapes,
-  history,
   startShape,
   finishShape,
   appendLine,
 } from "./scene";
-import { Action, Shape, Tile } from "./types";
+import { Mode, Shape } from "./types";
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 canvas.width = window.innerWidth;
@@ -39,18 +43,28 @@ const resetSizes = () => {
 };
 
 const scaleElement = document.getElementById("scale");
+const modeElement = document.getElementById("mode");
 
 if (scaleElement === null) {
-  throw new Error("HTML is missing #box.");
+  throw new Error("HTML is missing #scale.");
+}
+
+if (modeElement === null) {
+  throw new Error("HTML is missing #mode.");
 }
 
 let scale = 1;
 let camera = { x: 0, y: 0 };
 let mouseDown = false;
+let mode: Mode = "draw";
 
 const updateText = () => {
   const value = (scale * 100).toFixed(0);
   scaleElement.innerHTML = `${value}%`;
+};
+
+const updateMode = () => {
+  modeElement.innerHTML = mode;
 };
 
 const reset = () => {
@@ -75,6 +89,7 @@ const render = () => {
     }
 
     ctx.beginPath();
+    ctx.strokeStyle = shape.color;
 
     ctx.moveTo(shape.points[0].x, shape.points[0].y);
     for (let i = 1; i < shape.points.length; i++) {
@@ -86,6 +101,7 @@ const render = () => {
   }
 
   updateText();
+  updateMode();
 };
 
 const handlePointerDown = (event: PointerEvent) => {
@@ -97,13 +113,19 @@ const handlePointerDown = (event: PointerEvent) => {
     scale
   );
 
-  startShape(point);
+  if (mode === "draw") {
+    startShape(point);
+  } else if (mode === "erase") {
+  }
 };
 
 const handlePointerUp = (event: PointerEvent) => {
   mouseDown = false;
 
-  finishShape();
+  if (mode === "draw") {
+    finishShape();
+  } else if (mode === "erase") {
+  }
 };
 
 const handlePointerMove = (event: PointerEvent) => {
@@ -114,8 +136,12 @@ const handlePointerMove = (event: PointerEvent) => {
       scale
     );
 
-    appendLine(point);
+    if (mode === "draw") {
+      appendLine(point);
+    } else if (mode === "erase") {
+    }
   }
+
   render();
 };
 
@@ -154,10 +180,17 @@ const handleKeyPress = (event: KeyboardEvent) => {
     scale = zoomed.scale;
     render();
   }
+
+  if (event.key.toLowerCase() === "e") {
+    mode = "erase";
+  }
+
+  if (event.key.toLowerCase() === "d") {
+    mode = "draw";
+  }
 };
 
 const handleResize = () => {
-  // TODO: throttling.
   resetSizes();
   render();
 };

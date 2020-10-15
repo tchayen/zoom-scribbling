@@ -1,3 +1,5 @@
+export type Mode = "draw" | "erase";
+
 export type Point = {
   x: number;
   y: number;
@@ -6,6 +8,7 @@ export type Point = {
 export type Shape = {
   id: number;
   visible: boolean;
+  color: string;
   points: Point[];
 };
 

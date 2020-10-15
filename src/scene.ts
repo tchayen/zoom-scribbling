@@ -7,12 +7,13 @@ export const shapes: Shape[] = [];
 export const history: Action[] = [];
 let historyIndex = -1;
 
-const getRecentHistoryShape = () =>
-  shapes.find((shape) => shape.id === history[historyIndex].shapeIndex);
+const getRecentHistoryShape = (id: number) =>
+  shapes.find((shape) => shape.id === id);
 
 export const startShape = (point: Point) => {
   shapes.push({
     id: ids++,
+    color: "#000",
     points: [point],
     visible: true,
   });
@@ -35,10 +36,19 @@ export const finishShape = () => {
 
 export const undo = () => {
   if (historyIndex >= 0) {
-    const shape = getRecentHistoryShape();
+    const recentCommand = history[historyIndex];
+    const shape = getRecentHistoryShape(recentCommand.shapeIndex);
 
-    if (shape) {
+    if (!shape) {
+      throw new Error(
+        `Incorrect history. Shape with id '${recentCommand.shapeIndex}' does not exist.`
+      );
+    }
+
+    if (recentCommand.type === "draw") {
       shape.visible = false;
+    } else if (recentCommand.type === "erase") {
+      shape.visible = true;
     }
 
     historyIndex -= 1;
@@ -48,10 +58,19 @@ export const undo = () => {
 export const redo = () => {
   if (historyIndex < history.length - 1) {
     historyIndex += 1;
-    const shape = getRecentHistoryShape();
+    const recentCommand = history[historyIndex];
+    const shape = getRecentHistoryShape(recentCommand.shapeIndex);
 
-    if (shape) {
+    if (!shape) {
+      throw new Error(
+        `Incorrect history. Shape with id '${recentCommand.shapeIndex}' does not exist.`
+      );
+    }
+
+    if (recentCommand.type === "draw") {
       shape.visible = true;
+    } else if (recentCommand.type === "erase") {
+      shape.visible = false;
     }
   }
 };

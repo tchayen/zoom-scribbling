@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
+      @import url('https://rsms.me/inter/inter.css');
+
       body {
         background-color: #999;
         margin: 0px;
-        font-family: sans-serif;
+        font-family: Inter, sans-serif;
         overflow: hidden;
       }
 
@@ -16,11 +18,21 @@
         position: absolute;
         right: 0px;
         bottom: 0px;
-        color: #fff;
-        background-color: #000;
+        color: #777;
         padding: 5px;
         font-weight: 400;
-        font-size: 18px;
+        font-size: 15px;
+        user-select: none;
+      }
+
+      #mode {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        color: #777;
+        padding: 5px;
+        font-weight: 400;
+        font-size: 15px;
         user-select: none;
       }
     </style>
@@ -28,6 +40,7 @@
   <body>
       <canvas id="canvas"></canvas>
       <span id="scale"></span>
+      <span id="mode"></span>
     <script src="src/index.ts"></script>
   </body>
 </html>
