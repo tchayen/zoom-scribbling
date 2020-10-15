@@ -1,6 +1,14 @@
 import { screenToCameraSpace, translate, zoom, zoomTo } from "./helpers";
-import { redo, undo } from "./scene";
-import { Shape, Tile } from "./types";
+import {
+  redo,
+  undo,
+  shapes,
+  history,
+  startShape,
+  finishShape,
+  appendLine,
+} from "./scene";
+import { Action, Shape, Tile } from "./types";
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 canvas.width = window.innerWidth;
@@ -19,8 +27,6 @@ if (ctx === null) {
 if (bufferCtx === null) {
   throw new Error("Failed to create buffer canvas context.");
 }
-
-const cache: Tile[][] = [];
 
 bufferCtx.drawImage(canvas, 0, 0);
 ctx.drawImage(buffer, 0, 0);
@@ -42,8 +48,6 @@ let scale = 1;
 let camera = { x: 0, y: 0 };
 let mouseDown = false;
 
-const shapes: Shape[] = [];
-
 const updateText = () => {
   const value = (scale * 100).toFixed(0);
   scaleElement.innerHTML = `${value}%`;
@@ -62,11 +66,15 @@ const render = () => {
   reset();
 
   for (const shape of shapes) {
-    ctx.beginPath();
-
     if (shape.points.length < 2) {
       continue;
     }
+
+    if (!shape.visible) {
+      continue;
+    }
+
+    ctx.beginPath();
 
     ctx.moveTo(shape.points[0].x, shape.points[0].y);
     for (let i = 1; i < shape.points.length; i++) {
@@ -82,19 +90,20 @@ const render = () => {
 
 const handlePointerDown = (event: PointerEvent) => {
   mouseDown = true;
+
   const point = screenToCameraSpace(
     { x: event.offsetX, y: event.offsetY },
     camera,
     scale
   );
 
-  shapes.push({
-    points: [point],
-  });
+  startShape(point);
 };
 
 const handlePointerUp = (event: PointerEvent) => {
   mouseDown = false;
+
+  finishShape();
 };
 
 const handlePointerMove = (event: PointerEvent) => {
@@ -105,7 +114,7 @@ const handlePointerMove = (event: PointerEvent) => {
       scale
     );
 
-    shapes[shapes.length - 1].points.push(point);
+    appendLine(point);
   }
   render();
 };
@@ -131,13 +140,13 @@ const handleKeyPress = (event: KeyboardEvent) => {
     if (event.metaKey || event.ctrlKey) {
       if (event.shiftKey) {
         redo();
+        render();
       } else {
         undo();
+        render();
       }
     }
   }
-
-  console.log(event.key);
 
   if (event.key === ")" && event.shiftKey) {
     const zoomed = zoomTo(1, scale, camera);
