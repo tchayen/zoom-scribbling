@@ -9,7 +9,7 @@ export type Line = [Point, Point];
 
 export type Shape = {
   id: number;
-  visible: boolean;
+  state: "invisible" | "visible" | "erased";
   color: string;
   points: Point[];
 };

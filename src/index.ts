@@ -8,6 +8,7 @@
 // - Ability to see local files (IndexDB blob storage with miniatures of
 //   pictures saved?).
 // - Add React?
+// - Options: turn on/off pen pressure. Pick color.
 // - Export to PNG (Chrome handles max 65k in one dimension and area 16k^2
 //   in total).
 // - Measure bottlenecks (guesses: O(n) drawing time each frame, O(n) erasing).
@@ -89,12 +90,18 @@ const render = () => {
       continue;
     }
 
-    if (!shape.visible) {
+    if (shape.state === "invisible") {
       continue;
     }
 
     ctx.beginPath();
     ctx.strokeStyle = shape.color;
+
+    if (shape.state === "erased") {
+      ctx.setLineDash([10, 10]);
+    } else {
+      ctx.setLineDash([]);
+    }
 
     ctx.moveTo(shape.points[0].x, shape.points[0].y);
     for (let i = 1; i < shape.points.length; i++) {

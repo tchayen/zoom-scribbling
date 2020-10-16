@@ -33,7 +33,7 @@ export const startShape = (point: Point) => {
     id: ids++,
     color: "#000",
     points: [point],
-    visible: true,
+    state: "visible",
   });
 
   history.splice(historyIndex + 1, history.length - historyIndex - 1);
@@ -68,6 +68,7 @@ export const appendErase = (point: Point) => {
       const line: Line = [shape.points[i - 1], shape.points[i]];
       if (intersect(line, eraseLine)) {
         shape.color = "#ff00ff";
+        shape.state = "erased";
         eraseBuffer.add(shape.id);
       }
     }
@@ -85,8 +86,8 @@ export const finishErase = () => {
   historyIndex += 1;
 
   for (const shape of shapes) {
-    if (shape.color === "#ff00ff") {
-      shape.visible = false;
+    if (shape.state === "erased") {
+      shape.state = "invisible";
       shape.color = "#000";
     }
   }
@@ -98,11 +99,11 @@ export const undo = () => {
 
     if (recentCommand.type === "draw") {
       const shape = getShape(recentCommand.shapeIndex);
-      shape.visible = false;
+      shape.state = "invisible";
     } else if (recentCommand.type === "erase") {
       const affected = recentCommand.shapeIndices.map((id) => getShape(id));
       for (const shape of affected) {
-        shape.visible = true;
+        shape.state = "visible";
       }
     }
 
@@ -117,11 +118,11 @@ export const redo = () => {
 
     if (recentCommand.type === "draw") {
       const shape = getShape(recentCommand.shapeIndex);
-      shape.visible = true;
+      shape.state = "visible";
     } else if (recentCommand.type === "erase") {
       const affected = recentCommand.shapeIndices.map((id) => getShape(id));
       for (const shape of affected) {
-        shape.visible = false;
+        shape.state = "invisible";
       }
     }
   }

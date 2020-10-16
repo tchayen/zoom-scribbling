@@ -47,14 +47,14 @@ describe("erase", () => {
     appendErase({ x: 0, y: 10 });
 
     expect(__TEST_ONLY__.shapes[0].color).toBe("#ff00ff");
-    expect(__TEST_ONLY__.shapes[0].visible).toBeTruthy();
+    expect(__TEST_ONLY__.shapes[0].state).toBe("erased");
 
     finishErase();
 
     expect(__TEST_ONLY__.history).toHaveLength(2);
 
     expect(__TEST_ONLY__.shapes[0].color).toBe("#000");
-    expect(__TEST_ONLY__.shapes[0].visible).toBeFalsy();
+    expect(__TEST_ONLY__.shapes[0].state).toBe("invisible");
   });
 });
 
@@ -66,7 +66,7 @@ describe("undo", () => {
 
     undo();
 
-    expect(__TEST_ONLY__.shapes[0].visible).toBeFalsy();
+    expect(__TEST_ONLY__.shapes[0].state).toBe("invisible");
   });
 
   it("while drawing resets the drawn shape without changing the history", () => {
