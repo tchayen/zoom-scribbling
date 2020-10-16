@@ -1,3 +1,4 @@
+import consts from "./consts";
 import { screenToCameraSpace, translate, zoom, zoomTo } from "./helpers";
 import {
   redo,
@@ -83,7 +84,7 @@ const render = () => {
     ctx.strokeStyle = shape.color;
 
     if (shape.state === "erased") {
-      ctx.setLineDash([10, 10]);
+      ctx.setLineDash([consts.DASH_LENGTH, consts.DASH_LENGTH]);
     } else {
       ctx.setLineDash([]);
     }

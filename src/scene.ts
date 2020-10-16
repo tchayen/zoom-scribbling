@@ -1,3 +1,4 @@
+import consts from "./consts";
 import { intersect } from "./helpers";
 import { Action, Line, Point, Shape } from "./types";
 
@@ -31,7 +32,7 @@ const getShape = (id: number) => {
 export const startShape = (point: Point) => {
   shapes.push({
     id: ids++,
-    color: "#000",
+    color: consts.BRUSH_COLOR,
     points: [point],
     state: "visible",
   });
@@ -67,7 +68,7 @@ export const appendErase = (point: Point) => {
     for (let i = 1; i < shape.points.length; i++) {
       const line: Line = [shape.points[i - 1], shape.points[i]];
       if (intersect(line, eraseLine)) {
-        shape.color = "#ff00ff";
+        shape.color = consts.ERASER_COLOR;
         shape.state = "erased";
         eraseBuffer.add(shape.id);
       }
@@ -88,7 +89,7 @@ export const finishErase = () => {
   for (const shape of shapes) {
     if (shape.state === "erased") {
       shape.state = "invisible";
-      shape.color = "#000";
+      shape.color = consts.BRUSH_COLOR;
     }
   }
 };

@@ -1,6 +1,5 @@
+import consts from "./consts";
 import { Line, Point } from "./types";
-
-export const TILE_SIZE = 1000;
 
 export const clamp = (value: number, min: number, max: number) => {
   return Math.min(Math.max(value, min), max);
@@ -24,7 +23,11 @@ export const zoom = (
   scale: number
 ) => {
   const previous = scale;
-  const next = clamp(scale + direction * 0.05, 0.25, 2);
+  const next = clamp(
+    scale + direction * consts.SCALE_FACTOR,
+    consts.MIN_SCALE,
+    consts.MAX_SCALE
+  );
   const delta = next - previous;
 
   camera.x = camera.x + ((camera.x + pointer.x) * delta) / previous;
@@ -56,9 +59,10 @@ export const zoomTo = (
 };
 
 export const translate = (camera: Point, delta: Point, scale: number) => {
-  const factor = 25;
-  const x = delta.x !== 0 ? Math.sign(delta.x) * scale * factor : 0;
-  const y = delta.y !== 0 ? Math.sign(delta.y) * scale * factor : 0;
+  const x =
+    delta.x !== 0 ? Math.sign(delta.x) * scale * consts.TRANSLATE_FACTOR : 0;
+  const y =
+    delta.y !== 0 ? Math.sign(delta.y) * scale * consts.TRANSLATE_FACTOR : 0;
 
   return {
     x: camera.x + x,
@@ -68,11 +72,12 @@ export const translate = (camera: Point, delta: Point, scale: number) => {
 
 export const cameraSpaceToTile = (point: Point) => {
   return {
-    x: Math.floor(point.x / TILE_SIZE),
-    y: Math.floor(point.y / TILE_SIZE),
+    x: Math.floor(point.x / consts.TILE_SIZE),
+    y: Math.floor(point.y / consts.TILE_SIZE),
   };
 };
 
+// https://stackoverflow.com/a/24392281
 export const intersect = ([a, b]: Line, [c, d]: Line) => {
   let det = (b.x - a.x) * (d.y - c.y) - (d.x - c.x) * (b.y - a.y);
   if (det === 0) {
