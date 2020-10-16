@@ -8,6 +8,7 @@ export const shapes: Shape[] = [];
 
 export const history: Action[] = [];
 let historyIndex = -1;
+let drawing = false;
 
 let lastPoint: Point | null = null;
 let eraseBuffer = new Set<number>();
@@ -30,6 +31,7 @@ const getShape = (id: number) => {
 };
 
 export const startShape = (point: Point) => {
+  drawing = true;
   shapes.push({
     id: ids++,
     color: consts.BRUSH_COLOR,
@@ -41,16 +43,25 @@ export const startShape = (point: Point) => {
 };
 
 export const appendLine = (point: Point) => {
+  if (!drawing) {
+    return;
+  }
+
   shapes[shapes.length - 1].points.push(point);
 };
 
 export const finishShape = () => {
+  if (!drawing) {
+    return;
+  }
+
   history.push({
     type: "draw",
     shapeIndex: shapes[shapes.length - 1].id,
   });
 
   historyIndex += 1;
+  drawing = false;
 };
 
 export const startErase = (point: Point) => {
@@ -65,6 +76,10 @@ export const appendErase = (point: Point) => {
   const eraseLine: Line = [lastPoint, point];
 
   for (const shape of shapes) {
+    if (shape.state !== "visible") {
+      continue;
+    }
+
     for (let i = 1; i < shape.points.length; i++) {
       const line: Line = [shape.points[i - 1], shape.points[i]];
       if (intersect(line, eraseLine)) {
@@ -95,6 +110,12 @@ export const finishErase = () => {
 };
 
 export const undo = () => {
+  if (drawing) {
+    shapes.splice(shapes.length - 1, 1);
+    drawing = false;
+    return;
+  }
+
   if (historyIndex >= 0) {
     const recentCommand = history[historyIndex];
 

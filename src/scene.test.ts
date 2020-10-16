@@ -56,6 +56,10 @@ describe("erase", () => {
     expect(__TEST_ONLY__.shapes[0].color).toBe("#000");
     expect(__TEST_ONLY__.shapes[0].state).toBe("invisible");
   });
+
+  it("erasing previously erased shape does nothing", () => {
+    // TODO
+  });
 });
 
 describe("undo", () => {
