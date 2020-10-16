@@ -1,18 +1,3 @@
-// TODO
-// - Add unit tests to fix bugs with undo/redo and erasing.
-// - Fix bug with undoing during drawing.
-// - Resize throttling.
-// - Export to JSON.
-// - Import from JSON.
-// - Saving to localStorage.
-// - Ability to see local files (IndexDB blob storage with miniatures of
-//   pictures saved?).
-// - Add React?
-// - Options: turn on/off pen pressure. Pick color.
-// - Export to PNG (Chrome handles max 65k in one dimension and area 16k^2
-//   in total).
-// - Measure bottlenecks (guesses: O(n) drawing time each frame, O(n) erasing).
-
 import { screenToCameraSpace, translate, zoom, zoomTo } from "./helpers";
 import {
   redo,
