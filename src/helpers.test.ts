@@ -1,11 +1,13 @@
 import {
   cameraSpaceToTile,
   clamp,
+  intersect,
   screenToCameraSpace,
   translate,
   zoom,
   zoomTo,
 } from "./helpers";
+import { Line } from "./types";
 
 describe("clamp", () => {
   it("truncates to the specified range", () => {
@@ -65,5 +67,67 @@ describe("cameraSpaceToTile", () => {
   it("works", () => {
     const result = cameraSpaceToTile({ x: 1001, y: 123 });
     expect(result).toStrictEqual({ x: 1, y: 0 });
+  });
+});
+
+describe("intersect", () => {
+  it("detects typical intersection", () => {
+    const a: Line = [
+      { x: 1, y: 1 },
+      { x: 3, y: 4 },
+    ];
+    const b: Line = [
+      { x: 1, y: 3 },
+      { x: 3, y: 1 },
+    ];
+    expect(intersect(a, b)).toBe(true);
+  });
+
+  it("doesn't detect two lines completely unmatching", () => {
+    const a: Line = [
+      { x: 1, y: 1 },
+      { x: 3, y: 4 },
+    ];
+    const b: Line = [
+      { x: 4, y: 4 },
+      { x: 6, y: 2 },
+    ];
+    expect(intersect(a, b)).toBe(false);
+  });
+
+  it("doesn't false positive for a two parallel lines", () => {
+    const a: Line = [
+      { x: 1, y: 1 },
+      { x: 3, y: 4 },
+    ];
+    const b: Line = [
+      { x: 2, y: 1 },
+      { x: 4, y: 4 },
+    ];
+    expect(intersect(a, b)).toBe(false);
+  });
+
+  it("doesn't false positive for two lines with bounding rectangles collision", () => {
+    const a: Line = [
+      { x: 1, y: 1 },
+      { x: 5, y: 6 },
+    ];
+    const b: Line = [
+      { x: 3, y: 3 },
+      { x: 5, y: 1 },
+    ];
+    expect(intersect(a, b)).toBe(false);
+  });
+
+  it("works for vertical line", () => {
+    const a: Line = [
+      { x: 1, y: 1 },
+      { x: 3, y: 4 },
+    ];
+    const b: Line = [
+      { x: 2, y: 0 },
+      { x: 2, y: 5 },
+    ];
+    expect(intersect(a, b)).toBe(true);
   });
 });
