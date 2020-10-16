@@ -145,3 +145,15 @@ describe("redo", () => {
     expect(__TEST_ONLY__.shapes[0].state).toBe("visible");
   });
 });
+
+describe("exportState", () => {
+  it("", () => {
+    // TODO
+  });
+});
+
+describe("importState", () => {
+  it("", () => {
+    // TODO
+  });
+});

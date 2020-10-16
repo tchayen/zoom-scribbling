@@ -28,3 +28,9 @@ export type Action =
       type: "erase";
       shapeIndices: number[];
     };
+
+export type EditorState = {
+  shapes: Shape[];
+  history: Action[];
+  historyIndex: number;
+};

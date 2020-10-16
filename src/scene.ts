@@ -1,6 +1,6 @@
 import consts from "./consts";
 import { intersect } from "./helpers";
-import { Action, Line, Point, Shape } from "./types";
+import { Action, EditorState, Line, Point, Shape } from "./types";
 
 let ids = 1;
 
@@ -177,6 +177,22 @@ export const redo = () => {
       }
     }
   }
+};
+
+export const exportState = () => {
+  return JSON.stringify({
+    shapes,
+    history,
+    historyIndex,
+  });
+};
+
+export const importState = (state: EditorState) => {
+  reset();
+
+  shapes.push(...state.shapes);
+  history.push(...state.history);
+  historyIndex = state.historyIndex;
 };
 
 export const __TEST_ONLY__ = {

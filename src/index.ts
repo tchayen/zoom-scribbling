@@ -129,6 +129,10 @@ const handlePointerUp = (event: PointerEvent) => {
 };
 
 const handlePointerMove = (event: PointerEvent) => {
+  if (event.target !== canvas) {
+    return;
+  }
+
   if (mouseDown) {
     const point = screenToCameraSpace(
       { x: event.offsetX, y: event.offsetY },
