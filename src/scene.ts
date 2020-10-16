@@ -8,16 +8,24 @@ export const shapes: Shape[] = [];
 
 export const history: Action[] = [];
 let historyIndex = -1;
+
 let drawing = false;
+let erasing = false;
 
 let lastPoint: Point | null = null;
 let eraseBuffer = new Set<number>();
 
 const reset = () => {
   ids = 1;
+
   shapes.splice(0, shapes.length);
+
   history.splice(0, shapes.length);
   historyIndex = -1;
+
+  drawing = false;
+  erasing = false;
+
   lastPoint = null;
   eraseBuffer = new Set<number>();
 };
@@ -65,10 +73,15 @@ export const finishShape = () => {
 };
 
 export const startErase = (point: Point) => {
+  erasing = true;
   lastPoint = point;
 };
 
 export const appendErase = (point: Point) => {
+  if (!erasing) {
+    return;
+  }
+
   if (lastPoint === null) {
     throw new Error("Incorrect state");
   }
@@ -94,6 +107,10 @@ export const appendErase = (point: Point) => {
 };
 
 export const finishErase = () => {
+  if (!erasing) {
+    return;
+  }
+
   history.push({
     type: "erase",
     shapeIndices: [...eraseBuffer],
@@ -107,12 +124,24 @@ export const finishErase = () => {
       shape.color = consts.BRUSH_COLOR;
     }
   }
+
+  erasing = false;
 };
 
 export const undo = () => {
   if (drawing) {
     shapes.splice(shapes.length - 1, 1);
     drawing = false;
+    return;
+  }
+
+  if (erasing) {
+    erasing = false;
+    for (const shape of shapes) {
+      if (shape.state === "erased") {
+        shape.state = "visible";
+      }
+    }
     return;
   }
 

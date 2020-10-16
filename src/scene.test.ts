@@ -38,7 +38,7 @@ describe("draw", () => {
 });
 
 describe("erase", () => {
-  it("erase marks shape as pink and then invisible", () => {
+  it("erase marks shape as erased and then invisible", () => {
     startShape({ x: 0, y: 0 });
     appendLine({ x: 10, y: 10 });
     finishShape();
@@ -46,19 +46,31 @@ describe("erase", () => {
     startErase({ x: 10, y: 0 });
     appendErase({ x: 0, y: 10 });
 
-    expect(__TEST_ONLY__.shapes[0].color).toBe("#ff00ff");
     expect(__TEST_ONLY__.shapes[0].state).toBe("erased");
 
     finishErase();
 
     expect(__TEST_ONLY__.history).toHaveLength(2);
 
-    expect(__TEST_ONLY__.shapes[0].color).toBe("#000");
     expect(__TEST_ONLY__.shapes[0].state).toBe("invisible");
   });
 
   it("erasing previously erased shape does nothing", () => {
-    // TODO
+    startShape({ x: 0, y: 0 });
+    appendLine({ x: 10, y: 10 });
+    finishShape();
+
+    startErase({ x: 0, y: 5 });
+    appendErase({ x: 10, y: 5 });
+
+    expect(__TEST_ONLY__.shapes[0].state).toBe("erased");
+
+    finishErase();
+
+    startErase({ x: 0, y: 5 });
+    appendErase({ x: 10, y: 5 });
+
+    expect(__TEST_ONLY__.shapes[0].state).toBe("invisible");
   });
 });
 
@@ -74,24 +86,62 @@ describe("undo", () => {
   });
 
   it("while drawing resets the drawn shape without changing the history", () => {
-    // TODO
+    startShape({ x: 0, y: 0 });
+    appendLine({ x: 10, y: 10 });
+    undo();
+    expect(__TEST_ONLY__.shapes).toHaveLength(0);
+    expect(__TEST_ONLY__.history).toHaveLength(0);
   });
 
   it("after erasing two shapes restores both of them", () => {
-    // TODO
-  });
+    startShape({ x: 0, y: 0 });
+    appendLine({ x: 10, y: 10 });
+    finishShape();
 
-  it("of an erase restores shape", () => {
-    // TODO
+    startShape({ x: 10, y: 0 });
+    appendLine({ x: 20, y: 10 });
+    finishShape();
+
+    startErase({ x: 0, y: 5 });
+    appendErase({ x: 20, y: 5 });
+    finishErase();
+
+    expect(__TEST_ONLY__.shapes).toHaveLength(2);
+    expect(__TEST_ONLY__.shapes[0].state).toBe("invisible");
+    expect(__TEST_ONLY__.shapes[1].state).toBe("invisible");
+
+    undo();
+
+    expect(__TEST_ONLY__.shapes[0].state).toBe("visible");
+    expect(__TEST_ONLY__.shapes[1].state).toBe("visible");
   });
 
   it("while erasing leaves the shape intact also without changing the history", () => {
-    // TODO
+    startShape({ x: 0, y: 0 });
+    appendLine({ x: 10, y: 10 });
+    finishShape();
+
+    startErase({ x: 0, y: 5 });
+    appendErase({ x: 20, y: 5 });
+
+    undo();
+
+    expect(__TEST_ONLY__.shapes[0].state).toBe("visible");
   });
 });
 
 describe("redo", () => {
   it("sets shape as visible", () => {
-    // TODO
+    startShape({ x: 0, y: 0 });
+    appendLine({ x: 10, y: 10 });
+    finishShape();
+
+    undo();
+
+    expect(__TEST_ONLY__.shapes[0].state).toBe("invisible");
+
+    redo();
+
+    expect(__TEST_ONLY__.shapes[0].state).toBe("visible");
   });
 });
