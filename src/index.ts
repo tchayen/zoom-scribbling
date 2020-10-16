@@ -10,6 +10,7 @@ import {
   appendErase,
   finishErase,
   startErase,
+  exportState,
 } from "./scene";
 import { Mode } from "./types";
 
@@ -208,3 +209,23 @@ window.addEventListener("pointerup", handlePointerUp);
 window.addEventListener("wheel", handleWheel);
 window.addEventListener("keypress", handleKeyPress);
 window.addEventListener("resize", handleResize);
+
+const download = document.getElementById("download");
+
+if (!download) {
+  throw new Error("HTML is missing download");
+}
+
+download.onclick = () => {
+  const state = exportState();
+  const element = document.createElement("a");
+  element.setAttribute(
+    "href",
+    `data:text/plain;charset=utf-8,${encodeURIComponent(state)}`
+  );
+  element.setAttribute("download", "download.json");
+  element.style.display = "none";
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
+};
