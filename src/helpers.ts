@@ -1,4 +1,3 @@
-import { redo } from "./scene";
 import { Line, Point } from "./types";
 
 export const TILE_SIZE = 1000;

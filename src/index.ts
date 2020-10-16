@@ -10,7 +10,7 @@ import {
   finishErase,
   startErase,
 } from "./scene";
-import { Mode, Shape } from "./types";
+import { Mode } from "./types";
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 canvas.width = window.innerWidth;
