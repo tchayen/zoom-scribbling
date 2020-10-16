@@ -1,22 +1,72 @@
+import {
+  redo,
+  undo,
+  shapes,
+  startShape,
+  finishShape,
+  appendLine,
+  appendErase,
+  finishErase,
+  startErase,
+  __TEST_ONLY__,
+} from "./scene";
+
+beforeEach(() => {
+  __TEST_ONLY__.reset();
+});
+
 describe("draw", () => {
   it("saves drawing to shapes", () => {
-    // TODO
+    startShape({ x: 0, y: 0 });
+    appendLine({ x: 10, y: 10 });
+    finishShape();
+
+    expect(__TEST_ONLY__.history).toHaveLength(1);
   });
 
   it("after undo resets further history", () => {
-    // TODO
+    startShape({ x: 0, y: 0 });
+    appendLine({ x: 10, y: 10 });
+    finishShape();
+
+    undo();
+
+    startShape({ x: 0, y: 0 });
+
+    expect(__TEST_ONLY__.history).toHaveLength(0);
   });
 });
 
 describe("erase", () => {
   it("erase marks shape as pink and then invisible", () => {
-    // TODO
+    startShape({ x: 0, y: 0 });
+    appendLine({ x: 10, y: 10 });
+    finishShape();
+
+    startErase({ x: 10, y: 0 });
+    appendErase({ x: 0, y: 10 });
+
+    expect(__TEST_ONLY__.shapes[0].color).toBe("#ff00ff");
+    expect(__TEST_ONLY__.shapes[0].visible).toBeTruthy();
+
+    finishErase();
+
+    expect(__TEST_ONLY__.history).toHaveLength(2);
+
+    expect(__TEST_ONLY__.shapes[0].color).toBe("#000");
+    expect(__TEST_ONLY__.shapes[0].visible).toBeFalsy();
   });
 });
 
 describe("undo", () => {
   it("sets shape as not visible", () => {
-    // TODO
+    startShape({ x: 0, y: 0 });
+    appendLine({ x: 10, y: 10 });
+    finishShape();
+
+    undo();
+
+    expect(__TEST_ONLY__.shapes[0].visible).toBeFalsy();
   });
 
   it("while drawing resets the drawn shape without changing the history", () => {

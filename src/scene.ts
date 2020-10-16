@@ -8,6 +8,18 @@ export const shapes: Shape[] = [];
 export const history: Action[] = [];
 let historyIndex = -1;
 
+let lastPoint: Point | null = null;
+let eraseBuffer = new Set<number>();
+
+const reset = () => {
+  ids = 1;
+  shapes.splice(0, shapes.length);
+  history.splice(0, shapes.length);
+  historyIndex = -1;
+  lastPoint = null;
+  eraseBuffer = new Set<number>();
+};
+
 const getShape = (id: number) => {
   const shape = shapes.find((shape) => shape.id === id);
   if (!shape) {
@@ -39,9 +51,6 @@ export const finishShape = () => {
 
   historyIndex += 1;
 };
-
-let lastPoint: Point | null = null;
-let eraseBuffer = new Set<number>();
 
 export const startErase = (point: Point) => {
   lastPoint = point;
@@ -116,4 +125,17 @@ export const redo = () => {
       }
     }
   }
+};
+
+export const __TEST_ONLY__ = {
+  get shapes() {
+    return shapes;
+  },
+  get history() {
+    return history;
+  },
+  get historyIndex() {
+    return historyIndex;
+  },
+  reset,
 };
