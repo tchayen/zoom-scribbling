@@ -1,6 +1,6 @@
-import consts from "./consts";
+import consts from "../consts";
 import { intersect } from "./helpers";
-import { Action, EditorState, Line, Point, Shape } from "./types";
+import { Action, EditorState, Line, Point, Shape } from "../types";
 
 let ids = 1;
 

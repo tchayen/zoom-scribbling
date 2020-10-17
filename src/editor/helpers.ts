@@ -1,5 +1,5 @@
-import consts from "./consts";
-import { Line, Point } from "./types";
+import consts from "../consts";
+import { Line, Point } from "../types";
 import { readFromDb, saveToDb } from "./indexedDb";
 
 export const clamp = (value: number, min: number, max: number) => {

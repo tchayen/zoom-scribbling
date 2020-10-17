@@ -50,12 +50,19 @@
         cursor: pointer;
         user-select: none;
       }
+
+      #root {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+      }
     </style>
   </head>
   <body>
       <canvas id="canvas"></canvas>
       <span id="scale" class="text"></span>
       <button id="download">Download</button>
-    <script src="src/index.ts"></script>
+      <div id="root"></div>
+    <script src="src/index.tsx"></script>
   </body>
 </html>

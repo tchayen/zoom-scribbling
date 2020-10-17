@@ -43,5 +43,3 @@ export const readFromDb = (id: number) =>
       resolve(request.result);
     };
   });
-
-setupIndexedDb();

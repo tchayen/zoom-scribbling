@@ -1,3 +1,5 @@
+import React, { useEffect } from "react";
+import ReactDOM from "react-dom";
 import consts from "./consts";
 import {
   generateMiniature,
@@ -5,7 +7,8 @@ import {
   translate,
   zoom,
   zoomTo,
-} from "./helpers";
+} from "./editor/helpers";
+import { setupIndexedDb } from "./editor/indexedDb";
 import {
   redo,
   undo,
@@ -17,7 +20,7 @@ import {
   finishErase,
   startErase,
   exportState,
-} from "./scene";
+} from "./editor/scene";
 import { Mode } from "./types";
 
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
@@ -213,13 +216,6 @@ const handleResize = () => {
 
 render();
 
-window.addEventListener("pointermove", handlePointerMove);
-window.addEventListener("pointerdown", handlePointerDown);
-window.addEventListener("pointerup", handlePointerUp);
-window.addEventListener("wheel", handleWheel);
-window.addEventListener("keypress", handleKeyPress);
-window.addEventListener("resize", handleResize);
-
 const download = document.getElementById("download");
 
 if (!download) {
@@ -239,3 +235,28 @@ download.onclick = () => {
   element.click();
   document.body.removeChild(element);
 };
+
+const App = () => {
+  useEffect(() => {
+    setupIndexedDb();
+
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerdown", handlePointerDown);
+    window.addEventListener("pointerup", handlePointerUp);
+    window.addEventListener("wheel", handleWheel);
+    window.addEventListener("keypress", handleKeyPress);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("pointerup", handlePointerUp);
+      window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("keypress", handleKeyPress);
+      window.removeEventListener("resize", handleResize);
+    };
+  });
+  return <div>test</div>;
+};
+
+ReactDOM.render(<App />, document.getElementById("root"));
