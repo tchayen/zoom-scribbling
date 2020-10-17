@@ -1,6 +1,6 @@
 const consts = {
   BRUSH_COLOR: "#000",
-  ERASER_COLOR: "#ff00ff",
+  ERASER_COLOR: "#0366D6",
   DASH_LENGTH: 10,
   TILE_SIZE: 1000,
   TRANSLATE_FACTOR: 25,
