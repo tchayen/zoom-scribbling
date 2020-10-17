@@ -4,11 +4,86 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Editor</title>
-    <style>
+    <script>
+      const dashify = (string) =>
+        string
+          .trim()
+          .replace(/([a-z])([A-Z])/g, "$1-$2")
+          .replace(/\W/g, (m) => (/[À-ž]/.test(m) ? m : "-"))
+          .replace(/^-+|-+$/g, "")
+          .toLowerCase();
+
+      const palette = {
+        blue: "#0366d6",
+        blueDimmedIntense: "rgba(3, 102, 214, 0.35)",
+        blueDimmed: "rgba(3, 102, 214, 0.2)",
+        white: "#ffffff",
+        black: "#000000",
+        lightGray: "#f6f8fa",
+        gray: "#dfe2e5",
+        darkGray: "#777777",
+        darkestGray: "#24292e",
+      };
+
+      const light = {
+        primary: palette.blue,
+        primaryDimmed: palette.blueDimmed,
+        background: palette.white,
+        grayBackground: palette.lightGray,
+        mainText: palette.black,
+        border: palette.gray,
+        secondaryText: palette.darkGray,
+      };
+
+      const dark = {
+        primary: palette.blue,
+        primaryDimmed: palette.blueDimmedIntense,
+        background: palette.black,
+        grayBackground: palette.darkestGray,
+        mainText: palette.white,
+        border: palette.darkestGray,
+        secondaryText: palette.darkGray,
+      };
+
+      const colors = { light, dark };
+
+      const getInitialColorMode = () => {
+        const persistedColorPreference = window.localStorage.getItem(
+          "color-mode"
+        );
+
+        // If the user has explicitly chosen light or dark, let's use it. Otherwise,
+        // this value will be null.
+        if (persistedColorPreference) {
+          return persistedColorPreference;
+        }
+
+        // If they haven't been explicit, let's check the media query
+        const mql = window.matchMedia("(prefers-color-scheme: dark)");
+        const hasMediaQueryPreference = typeof mql.matches === "boolean";
+
+        if (hasMediaQueryPreference) {
+          return mql.matches ? "dark" : "light";
+        }
+
+        // If they are using a browser/OS that doesn't support color themes, let's
+        // default to 'light'.
+        return "light";
+      };
+
+      const colorMode = getInitialColorMode();
+      const root = document.documentElement;
+      root.style.setProperty("--initial-color-mode", colorMode);
+
+      Object.keys(colors[colorMode]).forEach((key) => {
+        root.style.setProperty(`--color-${dashify(key)}`, colors[colorMode][key]);
+      });
+    </script>
+     <style>
       @import url('https://rsms.me/inter/inter.css');
 
       body {
-        background-color: #999;
+        background-color: #fff;
         margin: 0px;
         font-family: Inter, sans-serif;
         overflow: hidden;
@@ -16,7 +91,7 @@
       }
 
       .text {
-        color: #777;
+        color: var(--color-secondary-text);
         padding: 5px;
         font-weight: 400;
         font-size: 15px;
@@ -36,7 +111,7 @@
         font-family: Inter, sans-serif;
         font-size: 15px;
         font-weight: 700;
-        color: #000;
+        color: var(--color-main-text);
         background-color: #eee;
         border-radius: 0;
         border: none;

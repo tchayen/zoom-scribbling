@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
+import ColorModeToggle from "./components/ColorModeToggle";
+import { ThemeProvider } from "./components/colorTheme";
 import consts from "./consts";
 import {
   generateMiniature,
@@ -256,7 +258,25 @@ const App = () => {
       window.removeEventListener("resize", handleResize);
     };
   });
-  return <div>test</div>;
+  return (
+    <ThemeProvider>
+      <>
+        {/* <ColorModeToggle /> */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            backgroundColor: "#fff",
+            border: "1px solid #000",
+            padding: 16,
+          }}
+        >
+          test
+        </div>
+      </>
+    </ThemeProvider>
+  );
 };
 
 ReactDOM.render(<App />, document.getElementById("root"));
