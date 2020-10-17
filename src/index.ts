@@ -152,9 +152,9 @@ const handlePointerMove = (event: PointerEvent) => {
     } else if (mode === "erase") {
       appendErase(point);
     }
-  }
 
-  render();
+    render();
+  }
 };
 
 const handleWheel = (event: WheelEvent) => {
