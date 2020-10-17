@@ -56,7 +56,7 @@ if (scaleElement === null) {
 
 let scale = 1;
 let camera = { x: 0, y: 0 };
-let mouseDown = false;
+let pointerDown = false;
 let mode: Mode = "draw";
 
 const updateText = () => {
@@ -109,7 +109,7 @@ const render = () => {
 };
 
 const handlePointerDown = (event: PointerEvent) => {
-  mouseDown = true;
+  pointerDown = true;
 
   const point = screenToCameraSpace(
     { x: event.offsetX, y: event.offsetY },
@@ -125,7 +125,7 @@ const handlePointerDown = (event: PointerEvent) => {
 };
 
 const handlePointerUp = (event: PointerEvent) => {
-  mouseDown = false;
+  pointerDown = false;
 
   if (mode === "draw") {
     finishShape();
@@ -140,7 +140,7 @@ const handlePointerMove = (event: PointerEvent) => {
     return;
   }
 
-  if (mouseDown) {
+  if (pointerDown) {
     const point = screenToCameraSpace(
       { x: event.offsetX, y: event.offsetY },
       camera,
