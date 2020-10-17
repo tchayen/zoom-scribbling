@@ -1,5 +1,11 @@
 import consts from "./consts";
-import { screenToCameraSpace, translate, zoom, zoomTo } from "./helpers";
+import {
+  generateMiniature,
+  screenToCameraSpace,
+  translate,
+  zoom,
+  zoomTo,
+} from "./helpers";
 import {
   redo,
   undo,
@@ -193,6 +199,10 @@ const handleKeyPress = (event: KeyboardEvent) => {
 
   if (event.key.toLowerCase() === "d") {
     mode = "draw";
+  }
+
+  if (event.key.toLowerCase() === "m") {
+    generateMiniature(canvas);
   }
 };
 

@@ -20,5 +20,8 @@
     "transform": {
       "^.+\\.ts?$": "ts-jest"
     }
-  }
+  },
+  "browserslist": [
+    "last 1 Chrome version"
+  ]
 }

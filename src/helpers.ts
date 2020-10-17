@@ -1,5 +1,6 @@
 import consts from "./consts";
 import { Line, Point } from "./types";
+import { readFromDb, saveToDb } from "./indexedDb";
 
 export const clamp = (value: number, min: number, max: number) => {
   return Math.min(Math.max(value, min), max);
@@ -88,4 +89,35 @@ export const intersect = ([a, b]: Line, [c, d]: Line) => {
     const gamma = ((a.y - b.y) * (d.x - a.x) + (b.x - a.x) * (d.y - a.y)) / det;
     return 0 < lambda && lambda < 1 && 0 < gamma && gamma < 1;
   }
+};
+
+const asBlob = (canvas: HTMLCanvasElement) =>
+  new Promise<Blob>((resolve, reject) => {
+    canvas.toBlob((result) => {
+      if (result === null) {
+        reject();
+      } else {
+        resolve(result);
+      }
+    });
+  });
+
+export const generateMiniature = async (canvas: HTMLCanvasElement) => {
+  const blob = await asBlob(canvas);
+  const id = await saveToDb(blob);
+  const miniature = await readFromDb(id);
+
+  const img = document.createElement("img");
+  const url = URL.createObjectURL(miniature);
+  img.src = url;
+
+  img.style.position = "absolute";
+  img.style.zIndex = "10";
+  img.style.top = "0px";
+  img.style.left = "0px";
+  img.width = window.innerWidth / 6;
+  img.height = window.innerHeight / 6;
+  img.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.25)";
+
+  document.body.appendChild(img);
 };
