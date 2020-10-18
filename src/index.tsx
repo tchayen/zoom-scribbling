@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import { ThemeProvider } from "./components/colorTheme";
 import consts from "./consts";
@@ -110,7 +110,7 @@ const App = () => {
   let pointerDown = false;
   let mode: Mode = "draw";
 
-  const handlePointerDown = (event: PointerEvent) => {
+  const handlePointerDown = useCallback((event: PointerEvent) => {
     pointerDown = true;
 
     const point = screenToCameraSpace(
@@ -124,9 +124,9 @@ const App = () => {
     } else if (mode === "erase") {
       startErase(point);
     }
-  };
+  }, []);
 
-  const handlePointerUp = (event: PointerEvent) => {
+  const handlePointerUp = useCallback((event: PointerEvent) => {
     pointerDown = false;
 
     if (mode === "draw") {
@@ -135,9 +135,9 @@ const App = () => {
       finishErase();
     }
     render(getCtx(), camera, scale);
-  };
+  }, []);
 
-  const handlePointerMove = (event: PointerEvent) => {
+  const handlePointerMove = useCallback((event: PointerEvent) => {
     if (event.target !== canvas.current) {
       return;
     }
@@ -157,9 +157,9 @@ const App = () => {
 
       render(getCtx(), camera, scale);
     }
-  };
+  }, []);
 
-  const handleWheel = (event: WheelEvent) => {
+  const handleWheel = useCallback((event: WheelEvent) => {
     if (event.metaKey || event.ctrlKey) {
       const zoomed = zoom(
         Math.sign(event.deltaY),
@@ -173,9 +173,9 @@ const App = () => {
       camera = translate(camera, { x: event.deltaX, y: event.deltaY }, scale);
     }
     render(getCtx(), camera, scale);
-  };
+  }, []);
 
-  const handleKeyPress = (event: KeyboardEvent) => {
+  const handleKeyPress = useCallback((event: KeyboardEvent) => {
     if (event.key.toLowerCase() === "z") {
       if (event.metaKey || event.ctrlKey) {
         if (event.shiftKey) {
@@ -207,12 +207,12 @@ const App = () => {
       console.log("Turned off!");
       // generateMiniature(canvas.current);
     }
-  };
+  }, []);
 
-  const handleResize = () => {
+  const handleResize = useCallback(() => {
     resetSizes();
     render(getCtx(), camera, scale);
-  };
+  }, []);
 
   useEffect(() => {
     setupIndexedDb();
@@ -235,7 +235,16 @@ const App = () => {
       window.removeEventListener("keypress", handleKeyPress);
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [
+    camera,
+    scale,
+    handlePointerMove,
+    handlePointerDown,
+    handlePointerUp,
+    handleWheel,
+    handleKeyPress,
+    handleResize,
+  ]);
 
   const value = (scale * 100).toFixed(0);
   const cameraX = camera.x.toFixed(0);
