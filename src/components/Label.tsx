@@ -1,4 +1,4 @@
-import { styled } from "../colorTheme";
+import { styled } from "./colorTheme";
 
 const Label = styled.label<{ isDisabled?: boolean }>`
   color: ${(props) => props.theme.mainText};

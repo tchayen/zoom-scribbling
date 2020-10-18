@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
-import ColorModeToggle from "./components/ColorModeToggle";
 import { ThemeProvider } from "./components/colorTheme";
 import consts from "./consts";
 import {
@@ -23,55 +22,9 @@ import {
   startErase,
   exportState,
 } from "./editor/scene";
-import { Mode } from "./types";
+import { Mode, Point } from "./types";
 
-const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-const ctx = canvas.getContext("2d");
-
-const buffer = document.createElement("canvas");
-buffer.width = canvas.width;
-buffer.height = canvas.height;
-const bufferCtx = buffer.getContext("2d");
-
-if (ctx === null) {
-  throw new Error("Failed to create canvas context.");
-}
-
-if (bufferCtx === null) {
-  throw new Error("Failed to create buffer canvas context.");
-}
-
-bufferCtx.drawImage(canvas, 0, 0);
-ctx.drawImage(buffer, 0, 0);
-
-const resetSizes = () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  buffer.width = canvas.width;
-  buffer.height = canvas.height;
-};
-
-const scaleElement = document.getElementById("scale");
-
-if (scaleElement === null) {
-  throw new Error("HTML is missing #scale.");
-}
-
-let scale = 1;
-let camera = { x: 0, y: 0 };
-let pointerDown = false;
-let mode: Mode = "draw";
-
-const updateText = () => {
-  const value = (scale * 100).toFixed(0);
-  const cameraX = camera.x.toFixed(0);
-  const cameraY = camera.y.toFixed(0);
-  scaleElement.innerHTML = `(${cameraX}, ${cameraY}) · ${value}% · ${mode} mode`;
-};
-
-const reset = () => {
+const reset = (ctx: CanvasRenderingContext2D, camera: Point, scale: number) => {
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.fillStyle = "rgba(255, 255, 255, 1)";
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
@@ -80,8 +33,17 @@ const reset = () => {
   ctx.scale(scale, scale);
 };
 
-const render = () => {
-  reset();
+const render = (
+  ctx: CanvasRenderingContext2D | null,
+  camera: Point,
+  scale: number
+) => {
+  if (ctx === null) {
+    console.log("No ctx");
+    return;
+  }
+
+  reset(ctx, camera, scale);
 
   for (const shape of shapes) {
     if (shape.points.length < 2) {
@@ -110,42 +72,47 @@ const render = () => {
     ctx.closePath();
   }
 
-  updateText();
+  // updateText();
 };
 
-const handlePointerDown = (event: PointerEvent) => {
-  pointerDown = true;
+// download.onclick = () => {
+//   const state = exportState();
+//   const element = document.createElement("a");
+//   element.setAttribute(
+//     "href",
+//     `data:text/plain;charset=utf-8,${encodeURIComponent(state)}`
+//   );
+//   element.setAttribute("download", "download.json");
+//   element.style.display = "none";
+//   document.body.appendChild(element);
+//   element.click();
+//   document.body.removeChild(element);
+// };
 
-  const point = screenToCameraSpace(
-    { x: event.offsetX, y: event.offsetY },
-    camera,
-    scale
-  );
+const App = () => {
+  const canvas = useRef<HTMLCanvasElement>(null);
 
-  if (mode === "draw") {
-    startShape(point);
-  } else if (mode === "erase") {
-    startErase(point);
-  }
-};
+  const getCtx = () => {
+    return canvas.current !== null ? canvas.current.getContext("2d") : null;
+  };
 
-const handlePointerUp = (event: PointerEvent) => {
-  pointerDown = false;
+  const resetSizes = () => {
+    if (canvas.current === null) {
+      return;
+    }
 
-  if (mode === "draw") {
-    finishShape();
-  } else if (mode === "erase") {
-    finishErase();
-  }
-  render();
-};
+    canvas.current.width = window.innerWidth;
+    canvas.current.height = window.innerHeight;
+  };
 
-const handlePointerMove = (event: PointerEvent) => {
-  if (event.target !== canvas) {
-    return;
-  }
+  let scale = 1;
+  let camera = { x: 0, y: 0 };
+  let pointerDown = false;
+  let mode: Mode = "draw";
 
-  if (pointerDown) {
+  const handlePointerDown = (event: PointerEvent) => {
+    pointerDown = true;
+
     const point = screenToCameraSpace(
       { x: event.offsetX, y: event.offsetY },
       camera,
@@ -153,94 +120,103 @@ const handlePointerMove = (event: PointerEvent) => {
     );
 
     if (mode === "draw") {
-      appendLine(point);
+      startShape(point);
     } else if (mode === "erase") {
-      appendErase(point);
+      startErase(point);
+    }
+  };
+
+  const handlePointerUp = (event: PointerEvent) => {
+    pointerDown = false;
+
+    if (mode === "draw") {
+      finishShape();
+    } else if (mode === "erase") {
+      finishErase();
+    }
+    render(getCtx(), camera, scale);
+  };
+
+  const handlePointerMove = (event: PointerEvent) => {
+    if (event.target !== canvas.current) {
+      return;
     }
 
-    render();
-  }
-};
+    if (pointerDown) {
+      const point = screenToCameraSpace(
+        { x: event.offsetX, y: event.offsetY },
+        camera,
+        scale
+      );
 
-const handleWheel = (event: WheelEvent) => {
-  if (event.metaKey || event.ctrlKey) {
-    const zoomed = zoom(
-      Math.sign(event.deltaY),
-      { x: event.offsetX, y: event.offsetY },
-      camera,
-      scale
-    );
-    camera = zoomed.camera;
-    scale = zoomed.scale;
-  } else {
-    camera = translate(camera, { x: event.deltaX, y: event.deltaY }, scale);
-  }
-  render();
-};
+      if (mode === "draw") {
+        appendLine(point);
+      } else if (mode === "erase") {
+        appendErase(point);
+      }
 
-const handleKeyPress = (event: KeyboardEvent) => {
-  if (event.key.toLowerCase() === "z") {
+      render(getCtx(), camera, scale);
+    }
+  };
+
+  const handleWheel = (event: WheelEvent) => {
     if (event.metaKey || event.ctrlKey) {
-      if (event.shiftKey) {
-        redo();
-        render();
-      } else {
-        undo();
-        render();
+      const zoomed = zoom(
+        Math.sign(event.deltaY),
+        { x: event.offsetX, y: event.offsetY },
+        camera,
+        scale
+      );
+      camera = zoomed.camera;
+      scale = zoomed.scale;
+    } else {
+      camera = translate(camera, { x: event.deltaX, y: event.deltaY }, scale);
+    }
+    render(getCtx(), camera, scale);
+  };
+
+  const handleKeyPress = (event: KeyboardEvent) => {
+    if (event.key.toLowerCase() === "z") {
+      if (event.metaKey || event.ctrlKey) {
+        if (event.shiftKey) {
+          redo();
+          render(getCtx(), camera, scale);
+        } else {
+          undo();
+          render(getCtx(), camera, scale);
+        }
       }
     }
-  }
 
-  if (event.key === ")" && event.shiftKey) {
-    const zoomed = zoomTo(1, scale, camera);
-    camera = zoomed.camera;
-    scale = zoomed.scale;
-    render();
-  }
+    if (event.key === ")" && event.shiftKey) {
+      const zoomed = zoomTo(1, scale, camera);
+      camera = zoomed.camera;
+      scale = zoomed.scale;
+      render(getCtx(), camera, scale);
+    }
 
-  if (event.key.toLowerCase() === "e") {
-    mode = "erase";
-  }
+    if (event.key.toLowerCase() === "e") {
+      mode = "erase";
+    }
 
-  if (event.key.toLowerCase() === "d") {
-    mode = "draw";
-  }
+    if (event.key.toLowerCase() === "d") {
+      mode = "draw";
+    }
 
-  if (event.key.toLowerCase() === "m") {
-    generateMiniature(canvas);
-  }
-};
+    if (event.key.toLowerCase() === "m") {
+      console.log("Turned off!");
+      // generateMiniature(canvas.current);
+    }
+  };
 
-const handleResize = () => {
-  resetSizes();
-  render();
-};
+  const handleResize = () => {
+    resetSizes();
+    render(getCtx(), camera, scale);
+  };
 
-render();
-
-const download = document.getElementById("download");
-
-if (!download) {
-  throw new Error("HTML is missing download");
-}
-
-download.onclick = () => {
-  const state = exportState();
-  const element = document.createElement("a");
-  element.setAttribute(
-    "href",
-    `data:text/plain;charset=utf-8,${encodeURIComponent(state)}`
-  );
-  element.setAttribute("download", "download.json");
-  element.style.display = "none";
-  document.body.appendChild(element);
-  element.click();
-  document.body.removeChild(element);
-};
-
-const App = () => {
   useEffect(() => {
     setupIndexedDb();
+    resetSizes();
 
     window.addEventListener("pointermove", handlePointerMove);
     window.addEventListener("pointerdown", handlePointerDown);
@@ -248,6 +224,8 @@ const App = () => {
     window.addEventListener("wheel", handleWheel);
     window.addEventListener("keypress", handleKeyPress);
     window.addEventListener("resize", handleResize);
+
+    render(getCtx(), camera, scale);
 
     return () => {
       window.removeEventListener("pointermove", handlePointerMove);
@@ -257,7 +235,12 @@ const App = () => {
       window.removeEventListener("keypress", handleKeyPress);
       window.removeEventListener("resize", handleResize);
     };
-  });
+  }, []);
+
+  const value = (scale * 100).toFixed(0);
+  const cameraX = camera.x.toFixed(0);
+  const cameraY = camera.y.toFixed(0);
+
   return (
     <ThemeProvider>
       <>
@@ -271,9 +254,11 @@ const App = () => {
             border: "1px solid #000",
             padding: 16,
           }}
-        >
-          test
+        ></div>
+        <div id="scale" className="text">
+          ({cameraX}, {cameraY}) · {value}% · {mode} mode
         </div>
+        <canvas ref={canvas}></canvas>
       </>
     </ThemeProvider>
   );

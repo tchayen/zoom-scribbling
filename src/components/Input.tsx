@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { useTextField } from "@react-aria/textfield";
 import { AriaTextFieldProps } from "@react-types/textfield";
-import { styled } from "../colorTheme";
+import { styled } from "./colorTheme";
 
 import Hint from "./Hint";
 import Label from "./Label";
