@@ -20,6 +20,7 @@ const RadioComponent = styled.div<{
   -webkit-appearance: none;
   height: 16px;
   width: 16px;
+  background-color: ${(props) => props.theme.background};
   border-radius: 8px;
   border: ${(props) =>
     props.isSelected

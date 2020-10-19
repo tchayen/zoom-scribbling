@@ -10,6 +10,9 @@ const ButtonComponent = styled.button<{
   isFocusVisible: boolean;
   isPressed: boolean;
 }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: ${(props) =>
     props.isPressed ? "#0033a3" : props.theme.primary};
   border-radius: 0;
@@ -41,6 +44,7 @@ const ButtonComponent = styled.button<{
 type Props = {
   isDisabled?: boolean;
   children: string;
+  style?: React.CSSProperties;
 } & AriaButtonProps;
 
 const Button = (props: Props) => {
@@ -53,8 +57,9 @@ const Button = (props: Props) => {
       isDisabled={!!props.isDisabled}
       isFocusVisible={isFocusVisible}
       isPressed={isPressed}
-      {...mergeProps(focusProps, buttonProps)}
       ref={ref}
+      style={props.style}
+      {...mergeProps(focusProps, buttonProps)}
     >
       {props.children}
     </ButtonComponent>

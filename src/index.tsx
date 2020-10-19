@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import Button from "./components/Button";
-import ColorModeToggle from "./components/ColorModeToggle";
 import colors, { ColorMode } from "./components/colors";
 import { styled, ThemeProvider, useTheme } from "./components/colorTheme";
 import IconButton from "./components/IconButton";
 import Input from "./components/Input";
+import { Select } from "./components/Select";
 import Switch from "./components/Switch";
+import { ToggleButtonGroup, ToggleButton } from "./components/ToggleButton";
 import consts from "./consts";
 import {
   generateMiniature,
@@ -28,7 +29,9 @@ import {
   startErase,
   exportState,
 } from "./editor/scene";
+import Erase from "./ico/Erase";
 import Moon from "./ico/Moon";
+import Pencil from "./ico/Pencil";
 import Picture from "./ico/Picture";
 import Sun from "./ico/Sun";
 import { Mode, Point } from "./types";
@@ -304,10 +307,15 @@ const App = () => {
     <>
       <Sidebar>
         <div style={{ display: "flex" }}>
-          <Button>-</Button>
-          <Input label="test" onChange={() => {}} />
-          <Button>+</Button>
+          <Button style={{ width: 32 }}>-</Button>
+          <Input onChange={() => {}} style={{ width: 32, border: "none" }} />
+          <Button style={{ width: 32 }}>+</Button>
         </div>
+        <ToggleButtonGroup>
+          <ToggleButton value="draw" Icon={Pencil} />
+          <ToggleButton value="erase" Icon={Erase} />
+          <ToggleButton value="select" Icon={Select} />
+        </ToggleButtonGroup>
         <IconButton
           Icon={colorMode === "dark" ? Sun : Moon}
           onPress={() => {

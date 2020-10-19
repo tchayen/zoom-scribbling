@@ -34,10 +34,11 @@ const InputComponent = styled.input`
 `;
 
 type Props = {
-  label: string;
+  label?: string;
   error?: boolean;
   hint?: string | false;
   onChange: (event: string) => void;
+  style?: React.CSSProperties;
 } & AriaTextFieldProps;
 
 const Input = (props: Props) => {
@@ -46,12 +47,13 @@ const Input = (props: Props) => {
 
   return (
     <Box isDisabled={!!props.isDisabled}>
-      <Label {...labelProps}>{props.label}</Label>
+      {props.label && <Label {...labelProps}>{props.label}</Label>}
       <InputComponent
         {...inputProps}
         // @ts-ignore
         onChange={props.onChange}
         disabled={props.isDisabled}
+        style={props.style}
         ref={ref}
       />
       {props.hint && <Hint error={!!props.error}>{props.hint}</Hint>}
