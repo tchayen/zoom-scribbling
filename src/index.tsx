@@ -36,7 +36,6 @@ const reset = (
   colorMode: ColorMode
 ) => {
   ctx.setTransform(1, 0, 0, 1, 0, 0);
-  console.log(colors[colorMode].background);
   ctx.fillStyle = colors[colorMode].background;
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
@@ -127,7 +126,6 @@ const App = () => {
   };
 
   const { colorMode } = useTheme();
-  console.log(colorMode);
 
   const [scale, setScale] = useState(1);
   const [camera, setCamera] = useState<Point>({ x: 0, y: 0 });
@@ -212,6 +210,8 @@ const App = () => {
 
   const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {
+      event.preventDefault();
+
       if (event.key.toLowerCase() === "z") {
         if (event.metaKey || event.ctrlKey) {
           if (event.shiftKey) {
@@ -254,6 +254,9 @@ const App = () => {
 
   useEffect(() => {
     setupIndexedDb();
+  }, []);
+
+  useEffect(() => {
     resetSizes();
 
     window.addEventListener("pointermove", handlePointerMove);
