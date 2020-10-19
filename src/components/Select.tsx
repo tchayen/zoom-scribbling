@@ -10,7 +10,7 @@ import { useFocusRing } from "@react-aria/focus";
 import { useFocus } from "@react-aria/interactions";
 import { FocusScope } from "@react-aria/focus";
 import { useOverlay, DismissButton } from "@react-aria/overlays";
-import { styled } from "../colorTheme";
+import { styled } from "./colorTheme";
 import Label from "./Label";
 
 import { Item } from "@react-stately/collections";

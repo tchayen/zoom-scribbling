@@ -4,7 +4,7 @@ import { useCheckbox } from "@react-aria/checkbox";
 import { useFocusRing } from "@react-aria/focus";
 import { mergeProps } from "@react-aria/utils";
 import { useToggleState } from "@react-stately/toggle";
-import { styled } from "../colorTheme";
+import { styled } from "./colorTheme";
 
 const Tick = () => (
   <svg

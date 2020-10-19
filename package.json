@@ -9,6 +9,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@svgr/parcel-plugin-svgr": "^5.4.0",
     "dashify": "^2.0.0",
     "react": "^17.0.0-rc.3",
     "react-aria": "^3.0.0",

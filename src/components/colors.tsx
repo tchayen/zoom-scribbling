@@ -1,4 +1,4 @@
-export type Mode = "light" | "dark";
+export type ColorMode = "light" | "dark";
 
 // NOTE:
 // Every time anything here is changed, it should be synced to index.html.

@@ -1,8 +1,8 @@
 import React from "react";
 import { useFocusRing } from "@react-aria/focus";
 import { styled, useTheme } from "./colorTheme";
-import Sun from "../../public/sun.svg";
-import Moon from "../../public/moon.svg";
+import Sun from "../icons/sun.svg";
+import Moon from "../icons/moon.svg";
 
 const ToggleButton = styled.button<{
   isFocusVisible: boolean;
@@ -12,6 +12,7 @@ const ToggleButton = styled.button<{
   background-color: transparent;
   border: none;
   outline: none;
+  padding: 0;
   width: 32px;
   height: 32px;
   border-radius: 16px;
@@ -24,7 +25,7 @@ const ToggleButton = styled.button<{
 `;
 
 type Props = {
-  isDisabled: boolean;
+  isDisabled?: boolean;
 };
 
 const ColorModeToggle = ({ isDisabled }: Props) => {
@@ -34,7 +35,7 @@ const ColorModeToggle = ({ isDisabled }: Props) => {
   return (
     <ToggleButton
       disabled={isDisabled}
-      isDisabled={isDisabled}
+      isDisabled={!!isDisabled}
       onClick={() => {
         setColorMode(colorMode === "dark" ? "light" : "dark");
       }}

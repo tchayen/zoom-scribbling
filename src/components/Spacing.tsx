@@ -1,5 +1,5 @@
 import React, { Children } from "react";
-import { styled } from "../colorTheme";
+import { styled } from "./colorTheme";
 
 const Box = styled.div`
   display: flex;

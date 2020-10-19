@@ -5,7 +5,7 @@ import { useFocusRing } from "@react-aria/focus";
 import { useSwitch } from "@react-aria/switch";
 import { useToggleState } from "@react-stately/toggle";
 import { mergeProps } from "@react-aria/utils";
-import { styled } from "../colorTheme";
+import { styled } from "./colorTheme";
 
 const Box = styled.div<{ isDisabled: boolean }>`
   position: relative;

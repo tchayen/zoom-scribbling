@@ -5,7 +5,7 @@ import { useFocusRing } from "@react-aria/focus";
 import { useRadio, useRadioGroup } from "@react-aria/radio";
 import { VisuallyHidden } from "@react-aria/visually-hidden";
 import { mergeProps } from "@react-aria/utils";
-import { styled } from "../colorTheme";
+import { styled } from "./colorTheme";
 import Label from "./Label";
 
 const RadioContext = createContext<{

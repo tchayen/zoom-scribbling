@@ -10,18 +10,18 @@ import baseStyled, {
   ThemeProvider as StyledComponentsProvider,
   ThemedStyledInterface,
 } from "styled-components";
-import colors, { Mode, ThemeColors } from "./colors";
+import colors, { ColorMode, ThemeColors } from "./colors";
 
 const INITIAL_COLOR_MODE = "--initial-color-mode";
 const root = window.document.documentElement;
 const initialColorMode = root.style.getPropertyValue(
   INITIAL_COLOR_MODE
-) as Mode;
+) as ColorMode;
 const mq = window.matchMedia("(prefers-color-scheme: dark)");
 
 type ThemeType = {
-  colorMode: Mode;
-  setColorMode: (value: Mode) => void;
+  colorMode: ColorMode;
+  setColorMode: (value: ColorMode) => void;
 };
 
 export const styled = baseStyled as ThemedStyledInterface<ThemeColors>;
@@ -50,7 +50,7 @@ const updateCssVariables = (colors: ThemeColors) => {
 };
 
 export const ThemeProvider = ({ children }: Props) => {
-  const [colorMode, rawSetColorMode] = useState<Mode>("light");
+  const [colorMode, rawSetColorMode] = useState<ColorMode>("light");
 
   const handleChange = useCallback((event: MediaQueryListEvent) => {
     // If user has set their own preference then we don't react to this change.
@@ -71,7 +71,7 @@ export const ThemeProvider = ({ children }: Props) => {
     };
   }, [handleChange]);
 
-  const setColorMode = (value: Mode) => {
+  const setColorMode = (value: ColorMode) => {
     rawSetColorMode(value);
     updateCssVariables(colors[value]);
 

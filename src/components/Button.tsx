@@ -3,7 +3,7 @@ import { useButton } from "@react-aria/button";
 import { AriaButtonProps } from "@react-types/button";
 import { mergeProps } from "@react-aria/utils";
 import { useFocusRing } from "@react-aria/focus";
-import { styled } from "../colorTheme";
+import { styled } from "./colorTheme";
 
 const ButtonComponent = styled.button<{
   isDisabled: boolean;
