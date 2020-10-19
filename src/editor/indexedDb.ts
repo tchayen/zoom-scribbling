@@ -2,8 +2,9 @@ export let db: IDBDatabase;
 
 export const setupIndexedDb = () => {
   const request = indexedDB.open("db", 1);
+
   request.onerror = () => {
-    throw new Error("Failed to start IndexedDB");
+    throw new Error(request.error?.message || "Unknown error");
   };
 
   request.onsuccess = () => {

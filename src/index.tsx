@@ -91,8 +91,6 @@ const render = (
     ctx.stroke();
     ctx.closePath();
   }
-
-  // updateText();
 };
 
 // download.onclick = () => {
