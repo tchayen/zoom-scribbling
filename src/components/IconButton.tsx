@@ -1,7 +1,12 @@
-import React, { Component, ReactComponentElement, ReactElement } from "react";
+import React, { useRef } from "react";
+import colors from "./colors";
+import Tooltip from "./Tooltip";
+import { mergeProps } from "@react-aria/utils";
 import { useFocusRing } from "@react-aria/focus";
 import { styled, useTheme } from "./colorTheme";
-import colors from "./colors";
+import { useButton } from "@react-aria/button";
+import { useTooltipTriggerState } from "@react-stately/tooltip";
+import { useTooltipTrigger } from "@react-aria/tooltip";
 
 const Button = styled.button<{
   isFocusVisible: boolean;
@@ -30,20 +35,28 @@ type Props = {
   isDisabled?: boolean;
 };
 
-const IconButton = ({ Icon, onPress, tooltip, isDisabled }: Props) => {
+const IconButton = (props: Props) => {
+  const state = useTooltipTriggerState(props);
+  const ref = useRef<HTMLButtonElement>(null);
+  const { buttonProps, isPressed } = useButton(props, ref);
+  const { triggerProps, tooltipProps } = useTooltipTrigger(props, state, ref);
   const { focusProps, isFocusVisible } = useFocusRing();
   const { colorMode } = useTheme();
 
   return (
-    <Button
-      disabled={isDisabled}
-      isDisabled={!!isDisabled}
-      onClick={onPress}
-      isFocusVisible={isFocusVisible}
-      {...focusProps}
-    >
-      <Icon color={colors[colorMode].mainText} />
-    </Button>
+    <div style={{ position: "relative" }}>
+      <Button
+        ref={ref}
+        disabled={props.isDisabled}
+        isDisabled={!!props.isDisabled}
+        onClick={props.onPress}
+        isFocusVisible={isFocusVisible}
+        {...mergeProps(focusProps, buttonProps, triggerProps)}
+      >
+        <props.Icon color={colors[colorMode].mainText} />
+        {state.isOpen && <Tooltip {...tooltipProps}>{props.tooltip}</Tooltip>}
+      </Button>
+    </div>
   );
 };
 

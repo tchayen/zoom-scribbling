@@ -313,7 +313,7 @@ const App = () => {
           onPress={() => {
             setColorMode(colorMode === "dark" ? "light" : "dark");
           }}
-          tooltip="Elo"
+          tooltip="Toggle color mode"
           isDisabled={false}
         />
         <div>
