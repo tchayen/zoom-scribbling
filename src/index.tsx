@@ -291,7 +291,6 @@ const App = () => {
   ]);
 
   useEffect(() => {
-    console.log("rendering", JSON.stringify({ camera, scale }));
     render(getCtx(), camera, scale, colorMode);
   });
 
