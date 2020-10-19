@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import ReactDOM from "react-dom";
 import { ThemeProvider } from "./components/colorTheme";
 import consts from "./consts";
@@ -105,44 +111,15 @@ const App = () => {
     canvas.current.height = window.innerHeight;
   };
 
-  let scale = 1;
-  let camera = { x: 0, y: 0 };
-  let pointerDown = false;
-  let mode: Mode = "draw";
+  let [scale, setScale] = useState(1);
+  let [camera, setCamera] = useState<Point>({ x: 0, y: 0 });
+  let [pointerDown, setPointerDown] = useState(false);
+  let [mode, setMode] = useState<Mode>("draw");
 
-  const handlePointerDown = useCallback((event: PointerEvent) => {
-    pointerDown = true;
+  const handlePointerDown = useCallback(
+    (event: PointerEvent) => {
+      setPointerDown(true);
 
-    const point = screenToCameraSpace(
-      { x: event.offsetX, y: event.offsetY },
-      camera,
-      scale
-    );
-
-    if (mode === "draw") {
-      startShape(point);
-    } else if (mode === "erase") {
-      startErase(point);
-    }
-  }, []);
-
-  const handlePointerUp = useCallback((event: PointerEvent) => {
-    pointerDown = false;
-
-    if (mode === "draw") {
-      finishShape();
-    } else if (mode === "erase") {
-      finishErase();
-    }
-    render(getCtx(), camera, scale);
-  }, []);
-
-  const handlePointerMove = useCallback((event: PointerEvent) => {
-    if (event.target !== canvas.current) {
-      return;
-    }
-
-    if (pointerDown) {
       const point = screenToCameraSpace(
         { x: event.offsetX, y: event.offsetY },
         camera,
@@ -150,69 +127,112 @@ const App = () => {
       );
 
       if (mode === "draw") {
-        appendLine(point);
+        startShape(point);
       } else if (mode === "erase") {
-        appendErase(point);
+        startErase(point);
       }
+    },
+    [camera, mode, scale]
+  );
 
-      render(getCtx(), camera, scale);
-    }
-  }, []);
+  const handlePointerUp = useCallback(() => {
+    setPointerDown(false);
 
-  const handleWheel = useCallback((event: WheelEvent) => {
-    if (event.metaKey || event.ctrlKey) {
-      const zoomed = zoom(
-        Math.sign(event.deltaY),
-        { x: event.offsetX, y: event.offsetY },
-        camera,
-        scale
-      );
-      camera = zoomed.camera;
-      scale = zoomed.scale;
-    } else {
-      camera = translate(camera, { x: event.deltaX, y: event.deltaY }, scale);
+    if (mode === "draw") {
+      finishShape();
+    } else if (mode === "erase") {
+      finishErase();
     }
     render(getCtx(), camera, scale);
-  }, []);
+  }, [camera, mode, scale]);
 
-  const handleKeyPress = useCallback((event: KeyboardEvent) => {
-    if (event.key.toLowerCase() === "z") {
+  const handlePointerMove = useCallback(
+    (event: PointerEvent) => {
+      if (event.target !== canvas.current) {
+        return;
+      }
+
+      if (pointerDown) {
+        const point = screenToCameraSpace(
+          { x: event.offsetX, y: event.offsetY },
+          camera,
+          scale
+        );
+
+        if (mode === "draw") {
+          appendLine(point);
+        } else if (mode === "erase") {
+          appendErase(point);
+        }
+
+        render(getCtx(), camera, scale);
+      }
+    },
+    [camera, mode, pointerDown, scale]
+  );
+
+  const handleWheel = useCallback(
+    (event: WheelEvent) => {
       if (event.metaKey || event.ctrlKey) {
-        if (event.shiftKey) {
-          redo();
-          render(getCtx(), camera, scale);
-        } else {
-          undo();
-          render(getCtx(), camera, scale);
+        const zoomed = zoom(
+          Math.sign(event.deltaY),
+          { x: event.offsetX, y: event.offsetY },
+          camera,
+          scale
+        );
+        setCamera(zoomed.camera);
+        setScale(zoomed.scale);
+      } else {
+        setCamera(
+          translate(camera, { x: event.deltaX, y: event.deltaY }, scale)
+        );
+      }
+      render(getCtx(), camera, scale);
+    },
+    [camera, scale]
+  );
+
+  const handleKeyPress = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key.toLowerCase() === "z") {
+        if (event.metaKey || event.ctrlKey) {
+          if (event.shiftKey) {
+            redo();
+            render(getCtx(), camera, scale);
+          } else {
+            undo();
+            render(getCtx(), camera, scale);
+          }
         }
       }
-    }
 
-    if (event.key === ")" && event.shiftKey) {
-      const zoomed = zoomTo(1, scale, camera);
-      camera = zoomed.camera;
-      scale = zoomed.scale;
-      render(getCtx(), camera, scale);
-    }
+      if (event.key === ")" && event.shiftKey) {
+        const zoomed = zoomTo(1, scale, camera);
+        setCamera(zoomed.camera);
+        setScale(zoomed.scale);
+        render(getCtx(), camera, scale);
+      }
 
-    if (event.key.toLowerCase() === "e") {
-      mode = "erase";
-    }
+      if (event.key.toLowerCase() === "e") {
+        setMode("erase");
+      }
 
-    if (event.key.toLowerCase() === "d") {
-      mode = "draw";
-    }
+      if (event.key.toLowerCase() === "d") {
+        setMode("draw");
+      }
 
-    if (event.key.toLowerCase() === "m") {
-      console.log("Turned off!");
-      // generateMiniature(canvas.current);
-    }
-  }, []);
+      if (event.key.toLowerCase() === "m") {
+        console.log("Turned off!");
+        // generateMiniature(canvas.current);
+      }
+    },
+    [camera, scale]
+  );
 
   const handleResize = useCallback(() => {
     resetSizes();
     render(getCtx(), camera, scale);
-  }, []);
+  }, [camera, scale]);
 
   useEffect(() => {
     setupIndexedDb();
@@ -224,8 +244,6 @@ const App = () => {
     window.addEventListener("wheel", handleWheel);
     window.addEventListener("keypress", handleKeyPress);
     window.addEventListener("resize", handleResize);
-
-    render(getCtx(), camera, scale);
 
     return () => {
       window.removeEventListener("pointermove", handlePointerMove);
@@ -245,6 +263,10 @@ const App = () => {
     handleKeyPress,
     handleResize,
   ]);
+
+  useEffect(() => {
+    render(getCtx(), camera, scale);
+  });
 
   const value = (scale * 100).toFixed(0);
   const cameraX = camera.x.toFixed(0);
