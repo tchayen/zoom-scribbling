@@ -81,12 +81,14 @@
           colors[colorMode][key]
         );
       });
+
+      root.style.setProperty("--const-toolbar-width", "250px");
     </script>
     <style>
       @import url("https://rsms.me/inter/inter.css");
 
       body {
-        background-color: #fff;
+        background-color: var(--color-background);
         margin: 0px;
         font-family: Inter, sans-serif;
         overflow: hidden;
@@ -104,7 +106,7 @@
       canvas {
         position: absolute;
         top: 0px;
-        left: 250px;
+        left: var(--const-toolbar-width);
       }
     </style>
   </head>
