@@ -5,8 +5,9 @@ import { useFocusRing } from "@react-aria/focus";
 import { useRadio, useRadioGroup } from "@react-aria/radio";
 import { VisuallyHidden } from "@react-aria/visually-hidden";
 import { mergeProps } from "@react-aria/utils";
-import { styled } from "./colorTheme";
+import { styled, useTheme } from "./colorTheme";
 import Label from "./Label";
+import colors from "./colors";
 
 const ToggleContext = createContext<{
   state: RadioGroupState;
@@ -48,6 +49,7 @@ export const ToggleButton = (props: Props) => {
     ref
   );
   const { isFocusVisible, focusProps } = useFocusRing();
+  const { colorMode } = useTheme();
 
   if (context === null) {
     return null;
@@ -66,7 +68,7 @@ export const ToggleButton = (props: Props) => {
         isFocusVisible={isFocusVisible}
         isSelected={context.state.selectedValue === inputProps.value}
       >
-        <props.Icon color="black" />
+        <props.Icon color={colors[colorMode].mainText} />
       </ToggleButtonComponent>
     </Row>
   );
@@ -86,9 +88,13 @@ export const ToggleButtonGroup = (props: ToggleButtonGroupProps) => {
       <Label {...labelProps} isDisabled={props.isDisabled}>
         {label}
       </Label>
-      <ToggleContext.Provider value={{ state, isDisabled: !!props.isDisabled }}>
-        {children}
-      </ToggleContext.Provider>
+      <div style={{ display: "flex" }}>
+        <ToggleContext.Provider
+          value={{ state, isDisabled: !!props.isDisabled }}
+        >
+          {children}
+        </ToggleContext.Provider>
+      </div>
     </div>
   );
 };

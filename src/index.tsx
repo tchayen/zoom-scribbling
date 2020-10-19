@@ -44,7 +44,7 @@ const reset = (
     0,
     0,
     window.innerWidth - consts.TOOLBAR_WIDTH,
-    window.innerHeight
+    window.innerHeight - consts.TOPBAR_HEIGHT
   );
 
   ctx.translate(-camera.x, -camera.y);
@@ -110,12 +110,23 @@ const Sidebar = styled.div`
   background-color: ${(props) => props.theme.grayBackground};
   padding: 16px;
   position: absolute;
-  width: ${consts.TOOLBAR_WIDTH - 32}px;
+  width: ${consts.TOOLBAR_WIDTH}px;
   top: 0px;
   left: 0px;
   height: 100vh;
   display: flex;
   flex-direction: column;
+`;
+
+const TopBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  top: 0;
+  left: ${consts.TOOLBAR_WIDTH}px;
+  width: ${window.innerWidth - consts.TOOLBAR_WIDTH}px;
+  height: 40px;
+  background-color: ${(props) => props.theme.grayBackground};
 `;
 
 const App = () => {
@@ -131,7 +142,7 @@ const App = () => {
     }
 
     canvas.current.width = window.innerWidth - consts.TOOLBAR_WIDTH;
-    canvas.current.height = window.innerHeight;
+    canvas.current.height = window.innerHeight - consts.TOPBAR_HEIGHT;
   };
 
   const { colorMode, setColorMode } = useTheme();
@@ -301,17 +312,11 @@ const App = () => {
 
   return (
     <>
-      <Sidebar>
-        <div style={{ display: "flex" }}>
-          <Button style={{ width: 32 }}>-</Button>
-          <Input onChange={() => {}} style={{ width: 32, border: "none" }} />
-          <Button style={{ width: 32 }}>+</Button>
+      <TopBar>
+        <div>
+          <Icons.Picture color="black" />
+          <Icons.Folder color="black" />
         </div>
-        <ToggleButtonGroup>
-          <ToggleButton value="draw" Icon={Icons.Pencil} />
-          <ToggleButton value="erase" Icon={Icons.Erase} />
-          <ToggleButton value="select" Icon={Icons.Selection} />
-        </ToggleButtonGroup>
         <IconButton
           Icon={colorMode === "dark" ? Icons.Sun : Icons.Moon}
           onPress={() => {
@@ -320,6 +325,29 @@ const App = () => {
           tooltip="Toggle color mode"
           isDisabled={false}
         />
+      </TopBar>
+      <Sidebar>
+        <div>
+          <IconButton Icon={Icons.New} onPress={() => {}} tooltip="New file" />
+          <IconButton Icon={Icons.Save} onPress={() => {}} tooltip="Save" />
+          <IconButton
+            Icon={Icons.Import}
+            onPress={() => {}}
+            tooltip="Import file"
+          />
+          <IconButton Icon={Icons.Undo} onPress={() => {}} tooltip="Undo" />
+          <IconButton Icon={Icons.Redo} onPress={() => {}} tooltip="Redo" />
+        </div>
+        <div style={{ display: "flex" }}>
+          <Button style={{ width: 32 }}>-</Button>
+          <Input onChange={() => {}} style={{ width: 32, border: "none" }} />
+          <Button style={{ width: 32 }}>+</Button>
+        </div>
+        <ToggleButtonGroup label="Tools">
+          <ToggleButton value="draw" Icon={Icons.Pencil} />
+          <ToggleButton value="erase" Icon={Icons.Erase} />
+          <ToggleButton value="select" Icon={Icons.Selection} />
+        </ToggleButtonGroup>
         <div>
           ({cameraX}, {cameraY})
         </div>
@@ -327,7 +355,14 @@ const App = () => {
         <div>{mode} mode</div>
         {/* <Switch /> */}
       </Sidebar>
-      <canvas ref={canvas}></canvas>
+      <canvas
+        ref={canvas}
+        style={{
+          position: "absolute",
+          top: consts.TOPBAR_HEIGHT,
+          left: consts.TOOLBAR_WIDTH,
+        }}
+      ></canvas>
     </>
   );
 };

@@ -20,6 +20,7 @@ const Span = styled.span`
   border: 1px solid ${(props) => props.theme.border};
   color: ${(props) => props.theme.mainText};
   padding: 4px;
+  z-index: 10;
 `;
 
 const Tooltip = (props: Props) => {

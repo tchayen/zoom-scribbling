@@ -8,6 +8,7 @@ const consts = {
   MIN_SCALE: 0.25,
   MAX_SCALE: 2,
   TOOLBAR_WIDTH: 250,
+  TOPBAR_HEIGHT: 40,
   FONT_STACK:
     '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
 };

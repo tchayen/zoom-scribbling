@@ -10,3 +10,5 @@ export { default as Remove } from "./Remove";
 export { default as Save } from "./Save";
 export { default as Selection } from "./Selection";
 export { default as Sun } from "./Sun";
+export { default as Undo } from "./Undo";
+export { default as Redo } from "./Redo";
