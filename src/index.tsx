@@ -258,7 +258,7 @@ const App = () => {
 
   const handleResize = useCallback(() => {
     resetSizes();
-    // render(getCtx(), camera, scale, colorMode);
+    render(getCtx(), camera, scale, colorMode);
   }, [camera, scale, colorMode]);
 
   useEffect(() => {
