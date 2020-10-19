@@ -50,7 +50,7 @@ const updateCssVariables = (colors: ThemeColors) => {
 };
 
 export const ThemeProvider = ({ children }: Props) => {
-  const [colorMode, rawSetColorMode] = useState<ColorMode>("light");
+  const [colorMode, rawSetColorMode] = useState<ColorMode>(initialColorMode);
 
   const handleChange = useCallback((event: MediaQueryListEvent) => {
     // If user has set their own preference then we don't react to this change.

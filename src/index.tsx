@@ -36,6 +36,7 @@ const reset = (
   colorMode: ColorMode
 ) => {
   ctx.setTransform(1, 0, 0, 1, 0, 0);
+  console.log(colors[colorMode].background);
   ctx.fillStyle = colors[colorMode].background;
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
@@ -126,6 +127,7 @@ const App = () => {
   };
 
   const { colorMode } = useTheme();
+  console.log(colorMode);
 
   const [scale, setScale] = useState(1);
   const [camera, setCamera] = useState<Point>({ x: 0, y: 0 });
