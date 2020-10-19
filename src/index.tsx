@@ -4,6 +4,7 @@ import Button from "./components/Button";
 import ColorModeToggle from "./components/ColorModeToggle";
 import colors, { ColorMode } from "./components/colors";
 import { styled, ThemeProvider, useTheme } from "./components/colorTheme";
+import IconButton from "./components/IconButton";
 import Input from "./components/Input";
 import Switch from "./components/Switch";
 import consts from "./consts";
@@ -27,6 +28,9 @@ import {
   startErase,
   exportState,
 } from "./editor/scene";
+import Moon from "./ico/Moon";
+import Picture from "./ico/Picture";
+import Sun from "./ico/Sun";
 import { Mode, Point } from "./types";
 
 const reset = (
@@ -133,7 +137,7 @@ const App = () => {
     canvas.current.height = window.innerHeight;
   };
 
-  const { colorMode } = useTheme();
+  const { colorMode, setColorMode } = useTheme();
 
   const [scale, setScale] = useState(1);
   const [camera, setCamera] = useState<Point>({ x: 0, y: 0 });
@@ -301,12 +305,19 @@ const App = () => {
   return (
     <>
       <Sidebar>
-        <ColorModeToggle />
         <div style={{ display: "flex" }}>
           <Button>-</Button>
           <Input label="test" onChange={() => {}} />
           <Button>+</Button>
         </div>
+        <IconButton
+          Icon={colorMode === "dark" ? Sun : Moon}
+          onPress={() => {
+            setColorMode(colorMode === "dark" ? "light" : "dark");
+          }}
+          tooltip="Elo"
+          isDisabled={false}
+        />
         <div>
           ({cameraX}, {cameraY})
         </div>

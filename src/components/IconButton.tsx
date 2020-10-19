@@ -1,10 +1,9 @@
-import React from "react";
+import React, { Component, ReactComponentElement, ReactElement } from "react";
 import { useFocusRing } from "@react-aria/focus";
 import { styled, useTheme } from "./colorTheme";
-import Sun from "../icons/sun.svg";
-import Moon from "../icons/moon.svg";
+import colors from "./colors";
 
-const ToggleButton = styled.button<{
+const Button = styled.button<{
   isFocusVisible: boolean;
   isDisabled: boolean;
 }>`
@@ -25,26 +24,27 @@ const ToggleButton = styled.button<{
 `;
 
 type Props = {
+  Icon: any;
+  onPress: () => void;
+  tooltip: string;
   isDisabled?: boolean;
 };
 
-const ColorModeToggle = ({ isDisabled }: Props) => {
-  const { setColorMode, colorMode } = useTheme();
+const IconButton = ({ Icon, onPress, tooltip, isDisabled }: Props) => {
   const { focusProps, isFocusVisible } = useFocusRing();
+  const { colorMode } = useTheme();
 
   return (
-    <ToggleButton
+    <Button
       disabled={isDisabled}
       isDisabled={!!isDisabled}
-      onClick={() => {
-        setColorMode(colorMode === "dark" ? "light" : "dark");
-      }}
+      onClick={onPress}
       isFocusVisible={isFocusVisible}
       {...focusProps}
     >
-      {colorMode === "dark" ? <Sun /> : <Moon />}
-    </ToggleButton>
+      <Icon color={colors[colorMode].mainText} />
+    </Button>
   );
 };
 
-export default ColorModeToggle;
+export default IconButton;
