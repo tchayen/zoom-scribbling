@@ -29,11 +29,7 @@ import {
   startErase,
   exportState,
 } from "./editor/scene";
-import Erase from "./ico/Erase";
-import Moon from "./ico/Moon";
-import Pencil from "./ico/Pencil";
-import Picture from "./ico/Picture";
-import Sun from "./ico/Sun";
+import * as Icons from "./icons";
 import { Mode, Point } from "./types";
 
 const reset = (
@@ -312,12 +308,12 @@ const App = () => {
           <Button style={{ width: 32 }}>+</Button>
         </div>
         <ToggleButtonGroup>
-          <ToggleButton value="draw" Icon={Pencil} />
-          <ToggleButton value="erase" Icon={Erase} />
-          <ToggleButton value="select" Icon={Select} />
+          <ToggleButton value="draw" Icon={Icons.Pencil} />
+          <ToggleButton value="erase" Icon={Icons.Erase} />
+          <ToggleButton value="select" Icon={Icons.Selection} />
         </ToggleButtonGroup>
         <IconButton
-          Icon={colorMode === "dark" ? Sun : Moon}
+          Icon={colorMode === "dark" ? Icons.Sun : Icons.Moon}
           onPress={() => {
             setColorMode(colorMode === "dark" ? "light" : "dark");
           }}
