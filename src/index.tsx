@@ -37,7 +37,7 @@ const reset = (
 ) => {
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.fillStyle = colors[colorMode].background;
-  ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+  ctx.fillRect(0, 0, window.innerWidth - 250, window.innerHeight);
 
   ctx.translate(-camera.x, -camera.y);
   ctx.scale(scale, scale);
@@ -104,9 +104,12 @@ const Sidebar = styled.div`
   background-color: ${(props) => props.theme.grayBackground};
   padding: 16px;
   position: absolute;
+  width: ${250 - 32}px;
   top: 0px;
   left: 0px;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 `;
 
 const App = () => {
@@ -121,7 +124,7 @@ const App = () => {
       return;
     }
 
-    canvas.current.width = window.innerWidth;
+    canvas.current.width = window.innerWidth - 250;
     canvas.current.height = window.innerHeight;
   };
 
@@ -159,8 +162,7 @@ const App = () => {
     } else if (mode === "erase") {
       finishErase();
     }
-    render(getCtx(), camera, scale, colorMode);
-  }, [camera, mode, scale, colorMode]);
+  }, [mode]);
 
   const handlePointerMove = useCallback(
     (event: PointerEvent) => {
@@ -203,9 +205,8 @@ const App = () => {
           translate(camera, { x: event.deltaX, y: event.deltaY }, scale)
         );
       }
-      render(getCtx(), camera, scale, colorMode);
     },
-    [camera, scale, colorMode]
+    [camera, scale]
   );
 
   const handleKeyPress = useCallback(
@@ -228,7 +229,6 @@ const App = () => {
         const zoomed = zoomTo(1, scale, camera);
         setCamera(zoomed.camera);
         setScale(zoomed.scale);
-        render(getCtx(), camera, scale, colorMode);
       }
 
       if (event.key.toLowerCase() === "e") {
@@ -249,7 +249,7 @@ const App = () => {
 
   const handleResize = useCallback(() => {
     resetSizes();
-    render(getCtx(), camera, scale, colorMode);
+    // render(getCtx(), camera, scale, colorMode);
   }, [camera, scale, colorMode]);
 
   useEffect(() => {
@@ -286,6 +286,7 @@ const App = () => {
   ]);
 
   useEffect(() => {
+    console.log("rendering", JSON.stringify({ camera, scale }));
     render(getCtx(), camera, scale, colorMode);
   });
 
@@ -302,11 +303,13 @@ const App = () => {
           <Input label="test" onChange={() => {}} />
           <Button>+</Button>
         </div>
+        <div>
+          ({cameraX}, {cameraY})
+        </div>
+        <div>{value}%</div>
+        <div>{mode} mode</div>
         {/* <Switch /> */}
       </Sidebar>
-      <div id="scale" className="text">
-        ({cameraX}, {cameraY}) · {value}% · {mode} mode
-      </div>
       <canvas ref={canvas}></canvas>
     </>
   );

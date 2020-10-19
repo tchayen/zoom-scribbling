@@ -76,32 +76,23 @@
       root.style.setProperty("--initial-color-mode", colorMode);
 
       Object.keys(colors[colorMode]).forEach((key) => {
-        root.style.setProperty(`--color-${dashify(key)}`, colors[colorMode][key]);
+        root.style.setProperty(
+          `--color-${dashify(key)}`,
+          colors[colorMode][key]
+        );
       });
     </script>
-     <style>
-      @import url('https://rsms.me/inter/inter.css');
+    <style>
+      @import url("https://rsms.me/inter/inter.css");
 
       body {
         background-color: #fff;
         margin: 0px;
         font-family: Inter, sans-serif;
         overflow: hidden;
-        cursor: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAXCAYAAAAGAx/kAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAGCSURBVHgBvZS9ToRAEMdh7zz0wnkfOdRcznh+YGJhhTbGxtj4ArwPiY2JpbWJsfBNKEgoeAKoaWgp8T/HbMLBoUCMk/wzy8L+dmbYWUX5S8uyjJxKwlhVOppq23YPXkvT9Bl+F+ozuJUJXjxBNFmSJC8Y69BOWxiBRtCCQFEUZXEcv87n85FlWa1gYjqdjjVNOyPQarXqDOtNYPBmlld9AzabzfYxN2gCk6BLCaqB/RoZ/bEKqAusxzWqgMowPEtY1egMUWp1oDoYH+Jmqf0AG21LUzQBlWGGYdCh7VciKqcmF9UZd8CAA8lrVI5IQlzX/cLzE/QIPUD30A1kQoaSt5bYWiMJ8TzvE3N30DW9gy6gc+gEOoTGkOY4jiinZspe833/A3O30Kmu6wf0ntqFxLUZFtJSiyD6peteC4LgHWOLdx7zAvpG0O4cgQSo5WLTLoswDN/gr6BjOqStup93WN9H0BEVsdAOQmlhKkdFsOFyudyD73e6cnmR4KOwUcB/t2+MrA8pEIPvhwAAAABJRU5ErkJggg==') 3 1, auto;
-      }
-
-      .text {
-        color: var(--color-secondary-text);
-        padding: 5px;
-        font-weight: 400;
-        font-size: 15px;
-        user-select: none;
-      }
-
-      #scale {
-        position: absolute;
-        right: 0px;
-        bottom: 0px;
+        cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAXCAYAAAAGAx/kAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAGCSURBVHgBvZS9ToRAEMdh7zz0wnkfOdRcznh+YGJhhTbGxtj4ArwPiY2JpbWJsfBNKEgoeAKoaWgp8T/HbMLBoUCMk/wzy8L+dmbYWUX5S8uyjJxKwlhVOppq23YPXkvT9Bl+F+ozuJUJXjxBNFmSJC8Y69BOWxiBRtCCQFEUZXEcv87n85FlWa1gYjqdjjVNOyPQarXqDOtNYPBmlld9AzabzfYxN2gCk6BLCaqB/RoZ/bEKqAusxzWqgMowPEtY1egMUWp1oDoYH+Jmqf0AG21LUzQBlWGGYdCh7VciKqcmF9UZd8CAA8lrVI5IQlzX/cLzE/QIPUD30A1kQoaSt5bYWiMJ8TzvE3N30DW9gy6gc+gEOoTGkOY4jiinZspe833/A3O30Kmu6wf0ntqFxLUZFtJSiyD6peteC4LgHWOLdx7zAvpG0O4cgQSo5WLTLoswDN/gr6BjOqStup93WN9H0BEVsdAOQmlhKkdFsOFyudyD73e6cnmR4KOwUcB/t2+MrA8pEIPvhwAAAABJRU5ErkJggg==")
+            3 1,
+          auto;
       }
 
       #root {
@@ -109,10 +100,16 @@
         top: 0px;
         left: 0px;
       }
+
+      canvas {
+        position: absolute;
+        top: 0px;
+        left: 250px;
+      }
     </style>
   </head>
   <body>
-      <div id="root"></div>
+    <div id="root"></div>
     <script src="src/index.tsx"></script>
   </body>
 </html>
