@@ -7,6 +7,7 @@ const consts = {
   SCALE_FACTOR: 0.05,
   MIN_SCALE: 0.25,
   MAX_SCALE: 2,
+  TOOLBAR_WIDTH: 250,
 };
 
 export default consts;

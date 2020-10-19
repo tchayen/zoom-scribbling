@@ -46,7 +46,7 @@ export const zoomTo = (
   const previous = currentScale;
   const delta = targetScale - previous;
   const center = {
-    x: (window.innerWidth - 250) / 2,
+    x: (window.innerWidth - consts.TOOLBAR_WIDTH) / 2,
     y: window.innerHeight / 2,
   };
 
@@ -115,7 +115,7 @@ export const generateMiniature = async (canvas: HTMLCanvasElement) => {
   img.style.zIndex = "10";
   img.style.top = "0px";
   img.style.left = "0px";
-  img.width = (window.innerWidth - 250) / 6;
+  img.width = (window.innerWidth - consts.TOOLBAR_WIDTH) / 6;
   img.height = window.innerHeight / 6;
   img.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.25)";
 

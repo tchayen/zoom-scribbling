@@ -37,7 +37,12 @@ const reset = (
 ) => {
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.fillStyle = colors[colorMode].background;
-  ctx.fillRect(0, 0, window.innerWidth - 250, window.innerHeight);
+  ctx.fillRect(
+    0,
+    0,
+    window.innerWidth - consts.TOOLBAR_WIDTH,
+    window.innerHeight
+  );
 
   ctx.translate(-camera.x, -camera.y);
   ctx.scale(scale, scale);
@@ -104,7 +109,7 @@ const Sidebar = styled.div`
   background-color: ${(props) => props.theme.grayBackground};
   padding: 16px;
   position: absolute;
-  width: ${250 - 32}px;
+  width: ${consts.TOOLBAR_WIDTH - 32}px;
   top: 0px;
   left: 0px;
   height: 100vh;
@@ -124,7 +129,7 @@ const App = () => {
       return;
     }
 
-    canvas.current.width = window.innerWidth - 250;
+    canvas.current.width = window.innerWidth - consts.TOOLBAR_WIDTH;
     canvas.current.height = window.innerHeight;
   };
 
