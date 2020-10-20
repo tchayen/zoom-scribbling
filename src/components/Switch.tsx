@@ -21,10 +21,10 @@ const Dot = styled.div<{ isSelected: boolean; isFocusVisible: boolean }>`
   position: absolute;
   left: ${(props) => (props.isSelected ? "16px" : 0)};
   top: 0;
-  box-shadow: ${(props) =>
+  /* box-shadow: ${(props) =>
     props.isFocusVisible
       ? `0 0 0 4px ${props.theme.primaryDimmed}`
-      : "0 1px 3px rgba(0, 0, 0, 0.25)"};
+      : "0 1px 3px rgba(0, 0, 0, 0.25)"}; */
   transition: background-color 150ms, left 150ms;
 `;
 
