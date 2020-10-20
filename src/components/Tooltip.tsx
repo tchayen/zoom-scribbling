@@ -1,4 +1,3 @@
-import React from "react";
 import { useTooltip } from "@react-aria/tooltip";
 import { mergeProps } from "@react-aria/utils";
 import { styled } from "./colorTheme";

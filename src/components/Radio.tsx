@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useRef } from "react";
+import { createContext, useContext, useRef } from "react";
+import * as React from "react";
 import { RadioGroupState, useRadioGroupState } from "@react-stately/radio";
 import { AriaRadioGroupProps } from "@react-types/radio";
 import { useFocusRing } from "@react-aria/focus";

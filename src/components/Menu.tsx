@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { useMenuTriggerState } from "@react-stately/menu";
 import { MenuTriggerProps } from "@react-types/menu";
 import { useMenuTrigger } from "@react-aria/menu";

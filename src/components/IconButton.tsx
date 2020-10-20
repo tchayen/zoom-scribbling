@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import colors from "./colors";
 import Tooltip from "./Tooltip";
 import { mergeProps } from "@react-aria/utils";

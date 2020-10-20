@@ -1,4 +1,5 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
+import * as React from "react";
 import { useTextField } from "@react-aria/textfield";
 import { AriaTextFieldProps } from "@react-types/textfield";
 import { styled } from "./colorTheme";

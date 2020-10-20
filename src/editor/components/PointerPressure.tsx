@@ -1,4 +1,3 @@
-import React from "react";
 import { useRecoilState } from "recoil";
 import Label from "../../components/Label";
 import Switch from "../../components/Switch";

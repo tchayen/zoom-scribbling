@@ -1,4 +1,3 @@
-import React from "react";
 import { useRecoilState } from "recoil";
 import { ToggleButton, ToggleButtonGroup } from "../../components/ToggleButton";
 import * as Icons from "../../icons";

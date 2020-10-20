@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useSelect } from "@react-aria/select";
 import { Node } from "@react-types/shared";
 import { useSelectState, SelectState } from "@react-stately/select";

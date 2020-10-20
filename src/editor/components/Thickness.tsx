@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { useRecoilState } from "recoil";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
