@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import { RecoilRoot, useRecoilState } from "recoil";
 import { scaleState, cameraState, modeState } from "./editor/state";
 import Actions from "./editor/components/Actions";
-import colors, { ColorMode } from "./components/colors";
 import { styled, ThemeProvider, useTheme } from "./components/colorTheme";
 import IconButton from "./components/IconButton";
 import Input from "./components/Input";
@@ -33,6 +32,7 @@ import * as Icons from "./icons";
 import Thickness from "./editor/components/Thickness";
 import Tools from "./editor/components/Tools";
 import render from "./editor/render";
+import PointerPressure from "./editor/components/PointerPressure";
 
 // download.onclick = () => {
 //   const state = exportState();
@@ -84,7 +84,6 @@ const App = () => {
   };
 
   const { colorMode, setColorMode } = useTheme();
-
   const [scale, setScale] = useRecoilState(scaleState);
   const [camera, setCamera] = useRecoilState(cameraState);
   const [mode, setMode] = useRecoilState(modeState);
@@ -238,6 +237,7 @@ const App = () => {
     handleResize,
   ]);
 
+  // Main render 'loop'.
   useEffect(() => {
     render(getCtx(), camera, scale, colorMode);
   });
@@ -248,8 +248,7 @@ const App = () => {
         <Actions />
         <Tools />
         <Thickness />
-        <Label>Pointer pressure</Label>
-        <Switch aria-label="Pointer pressure" />
+        <PointerPressure />
         <Input
           label="Zoom"
           value={`${(scale * 100).toFixed(0)}%`}
@@ -260,8 +259,8 @@ const App = () => {
       <div style={{ display: "flex", flexDirection: "column" }}>
         <TopBar>
           <div>
-            <Icons.Picture color="black" />
-            <Icons.Folder color="black" />
+            {/* <Icons.Picture color="black" />
+            <Icons.Folder color="black" /> */}
           </div>
           <IconButton
             Icon={colorMode === "dark" ? Icons.Sun : Icons.Moon}
@@ -269,7 +268,6 @@ const App = () => {
               setColorMode(colorMode === "dark" ? "light" : "dark");
             }}
             tooltip="Toggle color mode"
-            isDisabled={false}
           />
         </TopBar>
         <canvas ref={canvas}></canvas>

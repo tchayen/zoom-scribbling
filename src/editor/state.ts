@@ -15,3 +15,13 @@ export const modeState = atom<Mode>({
   key: "mode",
   default: "draw",
 });
+
+export const pointerPressureState = atom<boolean>({
+  key: "pointerPressure",
+  default: false,
+});
+
+export const thicknessState = atom<string>({
+  key: "thickness",
+  default: "1",
+});
