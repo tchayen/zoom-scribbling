@@ -38,12 +38,13 @@ const getShape = (id: number) => {
   return shape;
 };
 
-export const startShape = (point: Point) => {
+export const startShape = (point: Point, thickness: number) => {
   drawing = true;
   shapes.push({
     id: ids++,
     color: consts.BRUSH_COLOR,
     points: [point],
+    thickness,
     state: "visible",
   });
 

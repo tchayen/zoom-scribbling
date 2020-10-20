@@ -11,6 +11,7 @@ export type Shape = {
   id: number;
   state: "invisible" | "visible" | "erased";
   color: string;
+  thickness: number;
   points: Point[];
 };
 

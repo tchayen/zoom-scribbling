@@ -45,6 +45,7 @@ const render = (
     }
 
     ctx.beginPath();
+    ctx.lineWidth = shape.thickness;
     ctx.strokeStyle = colors[colorMode].mainText;
 
     if (shape.state === "erased") {

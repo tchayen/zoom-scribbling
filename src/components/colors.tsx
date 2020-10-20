@@ -25,6 +25,7 @@ export type ThemeColors = {
   mainText: Color;
   border: Color;
   secondaryText: Color;
+  secondaryButtonBackground: Color;
 };
 
 const light: ThemeColors = {
@@ -35,6 +36,7 @@ const light: ThemeColors = {
   mainText: palette.black,
   border: palette.gray,
   secondaryText: palette.darkGray,
+  secondaryButtonBackground: palette.gray,
 };
 
 const dark: ThemeColors = {
@@ -45,6 +47,7 @@ const dark: ThemeColors = {
   mainText: palette.white,
   border: palette.darkestGray,
   secondaryText: palette.darkGray,
+  secondaryButtonBackground: palette.darkGray,
 };
 
 const colors = {

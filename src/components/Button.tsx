@@ -47,8 +47,11 @@ const PrimaryButton = styled(ButtonComponent)`
 const SecondaryButton = styled(ButtonComponent)`
   color: ${(props) => props.theme.mainText};
 
+  // TODO:
+  // - Add colors of hover and active to theme.
+
   background-color: ${(props) =>
-    props.isPressed ? "#aaa" : props.theme.border};
+    props.isPressed ? "#aaa" : props.theme.secondaryButtonBackground};
 
   &:focus {
     outline: ${(props) =>

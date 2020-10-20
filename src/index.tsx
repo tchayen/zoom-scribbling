@@ -1,7 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { RecoilRoot, useRecoilState } from "recoil";
-import { scaleState, cameraState, modeState } from "./editor/state";
+import {
+  scaleState,
+  cameraState,
+  modeState,
+  thicknessState,
+} from "./editor/state";
 import Actions from "./editor/components/Actions";
 import { styled, ThemeProvider, useTheme } from "./components/colorTheme";
 import IconButton from "./components/IconButton";
@@ -87,6 +92,7 @@ const App = () => {
   const [scale, setScale] = useRecoilState(scaleState);
   const [camera, setCamera] = useRecoilState(cameraState);
   const [mode, setMode] = useRecoilState(modeState);
+  const [thickness, setThickness] = useRecoilState(thicknessState);
   const [pointerDown, setPointerDown] = useState(false);
 
   const handlePointerDown = useCallback(
@@ -100,12 +106,12 @@ const App = () => {
       );
 
       if (mode === "draw") {
-        startShape(point);
+        startShape(point, Number(thickness));
       } else if (mode === "erase") {
         startErase(point);
       }
     },
-    [camera, mode, scale]
+    [camera, mode, scale, thickness]
   );
 
   const handlePointerUp = useCallback(() => {
@@ -245,10 +251,10 @@ const App = () => {
   return (
     <div style={{ display: "flex" }}>
       <Sidebar>
-        <Actions />
+        {/* <Actions /> */}
         <Tools />
         <Thickness />
-        <PointerPressure />
+        {/* <PointerPressure /> */}
         <Input
           label="Zoom"
           value={`${(scale * 100).toFixed(0)}%`}
