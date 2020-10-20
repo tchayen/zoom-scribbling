@@ -334,10 +334,15 @@ const App = () => {
         <Thickness />
         <Label>Pointer pressure</Label>
         <Switch />
+        <Input
+          label="Zoom"
+          value={`${value}%`}
+          onChange={() => {}}
+          style={{ width: 55, border: "none" }}
+        />
         <div>
           ({cameraX}, {cameraY})
         </div>
-        <div>{value}%</div>
         <div>{mode} mode</div>
       </Sidebar>
       <canvas

@@ -40,7 +40,7 @@ type Props = {
   isDisabled?: boolean;
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   style?: React.CSSProperties;
 };
 
