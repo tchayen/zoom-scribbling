@@ -12,9 +12,9 @@ const Tools = () => {
         value={mode}
         onChange={(mode) => setMode(mode as any)}
       >
-        <ToggleButton value="draw" Icon={Icons.Pencil} />
-        <ToggleButton value="erase" Icon={Icons.Erase} />
-        <ToggleButton value="select" Icon={Icons.Selection} />
+        <ToggleButton value="draw" Icon={Icons.Pencil} tooltip="Draw" />
+        <ToggleButton value="erase" Icon={Icons.Erase} tooltip="Erase" />
+        <ToggleButton value="select" Icon={Icons.Selection} tooltip="Select" />
       </ToggleButtonGroup>
     </>
   );

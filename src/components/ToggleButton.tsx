@@ -6,8 +6,11 @@ import { useRadio, useRadioGroup } from "@react-aria/radio";
 import { VisuallyHidden } from "@react-aria/visually-hidden";
 import { mergeProps } from "@react-aria/utils";
 import { styled, useTheme } from "./colorTheme";
+import { useTooltipTriggerState } from "@react-stately/tooltip";
+import { useTooltipTrigger } from "@react-aria/tooltip";
 import Label from "./Label";
 import colors from "./colors";
+import Tooltip from "./Tooltip";
 
 const ToggleContext = createContext<{
   state: RadioGroupState;
@@ -27,22 +30,31 @@ const ToggleButtonComponent = styled.div<{
 `;
 
 const Row = styled.label<{ isDisabled: boolean }>`
+  position: relative;
   font-size: 14px;
   display: flex;
   align-items: center;
   height: 24px;
+  margin-right: 8px;
   opacity: ${(props) => (props.isDisabled ? 0.5 : 1)};
 `;
 
 type Props = {
   Icon: any;
   value: string;
+  tooltip: string;
 };
 
 export const ToggleButton = (props: Props) => {
-  const context = useContext(ToggleContext);
-
   const ref = useRef(null);
+  const context = useContext(ToggleContext);
+  const state = useTooltipTriggerState(props as any);
+  const { triggerProps, tooltipProps } = useTooltipTrigger(
+    props as any,
+    state,
+    ref
+  );
+
   const { inputProps } = useRadio(
     props,
     context!.state as RadioGroupState,
@@ -67,9 +79,11 @@ export const ToggleButton = (props: Props) => {
       <ToggleButtonComponent
         isFocusVisible={isFocusVisible}
         isSelected={context.state.selectedValue === inputProps.value}
+        {...triggerProps}
       >
         <props.Icon color={colors[colorMode].mainText} />
       </ToggleButtonComponent>
+      {state.isOpen && <Tooltip {...tooltipProps}>{props.tooltip}</Tooltip>}
     </Row>
   );
 };

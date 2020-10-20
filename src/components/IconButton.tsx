@@ -36,9 +36,9 @@ type Props = {
 };
 
 const IconButton = (props: Props) => {
-  const state = useTooltipTriggerState(props);
   const ref = useRef<HTMLButtonElement>(null);
   const { buttonProps, isPressed } = useButton(props, ref);
+  const state = useTooltipTriggerState(props);
   const { triggerProps, tooltipProps } = useTooltipTrigger(props, state, ref);
   const { focusProps, isFocusVisible } = useFocusRing();
   const { colorMode } = useTheme();
