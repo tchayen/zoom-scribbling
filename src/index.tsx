@@ -197,6 +197,10 @@ const App = () => {
         setMode("draw");
       }
 
+      if (event.key.toLowerCase() === "t") {
+        setColorMode(colorMode === "dark" ? "light" : "dark");
+      }
+
       if (event.key.toLowerCase() === "m") {
         console.log("Turned off!");
         // generateMiniature(canvas.current);
