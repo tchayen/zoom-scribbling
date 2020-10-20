@@ -112,10 +112,7 @@ const render = (
 const Sidebar = styled.div`
   background-color: ${(props) => props.theme.grayBackground};
   padding: 16px;
-  position: absolute;
   width: ${consts.TOOLBAR_WIDTH}px;
-  top: 0px;
-  left: 0px;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -123,11 +120,10 @@ const Sidebar = styled.div`
 
 const TopBar = styled.div`
   display: flex;
+  flex: 1;
+  width: 100%;
   justify-content: space-between;
-  position: absolute;
-  top: 0;
-  left: ${consts.TOOLBAR_WIDTH}px;
-  width: ${window.innerWidth - consts.TOOLBAR_WIDTH}px;
+  /* width: ${window.innerWidth - consts.TOOLBAR_WIDTH}px; */
   height: 40px;
   background-color: ${(props) => props.theme.grayBackground};
 `;
@@ -308,21 +304,7 @@ const App = () => {
   });
 
   return (
-    <>
-      <TopBar>
-        <div>
-          <Icons.Picture color="black" />
-          <Icons.Folder color="black" />
-        </div>
-        <IconButton
-          Icon={colorMode === "dark" ? Icons.Sun : Icons.Moon}
-          onPress={() => {
-            setColorMode(colorMode === "dark" ? "light" : "dark");
-          }}
-          tooltip="Toggle color mode"
-          isDisabled={false}
-        />
-      </TopBar>
+    <div style={{ display: "flex" }}>
       <Sidebar>
         <Actions />
         <Tools />
@@ -336,15 +318,24 @@ const App = () => {
           style={{ width: 55, border: "none" }}
         />
       </Sidebar>
-      <canvas
-        ref={canvas}
-        style={{
-          position: "absolute",
-          top: consts.TOPBAR_HEIGHT,
-          left: consts.TOOLBAR_WIDTH,
-        }}
-      ></canvas>
-    </>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <TopBar>
+          <div>
+            <Icons.Picture color="black" />
+            <Icons.Folder color="black" />
+          </div>
+          <IconButton
+            Icon={colorMode === "dark" ? Icons.Sun : Icons.Moon}
+            onPress={() => {
+              setColorMode(colorMode === "dark" ? "light" : "dark");
+            }}
+            tooltip="Toggle color mode"
+            isDisabled={false}
+          />
+        </TopBar>
+        <canvas ref={canvas}></canvas>
+      </div>
+    </div>
   );
 };
 
