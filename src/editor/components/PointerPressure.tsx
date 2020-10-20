@@ -9,10 +9,12 @@ const PointerPressure = () => {
     pointerPressureState
   );
   return (
-    <>
+    <div style={{ marginBottom: 16 }}>
       <Label>Pointer pressure</Label>
-      <Switch aria-label="Pointer pressure" value={pointerPressure} />
-    </>
+      <div style={{ marginTop: 4 }}>
+        <Switch aria-label="Pointer pressure" value={pointerPressure} />
+      </div>
+    </div>
   );
 };
 
