@@ -6,7 +6,7 @@ import { Mode } from "../../types";
 const Tools = () => {
   const [mode, setMode] = useState<Mode>("draw");
   return (
-    <>
+    <div style={{ marginBottom: 16 }}>
       <ToggleButtonGroup
         label="Tools"
         value={mode}
@@ -16,7 +16,7 @@ const Tools = () => {
         <ToggleButton value="erase" Icon={Icons.Erase} tooltip="Erase" />
         <ToggleButton value="select" Icon={Icons.Selection} tooltip="Select" />
       </ToggleButtonGroup>
-    </>
+    </div>
   );
 };
 

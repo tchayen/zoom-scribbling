@@ -11,7 +11,7 @@ const Row = styled.div`
 
 const Actions = () => {
   return (
-    <div>
+    <div style={{ marginBottom: 16 }}>
       <Label>Actions</Label>
       <Row>
         <IconButton Icon={Icons.New} onPress={() => {}} tooltip="New file" />
