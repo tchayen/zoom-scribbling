@@ -25,3 +25,8 @@ export const thicknessState = atom<string>({
   key: "thickness",
   default: "1",
 });
+
+export const colorState = atom<string>({
+  key: "color",
+  default: "#000000",
+});

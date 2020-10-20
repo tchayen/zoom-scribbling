@@ -6,6 +6,7 @@ import {
   cameraState,
   modeState,
   thicknessState,
+  colorState,
 } from "./editor/state";
 import Actions from "./editor/components/Actions";
 import { styled, ThemeProvider, useTheme } from "./components/colorTheme";
@@ -14,6 +15,7 @@ import Input from "./components/Input";
 import consts from "./consts";
 import {
   generateMiniature,
+  invertHex,
   screenToCameraSpace,
   translate,
   zoom,
@@ -36,6 +38,7 @@ import Thickness from "./editor/components/Thickness";
 import Tools from "./editor/components/Tools";
 import render from "./editor/render";
 import PointerPressure from "./editor/components/PointerPressure";
+import Label from "./components/Label";
 
 // download.onclick = () => {
 //   const state = exportState();
@@ -90,6 +93,7 @@ const App = () => {
   const [camera, setCamera] = useRecoilState(cameraState);
   const [mode, setMode] = useRecoilState(modeState);
   const [thickness, setThickness] = useRecoilState(thicknessState);
+  const [color, setColor] = useRecoilState(colorState);
   const [pointerDown, setPointerDown] = useState(false);
 
   const handlePointerDown = useCallback(
@@ -103,12 +107,12 @@ const App = () => {
       );
 
       if (mode === "draw") {
-        startShape(point, Number(thickness));
+        startShape(point, Number(thickness), color);
       } else if (mode === "erase") {
         startErase(point);
       }
     },
-    [camera, mode, scale, thickness]
+    [camera, mode, scale, thickness, color]
   );
 
   const handlePointerUp = useCallback(() => {
@@ -256,6 +260,26 @@ const App = () => {
         <Tools />
         <Thickness />
         <PointerPressure />
+        <div style={{ marginBottom: 16 }}>
+          <Label>Color</Label>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <div
+              style={{
+                width: 40,
+                height: 32,
+                marginRight: 8,
+                backgroundColor:
+                  colorMode === "dark" ? invertHex(color) : color,
+              }}
+            />
+            <Input
+              aria-label="Color"
+              value={color}
+              onChange={(event) => setColor(event.target.value)}
+              style={{ width: 80, border: "none" }}
+            />
+          </div>
+        </div>
         <Input
           label="Zoom"
           value={`${(scale * 100).toFixed(0)}%`}

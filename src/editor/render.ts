@@ -1,6 +1,7 @@
 import colors, { ColorMode } from "../components/colors";
 import consts from "../consts";
 import { Point } from "../types";
+import { invertHex } from "./helpers";
 import { shapes } from "./scene";
 
 const reset = (
@@ -43,7 +44,8 @@ const render = (
 
     ctx.beginPath();
     ctx.lineWidth = shape.thickness;
-    ctx.strokeStyle = colors[colorMode].mainText;
+    ctx.strokeStyle =
+      colorMode === "dark" ? invertHex(shape.color) : shape.color;
 
     if (shape.state === "erased") {
       ctx.setLineDash([consts.DASH_LENGTH, consts.DASH_LENGTH]);
