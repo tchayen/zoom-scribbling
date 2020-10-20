@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { styled } from "../components/colorTheme";
-import IconButton from "../components/IconButton";
-import * as Icons from "../icons";
+import { styled } from "../../components/colorTheme";
+import IconButton from "../../components/IconButton";
+import Label from "../../components/Label";
+import * as Icons from "../../icons";
 
 const Row = styled.div`
   display: flex;
@@ -11,6 +12,7 @@ const Row = styled.div`
 const Actions = () => {
   return (
     <div>
+      <Label>Actions</Label>
       <Row>
         <IconButton Icon={Icons.New} onPress={() => {}} tooltip="New file" />
         <IconButton Icon={Icons.Save} onPress={() => {}} tooltip="Save" />

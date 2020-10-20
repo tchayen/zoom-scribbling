@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { ToggleButton, ToggleButtonGroup } from "../components/ToggleButton";
-import * as Icons from "../icons";
-import { Mode } from "../types";
+import { ToggleButton, ToggleButtonGroup } from "../../components/ToggleButton";
+import * as Icons from "../../icons";
+import { Mode } from "../../types";
 
 const Tools = () => {
   const [mode, setMode] = useState<Mode>("draw");

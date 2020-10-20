@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
-import Actions from "./editor/Actions";
+import Actions from "./editor/components/Actions";
 import Button from "./components/Button";
 import colors, { ColorMode } from "./components/colors";
 import { styled, ThemeProvider, useTheme } from "./components/colorTheme";
@@ -32,9 +32,9 @@ import {
   exportState,
 } from "./editor/scene";
 import * as Icons from "./icons";
-import Thickness from "./editor/Thickness";
+import Thickness from "./editor/components/Thickness";
 import { Mode, Point } from "./types";
-import Tools from "./editor/Tools";
+import Tools from "./editor/components/Tools";
 
 const reset = (
   ctx: CanvasRenderingContext2D,
@@ -330,10 +330,10 @@ const App = () => {
       </TopBar>
       <Sidebar>
         <Actions />
-        <Thickness />
         <Tools />
-        {/* <Label>Pointer pressure</Label>
-        <Switch /> */}
+        <Thickness />
+        <Label>Pointer pressure</Label>
+        <Switch />
         <div>
           ({cameraX}, {cameraY})
         </div>

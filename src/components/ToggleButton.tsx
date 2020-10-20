@@ -23,10 +23,10 @@ const ToggleButtonComponent = styled.div<{
 }>`
   -webkit-appearance: none;
   outline: none;
+  padding: 4px;
+  height: 32px;
   background-color: ${(props) =>
     props.isSelected ? props.theme.primaryDimmed : "transparent"};
-  box-shadow: ${(props) =>
-    props.isFocusVisible ? `0 0 0 4px ${props.theme.primaryDimmed}` : "none"};
 `;
 
 const Row = styled.label<{ isDisabled: boolean }>`
@@ -102,7 +102,7 @@ export const ToggleButtonGroup = (props: ToggleButtonGroupProps) => {
       <Label {...labelProps} isDisabled={props.isDisabled}>
         {label}
       </Label>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", marginTop: 4 }}>
         <ToggleContext.Provider
           value={{ state, isDisabled: !!props.isDisabled }}
         >
