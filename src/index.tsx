@@ -65,7 +65,6 @@ const TopBar = styled.div`
   flex: 1;
   width: 100%;
   justify-content: space-between;
-  /* width: ${window.innerWidth - consts.TOOLBAR_WIDTH}px; */
   height: 40px;
   background-color: ${(props) => props.theme.grayBackground};
 `;
@@ -141,7 +140,7 @@ const App = () => {
           appendErase(point);
         }
 
-        render(getCtx(), camera, scale, colorMode);
+        render(getCtx(), canvas.current!, camera, scale, colorMode);
       }
     },
     [camera, mode, pointerDown, scale, colorMode]
@@ -173,16 +172,16 @@ const App = () => {
         if (event.metaKey || event.ctrlKey) {
           if (event.shiftKey) {
             redo();
-            render(getCtx(), camera, scale, colorMode);
+            render(getCtx(), canvas.current!, camera, scale, colorMode);
           } else {
             undo();
-            render(getCtx(), camera, scale, colorMode);
+            render(getCtx(), canvas.current!, camera, scale, colorMode);
           }
         }
       }
 
       if (event.key === ")" && event.shiftKey) {
-        const zoomed = zoomTo(1, scale, camera);
+        const zoomed = zoomTo(1, scale, canvas.current!, camera);
         setCamera(zoomed.camera);
         setScale(zoomed.scale);
       }
@@ -209,7 +208,7 @@ const App = () => {
 
   const handleResize = useCallback(() => {
     resetSizes();
-    render(getCtx(), camera, scale, colorMode);
+    render(getCtx(), canvas.current!, camera, scale, colorMode);
   }, [camera, scale, colorMode]);
 
   useEffect(() => {
@@ -247,7 +246,7 @@ const App = () => {
 
   // Main render 'loop'.
   useEffect(() => {
-    render(getCtx(), camera, scale, colorMode);
+    render(getCtx(), canvas.current!, camera, scale, colorMode);
   });
 
   return (

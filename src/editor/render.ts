@@ -5,18 +5,14 @@ import { shapes } from "./scene";
 
 const reset = (
   ctx: CanvasRenderingContext2D,
+  canvas: HTMLCanvasElement,
   camera: Point,
   scale: number,
   colorMode: ColorMode
 ) => {
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.fillStyle = colors[colorMode].background;
-  ctx.fillRect(
-    0,
-    0,
-    window.innerWidth - consts.TOOLBAR_WIDTH,
-    window.innerHeight - consts.TOPBAR_HEIGHT
-  );
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   ctx.translate(-camera.x, -camera.y);
   ctx.scale(scale, scale);
@@ -24,6 +20,7 @@ const reset = (
 
 const render = (
   ctx: CanvasRenderingContext2D | null,
+  canvas: HTMLCanvasElement,
   camera: Point,
   scale: number,
   colorMode: ColorMode
@@ -33,7 +30,7 @@ const render = (
     return;
   }
 
-  reset(ctx, camera, scale, colorMode);
+  reset(ctx, canvas, camera, scale, colorMode);
 
   for (const shape of shapes) {
     if (shape.points.length < 2) {

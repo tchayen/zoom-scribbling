@@ -42,13 +42,14 @@ export const zoom = (
 export const zoomTo = (
   targetScale: number,
   currentScale: number,
+  canvas: HTMLCanvasElement,
   camera: Point
 ) => {
   const previous = currentScale;
   const delta = targetScale - previous;
   const center = {
-    x: (window.innerWidth - consts.TOOLBAR_WIDTH) / 2,
-    y: (window.innerHeight - consts.TOPBAR_HEIGHT) / 2,
+    x: canvas.width / 2,
+    y: canvas.height / 2,
   };
 
   camera.x = camera.x + ((camera.x + center.x) * delta) / previous;
@@ -116,8 +117,8 @@ export const generateMiniature = async (canvas: HTMLCanvasElement) => {
   img.style.zIndex = "10";
   img.style.top = "0px";
   img.style.left = "0px";
-  img.width = (window.innerWidth - consts.TOOLBAR_WIDTH) / 6;
-  img.height = (window.innerHeight - consts.TOPBAR_HEIGHT) / 6;
+  img.width = canvas.width / 6;
+  img.height = canvas.height / 6;
   img.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.25)";
 
   document.body.appendChild(img);
