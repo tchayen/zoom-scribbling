@@ -13,18 +13,21 @@ const ButtonComponent = styled.button<{
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) =>
-    props.isPressed ? "#0033a3" : props.theme.primary};
   border-radius: 0;
   height: 32px;
   padding-left: 16px;
   padding-right: 16px;
-  color: ${(props) => props.theme.background};
   font-size: 14px;
   font-weight: 600;
   border: none;
   cursor: ${(props) => (props.isDisabled ? "default" : "pointer")};
   opacity: ${(props) => (props.isDisabled ? 0.5 : 1)};
+`;
+
+const PrimaryButton = styled(ButtonComponent)`
+  color: ${(props) => props.theme.background};
+  background-color: ${(props) =>
+    props.isPressed ? "#0033a3" : props.theme.primary};
 
   &:focus {
     outline: ${(props) =>
@@ -41,10 +44,32 @@ const ButtonComponent = styled.button<{
   }
 `;
 
+const SecondaryButton = styled(ButtonComponent)`
+  color: ${(props) => props.theme.mainText};
+
+  background-color: ${(props) =>
+    props.isPressed ? "#aaa" : props.theme.border};
+
+  &:focus {
+    outline: ${(props) =>
+      props.isFocusVisible ? `4px solid ${props.theme.primaryDimmed}` : "none"};
+  }
+
+  &:hover {
+    // In rare situation the button might be pressed by keyboard but hover would override it.
+    background-color: ${(props) => (props.isPressed ? "#aaa" : "#ccc")};
+  }
+
+  &:active {
+    background-color: #aaa;
+  }
+`;
+
 type Props = {
   isDisabled?: boolean;
   children: string;
   style?: React.CSSProperties;
+  secondary?: boolean;
 } & AriaButtonProps;
 
 const Button = (props: Props) => {
@@ -52,8 +77,11 @@ const Button = (props: Props) => {
   const { buttonProps, isPressed } = useButton(props, ref);
   const { focusProps, isFocusVisible } = useFocusRing();
 
+  const Component = props.secondary ? SecondaryButton : PrimaryButton;
+
   return (
-    <ButtonComponent
+    <Component
+      // secondary={props.secondary}
       isDisabled={!!props.isDisabled}
       isFocusVisible={isFocusVisible}
       isPressed={isPressed}
@@ -62,7 +90,7 @@ const Button = (props: Props) => {
       {...mergeProps(focusProps, buttonProps)}
     >
       {props.children}
-    </ButtonComponent>
+    </Component>
   );
 };
 

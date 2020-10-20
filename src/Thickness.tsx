@@ -32,7 +32,11 @@ const Thickness = () => {
     <div style={{ display: "flex", flexDirection: "column" }}>
       <Label>Thickness</Label>
       <div style={{ display: "flex" }}>
-        <Button style={{ width: 32, marginRight: 8 }} onPress={handleDecrease}>
+        <Button
+          secondary
+          style={{ width: 32, marginRight: 8 }}
+          onPress={handleDecrease}
+        >
           -
         </Button>
         <Input
@@ -42,7 +46,7 @@ const Thickness = () => {
           onBlur={handleBlur}
           aria-label="dupa"
         />
-        <Button style={{ width: 32 }} onPress={handleIncrease}>
+        <Button secondary style={{ width: 32 }} onPress={handleIncrease}>
           +
         </Button>
       </div>
