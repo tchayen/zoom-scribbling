@@ -11,8 +11,6 @@ import Actions from "./editor/components/Actions";
 import { styled, ThemeProvider, useTheme } from "./components/colorTheme";
 import IconButton from "./components/IconButton";
 import Input from "./components/Input";
-import Label from "./components/Label";
-import Switch from "./components/Switch";
 import consts from "./consts";
 import {
   generateMiniature,
@@ -206,7 +204,7 @@ const App = () => {
         // generateMiniature(canvas.current);
       }
     },
-    [camera, scale, colorMode, setCamera, setMode, setScale]
+    [camera, scale, colorMode, setCamera, setMode, setScale, setColorMode]
   );
 
   const handleResize = useCallback(() => {
@@ -255,10 +253,10 @@ const App = () => {
   return (
     <div style={{ display: "flex" }}>
       <Sidebar>
-        {/* <Actions /> */}
+        <Actions />
         <Tools />
         <Thickness />
-        {/* <PointerPressure /> */}
+        <PointerPressure />
         <Input
           label="Zoom"
           value={`${(scale * 100).toFixed(0)}%`}
