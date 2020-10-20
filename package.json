@@ -15,6 +15,7 @@
     "react-aria": "^3.0.0",
     "react-dom": "^17.0.0-rc.3",
     "react-stately": "^3.0.1",
+    "recoil": "^0.0.13",
     "styled-components": "^5.2.0"
   },
   "devDependencies": {

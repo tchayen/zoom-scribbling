@@ -31,11 +31,12 @@ export const zoom = (
   );
   const delta = next - previous;
 
-  camera.x = camera.x + ((camera.x + pointer.x) * delta) / previous;
-  camera.y = camera.y + ((camera.y + pointer.y) * delta) / previous;
-  scale = next;
+  const nextCamera = {
+    x: camera.x + ((camera.x + pointer.x) * delta) / previous,
+    y: camera.y + ((camera.y + pointer.y) * delta) / previous,
+  };
 
-  return { scale, camera };
+  return { scale: next, camera: nextCamera };
 };
 
 export const zoomTo = (

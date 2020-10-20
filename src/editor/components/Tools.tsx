@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
+import { useRecoilState } from "recoil";
 import { ToggleButton, ToggleButtonGroup } from "../../components/ToggleButton";
 import * as Icons from "../../icons";
-import { Mode } from "../../types";
+import { modeState } from "../state";
 
 const Tools = () => {
-  const [mode, setMode] = useState<Mode>("draw");
+  const [mode, setMode] = useRecoilState(modeState);
   return (
     <div style={{ marginBottom: 16 }}>
       <ToggleButtonGroup

@@ -1,15 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
+import { RecoilRoot, useRecoilState } from "recoil";
+import { scaleState, cameraState, modeState } from "./editor/state";
 import Actions from "./editor/components/Actions";
-import Button from "./components/Button";
 import colors, { ColorMode } from "./components/colors";
 import { styled, ThemeProvider, useTheme } from "./components/colorTheme";
 import IconButton from "./components/IconButton";
 import Input from "./components/Input";
 import Label from "./components/Label";
-import { Select } from "./components/Select";
 import Switch from "./components/Switch";
-import { ToggleButtonGroup, ToggleButton } from "./components/ToggleButton";
 import consts from "./consts";
 import {
   generateMiniature,
@@ -151,10 +150,10 @@ const App = () => {
 
   const { colorMode, setColorMode } = useTheme();
 
-  const [scale, setScale] = useState(1);
-  const [camera, setCamera] = useState<Point>({ x: 0, y: 0 });
+  const [scale, setScale] = useRecoilState(scaleState);
+  const [camera, setCamera] = useRecoilState(cameraState);
+  const [mode, setMode] = useRecoilState(modeState);
   const [pointerDown, setPointerDown] = useState(false);
-  const [mode, setMode] = useState<Mode>("draw");
 
   const handlePointerDown = useCallback(
     (event: PointerEvent) => {
@@ -227,7 +226,7 @@ const App = () => {
         );
       }
     },
-    [camera, scale]
+    [camera, scale, setCamera, setScale]
   );
 
   const handleKeyPress = useCallback(
@@ -263,7 +262,7 @@ const App = () => {
         // generateMiniature(canvas.current);
       }
     },
-    [camera, scale, colorMode]
+    [camera, scale, colorMode, setCamera, setMode, setScale]
   );
 
   const handleResize = useCallback(() => {
@@ -308,10 +307,6 @@ const App = () => {
     render(getCtx(), camera, scale, colorMode);
   });
 
-  const value = (scale * 100).toFixed(0);
-  const cameraX = camera.x.toFixed(0);
-  const cameraY = camera.y.toFixed(0);
-
   return (
     <>
       <TopBar>
@@ -336,14 +331,10 @@ const App = () => {
         <Switch />
         <Input
           label="Zoom"
-          value={`${value}%`}
+          value={`${(scale * 100).toFixed(0)}%`}
           onChange={() => {}}
           style={{ width: 55, border: "none" }}
         />
-        <div>
-          ({cameraX}, {cameraY})
-        </div>
-        <div>{mode} mode</div>
       </Sidebar>
       <canvas
         ref={canvas}
@@ -358,8 +349,10 @@ const App = () => {
 };
 
 ReactDOM.render(
-  <ThemeProvider>
-    <App />
-  </ThemeProvider>,
+  <RecoilRoot>
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
+  </RecoilRoot>,
   document.getElementById("root")
 );
