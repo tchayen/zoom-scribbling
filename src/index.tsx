@@ -1,10 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
+import Actions from "./Actions";
 import Button from "./components/Button";
 import colors, { ColorMode } from "./components/colors";
 import { styled, ThemeProvider, useTheme } from "./components/colorTheme";
 import IconButton from "./components/IconButton";
 import Input from "./components/Input";
+import Label from "./components/Label";
 import { Select } from "./components/Select";
 import Switch from "./components/Switch";
 import { ToggleButtonGroup, ToggleButton } from "./components/ToggleButton";
@@ -30,6 +32,7 @@ import {
   exportState,
 } from "./editor/scene";
 import * as Icons from "./icons";
+import Thickness from "./Thickness";
 import { Mode, Point } from "./types";
 
 const reset = (
@@ -228,8 +231,6 @@ const App = () => {
 
   const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {
-      event.preventDefault();
-
       if (event.key.toLowerCase() === "z") {
         if (event.metaKey || event.ctrlKey) {
           if (event.shiftKey) {
@@ -327,33 +328,20 @@ const App = () => {
         />
       </TopBar>
       <Sidebar>
-        <div>
-          <IconButton Icon={Icons.New} onPress={() => {}} tooltip="New file" />
-          <IconButton Icon={Icons.Save} onPress={() => {}} tooltip="Save" />
-          <IconButton
-            Icon={Icons.Import}
-            onPress={() => {}}
-            tooltip="Import file"
-          />
-          <IconButton Icon={Icons.Undo} onPress={() => {}} tooltip="Undo" />
-          <IconButton Icon={Icons.Redo} onPress={() => {}} tooltip="Redo" />
-        </div>
-        <div style={{ display: "flex" }}>
-          <Button style={{ width: 32 }}>-</Button>
-          <Input onChange={() => {}} style={{ width: 32, border: "none" }} />
-          <Button style={{ width: 32 }}>+</Button>
-        </div>
-        <ToggleButtonGroup label="Tools">
+        <Actions />
+        <Thickness />
+        {/* <ToggleButtonGroup label="Tools">
           <ToggleButton value="draw" Icon={Icons.Pencil} />
           <ToggleButton value="erase" Icon={Icons.Erase} />
           <ToggleButton value="select" Icon={Icons.Selection} />
-        </ToggleButtonGroup>
+        </ToggleButtonGroup> */}
+        {/* <Label>Pointer pressure</Label>
+        <Switch /> */}
         <div>
           ({cameraX}, {cameraY})
         </div>
         <div>{value}%</div>
         <div>{mode} mode</div>
-        {/* <Switch /> */}
       </Sidebar>
       <canvas
         ref={canvas}

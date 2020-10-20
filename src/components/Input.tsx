@@ -37,21 +37,24 @@ type Props = {
   label?: string;
   error?: boolean;
   hint?: string | false;
-  onChange: (event: string) => void;
+  isDisabled?: boolean;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
   style?: React.CSSProperties;
-} & AriaTextFieldProps;
+};
 
 const Input = (props: Props) => {
-  const ref = useRef(null);
-  const { labelProps, inputProps } = useTextField(props, ref);
+  const ref = useRef<HTMLInputElement>(null);
+  const { labelProps, inputProps } = useTextField(props as any, ref);
 
   return (
     <Box isDisabled={!!props.isDisabled}>
       {props.label && <Label {...labelProps}>{props.label}</Label>}
       <InputComponent
         {...inputProps}
-        // @ts-ignore
         onChange={props.onChange}
+        value={props.value}
         disabled={props.isDisabled}
         style={props.style}
         ref={ref}
