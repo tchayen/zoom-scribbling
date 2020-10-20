@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
-import Actions from "./Actions";
+import Actions from "./editor/Actions";
 import Button from "./components/Button";
 import colors, { ColorMode } from "./components/colors";
 import { styled, ThemeProvider, useTheme } from "./components/colorTheme";
@@ -32,8 +32,9 @@ import {
   exportState,
 } from "./editor/scene";
 import * as Icons from "./icons";
-import Thickness from "./Thickness";
+import Thickness from "./editor/Thickness";
 import { Mode, Point } from "./types";
+import Tools from "./editor/Tools";
 
 const reset = (
   ctx: CanvasRenderingContext2D,
@@ -330,11 +331,7 @@ const App = () => {
       <Sidebar>
         <Actions />
         <Thickness />
-        {/* <ToggleButtonGroup label="Tools">
-          <ToggleButton value="draw" Icon={Icons.Pencil} />
-          <ToggleButton value="erase" Icon={Icons.Erase} />
-          <ToggleButton value="select" Icon={Icons.Selection} />
-        </ToggleButtonGroup> */}
+        <Tools />
         {/* <Label>Pointer pressure</Label>
         <Switch /> */}
         <div>

@@ -1,7 +1,7 @@
-import React from "react";
-import { styled } from "./components/colorTheme";
-import IconButton from "./components/IconButton";
-import * as Icons from "./icons";
+import React, { useState } from "react";
+import { styled } from "../components/colorTheme";
+import IconButton from "../components/IconButton";
+import * as Icons from "../icons";
 
 const Row = styled.div`
   display: flex;

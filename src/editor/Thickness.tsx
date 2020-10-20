@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Button from "./components/Button";
-import Input from "./components/Input";
-import Label from "./components/Label";
-import { clamp } from "./editor/helpers";
+import Button from "../components/Button";
+import Input from "../components/Input";
+import Label from "../components/Label";
+import { clamp } from "./helpers";
 
 // TODO:
 // - Make label focus input by copy-pasting relevant parts from <Input /> and

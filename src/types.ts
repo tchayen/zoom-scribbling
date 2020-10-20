@@ -1,4 +1,4 @@
-export type Mode = "draw" | "erase";
+export type Mode = "draw" | "erase" | "select";
 
 export type Point = {
   x: number;
