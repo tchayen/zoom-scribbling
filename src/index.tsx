@@ -1,44 +1,20 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
-import { RecoilRoot, useRecoilState } from "recoil";
-import { BrowserRouter as Router } from "react-router-dom";
-import {
-  scaleState,
-  cameraState,
-  modeState,
-  thicknessState,
-  colorState,
-} from "./editor/state";
+import { RecoilRoot, useRecoilValue } from "recoil";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { scaleState } from "./editor/state";
 import Actions from "./editor/components/Actions";
 import { styled, ThemeProvider, useTheme } from "./components/colorTheme";
 import IconButton from "./components/IconButton";
 import Input from "./components/Input";
 import consts from "./consts";
-import {
-  generateMiniature,
-  screenToCameraSpace,
-  translate,
-  zoom,
-  zoomTo,
-} from "./editor/helpers";
 import { setupIndexedDb } from "./editor/indexedDb";
-import {
-  redo,
-  undo,
-  startShape,
-  finishShape,
-  appendLine,
-  appendErase,
-  finishErase,
-  startErase,
-  exportState,
-} from "./editor/scene";
 import * as Icons from "./icons";
 import Thickness from "./editor/components/Thickness";
 import Tools from "./editor/components/Tools";
-import render from "./editor/render";
 import PointerPressure from "./editor/components/PointerPressure";
 import Color from "./editor/components/Color";
+import Editor from "./editor/components/Editor";
 
 // download.onclick = () => {
 //   const state = exportState();
@@ -65,7 +41,6 @@ const Sidebar = styled.div`
 
 const TopBar = styled.div`
   display: flex;
-  flex: 1;
   width: 100%;
   align-items: center;
   padding-right: 4px;
@@ -74,233 +49,114 @@ const TopBar = styled.div`
   background-color: ${(props) => props.theme.grayBackground};
 `;
 
+const Row = styled.div`
+  display: flex;
+  width: 100vw;
+`;
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`;
+
 const App = () => {
-  const canvas = useRef<HTMLCanvasElement>(null);
-
-  const getCtx = () => {
-    return canvas.current !== null ? canvas.current.getContext("2d") : null;
-  };
-
-  const resetSizes = () => {
-    if (canvas.current === null) {
-      return;
-    }
-
-    canvas.current.width = window.innerWidth - consts.TOOLBAR_WIDTH;
-    canvas.current.height = window.innerHeight - consts.TOPBAR_HEIGHT;
-  };
-
   const { colorMode, setColorMode } = useTheme();
-  const [scale, setScale] = useRecoilState(scaleState);
-  const [camera, setCamera] = useRecoilState(cameraState);
-  const [mode, setMode] = useRecoilState(modeState);
-  const [thickness, setThickness] = useRecoilState(thicknessState);
-  const [color, setColor] = useRecoilState(colorState);
-  const [pointerDown, setPointerDown] = useState(false);
-
-  const handlePointerDown = useCallback(
-    (event: PointerEvent) => {
-      setPointerDown(true);
-
-      const point = screenToCameraSpace(
-        { x: event.offsetX, y: event.offsetY },
-        camera,
-        scale
-      );
-
-      if (mode === "draw") {
-        startShape(point, Number(thickness), color);
-      } else if (mode === "erase") {
-        startErase(point);
-      }
-    },
-    [camera, mode, scale, thickness, color]
-  );
-
-  const handlePointerUp = useCallback(() => {
-    setPointerDown(false);
-
-    if (mode === "draw") {
-      finishShape();
-    } else if (mode === "erase") {
-      finishErase();
-    }
-  }, [mode]);
-
-  const handlePointerMove = useCallback(
-    (event: PointerEvent) => {
-      if (event.target !== canvas.current) {
-        return;
-      }
-
-      if (pointerDown) {
-        const point = screenToCameraSpace(
-          { x: event.offsetX, y: event.offsetY },
-          camera,
-          scale
-        );
-
-        if (mode === "draw") {
-          appendLine(point);
-        } else if (mode === "erase") {
-          appendErase(point);
-        }
-
-        render(getCtx(), canvas.current!, camera, scale, colorMode);
-      }
-    },
-    [camera, mode, pointerDown, scale, colorMode]
-  );
-
-  const handleWheel = useCallback(
-    (event: WheelEvent) => {
-      if (event.metaKey || event.ctrlKey) {
-        const zoomed = zoom(
-          Math.sign(event.deltaY),
-          { x: event.offsetX, y: event.offsetY },
-          camera,
-          scale
-        );
-        setCamera(zoomed.camera);
-        setScale(zoomed.scale);
-      } else {
-        setCamera(
-          translate(camera, { x: event.deltaX, y: event.deltaY }, scale)
-        );
-      }
-    },
-    [camera, scale, setCamera, setScale]
-  );
-
-  const handleKeyPress = useCallback(
-    (event: KeyboardEvent) => {
-      if (event.key.toLowerCase() === "z") {
-        if (event.metaKey || event.ctrlKey) {
-          if (event.shiftKey) {
-            redo();
-            render(getCtx(), canvas.current!, camera, scale, colorMode);
-          } else {
-            undo();
-            render(getCtx(), canvas.current!, camera, scale, colorMode);
-          }
-        }
-      }
-
-      if (event.key === ")" && event.shiftKey) {
-        const zoomed = zoomTo(1, scale, canvas.current!, camera);
-        setCamera(zoomed.camera);
-        setScale(zoomed.scale);
-      }
-
-      if (event.key.toLowerCase() === "e") {
-        setMode("erase");
-      }
-
-      if (event.key.toLowerCase() === "d") {
-        setMode("draw");
-      }
-
-      if (event.key.toLowerCase() === "t") {
-        setColorMode(colorMode === "dark" ? "light" : "dark");
-      }
-
-      if (event.key.toLowerCase() === "m") {
-        console.log("Turned off!");
-        // generateMiniature(canvas.current);
-      }
-    },
-    [camera, scale, colorMode, setCamera, setMode, setScale, setColorMode]
-  );
-
-  const handleResize = useCallback(() => {
-    resetSizes();
-    render(getCtx(), canvas.current!, camera, scale, colorMode);
-  }, [camera, scale, colorMode]);
+  const scale = useRecoilValue(scaleState);
 
   useEffect(() => {
     setupIndexedDb();
   }, []);
 
-  useEffect(() => {
-    resetSizes();
+  const sidebar = (
+    <Sidebar>
+      <Actions />
+      <Tools />
+      <Thickness />
+      <PointerPressure />
+      <Color />
+      <Input
+        label="Zoom"
+        value={`${(scale * 100).toFixed(0)}%`}
+        onChange={() => {}}
+        style={{ width: 55, border: "none" }}
+      />
+    </Sidebar>
+  );
 
-    window.addEventListener("pointermove", handlePointerMove);
-    window.addEventListener("pointerdown", handlePointerDown);
-    window.addEventListener("pointerup", handlePointerUp);
-    window.addEventListener("wheel", handleWheel);
-    window.addEventListener("keypress", handleKeyPress);
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("pointermove", handlePointerMove);
-      window.removeEventListener("pointerdown", handlePointerDown);
-      window.removeEventListener("pointerup", handlePointerUp);
-      window.removeEventListener("wheel", handleWheel);
-      window.removeEventListener("keypress", handleKeyPress);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [
-    camera,
-    scale,
-    handlePointerMove,
-    handlePointerDown,
-    handlePointerUp,
-    handleWheel,
-    handleKeyPress,
-    handleResize,
-  ]);
-
-  // Main render 'loop'.
-  useEffect(() => {
-    render(getCtx(), canvas.current!, camera, scale, colorMode);
-  });
+  const header = (
+    <TopBar>
+      <div style={{ display: "flex" }}>
+        <Link to="/">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: 32,
+              height: 32,
+            }}
+          >
+            <Icons.Picture color={colorMode === "dark" ? "white" : "black"} />
+          </div>
+        </Link>
+        <Link to="/directory">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: 32,
+              height: 32,
+            }}
+          >
+            <Icons.Folder color={colorMode === "dark" ? "white" : "black"} />
+          </div>
+        </Link>
+      </div>
+      <IconButton
+        Icon={colorMode === "dark" ? Icons.Sun : Icons.Moon}
+        onPress={() => {
+          setColorMode(colorMode === "dark" ? "light" : "dark");
+        }}
+        tooltip="Toggle color mode"
+      />
+    </TopBar>
+  );
 
   return (
-    <div style={{ display: "flex" }}>
-      <Sidebar>
-        <Actions />
-        <Tools />
-        <Thickness />
-        <PointerPressure />
-        <Color />
-        <Input
-          label="Zoom"
-          value={`${(scale * 100).toFixed(0)}%`}
-          onChange={() => {}}
-          style={{ width: 55, border: "none" }}
-        />
-      </Sidebar>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <TopBar>
-          <div>
-            {/* <Icons.Picture color="black" />
-            <Icons.Folder color="black" /> */}
-          </div>
-          <IconButton
-            Icon={colorMode === "dark" ? Icons.Sun : Icons.Moon}
-            onPress={() => {
-              setColorMode(colorMode === "dark" ? "light" : "dark");
-            }}
-            tooltip="Toggle color mode"
-          />
-        </TopBar>
-        <canvas ref={canvas}></canvas>
-      </div>
-    </div>
+    <Router>
+      <Column>
+        <Switch>
+          <Route path="/directory">
+            <Row>
+              <Column>{header}Your drawings will be listed here</Column>
+            </Row>
+          </Route>
+          <Route path="/settings">
+            <Row>
+              <Column>{header}Settings</Column>
+            </Row>
+          </Route>
+          <Route path="/">
+            <Row>
+              {sidebar}
+              <Column>
+                {header}
+                <Editor />
+              </Column>
+            </Row>
+          </Route>
+        </Switch>
+      </Column>
+    </Router>
   );
 };
 
 ReactDOM.render(
   <RecoilRoot>
     <ThemeProvider>
-      <Router>
-        <App />
-      </Router>
+      <App />
     </ThemeProvider>
   </RecoilRoot>,
   document.getElementById("root")
