@@ -21,7 +21,8 @@ const Thickness = () => {
   };
 
   const handleBlur = () => {
-    const clamped = clamp(Number(thickness), 1, 10).toString();
+    const asNumber = Number(thickness) || 1;
+    const clamped = clamp(asNumber, 1, 10).toString();
     if (clamped !== thickness) {
       setThickness(clamped);
     }
