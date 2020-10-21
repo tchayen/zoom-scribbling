@@ -16,7 +16,9 @@ const Box = styled.div<{ isDisabled: boolean }>`
 const Dot = styled.div<{ isSelected: boolean; isFocusVisible: boolean }>`
   width: 16px;
   height: 16px;
-  background-color: ${(props) => (props.isSelected ? "#0366d6" : "#ffffff")};
+  // TODO: if darkMode then gray else white (for the default case).
+  background-color: ${(props) =>
+    props.isSelected ? props.theme.primary : props.theme.background};
   border-radius: 8px;
   position: absolute;
   left: ${(props) => (props.isSelected ? "16px" : 0)};
@@ -34,6 +36,7 @@ const Bar = styled.div<{ isSelected: boolean }>`
   position: absolute;
   left: 0;
   top: 2px;
+  // TODO: if darkMode then darkGray, else gray (for the default case).
   background-color: ${(props) =>
     props.isSelected ? props.theme.primaryDimmed : props.theme.border};
   border-radius: 6px;

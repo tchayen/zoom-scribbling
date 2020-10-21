@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useRecoilState } from "recoil";
+import { useTextField } from "@react-aria/textfield";
 import Button from "../../components/Button";
-import Input from "../../components/Input";
+import { InputComponent } from "../../components/Input";
 import Label from "../../components/Label";
 import { clamp } from "../helpers";
 import { thicknessState } from "../state";
 
-// TODO:
-// - Make label focus input by copy-pasting relevant parts from <Input /> and
-//   using imported styled.InputComponent
-
 const Thickness = () => {
+  const label = "Thickness";
+  // labelProps were empty for empty props.
+  const props = { label };
+
+  const ref = useRef<HTMLInputElement>(null);
+  const { labelProps, inputProps } = useTextField(props, ref);
   const [thickness, setThickness] = useRecoilState(thicknessState);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +35,7 @@ const Thickness = () => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", marginBottom: 16 }}>
-      <Label>Thickness</Label>
+      <Label {...labelProps}>{label}</Label>
       <div style={{ display: "flex" }}>
         <Button
           secondary
@@ -41,12 +44,13 @@ const Thickness = () => {
         >
           -
         </Button>
-        <Input
+        <InputComponent
+          {...inputProps}
           onChange={handleChange}
-          style={{ width: 32, border: "none", marginRight: 8 }}
-          value={thickness.toString()}
           onBlur={handleBlur}
-          aria-label="dupa"
+          value={thickness.toString()}
+          style={{ width: 32, border: "none", marginRight: 8 }}
+          ref={ref}
         />
         <Button secondary style={{ width: 32 }} onPress={handleIncrease}>
           +

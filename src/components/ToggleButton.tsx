@@ -102,7 +102,7 @@ export const ToggleButtonGroup = (props: ToggleButtonGroupProps) => {
       <Label {...labelProps} isDisabled={props.isDisabled}>
         {label}
       </Label>
-      <div style={{ display: "flex", marginTop: 4 }}>
+      <div style={{ display: "flex", marginTop: 8 }}>
         <ToggleContext.Provider
           value={{ state, isDisabled: !!props.isDisabled }}
         >

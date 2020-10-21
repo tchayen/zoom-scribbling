@@ -39,6 +39,7 @@ import Tools from "./editor/components/Tools";
 import render from "./editor/render";
 import PointerPressure from "./editor/components/PointerPressure";
 import Label from "./components/Label";
+import Color from "./editor/components/Color";
 
 // download.onclick = () => {
 //   const state = exportState();
@@ -67,6 +68,8 @@ const TopBar = styled.div`
   display: flex;
   flex: 1;
   width: 100%;
+  align-items: center;
+  padding-right: 4px;
   justify-content: space-between;
   height: 40px;
   background-color: ${(props) => props.theme.grayBackground};
@@ -260,26 +263,7 @@ const App = () => {
         <Tools />
         <Thickness />
         <PointerPressure />
-        <div style={{ marginBottom: 16 }}>
-          <Label>Color</Label>
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <div
-              style={{
-                width: 40,
-                height: 32,
-                marginRight: 8,
-                backgroundColor:
-                  colorMode === "dark" ? invertHex(color) : color,
-              }}
-            />
-            <Input
-              aria-label="Color"
-              value={color}
-              onChange={(event) => setColor(event.target.value)}
-              style={{ width: 80, border: "none" }}
-            />
-          </div>
-        </div>
+        <Color />
         <Input
           label="Zoom"
           value={`${(scale * 100).toFixed(0)}%`}
@@ -287,7 +271,12 @@ const App = () => {
           style={{ width: 55, border: "none" }}
         />
       </Sidebar>
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <TopBar>
           <div>
             {/* <Icons.Picture color="black" />

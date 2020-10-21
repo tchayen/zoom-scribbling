@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import { useTextField } from "@react-aria/textfield";
-import { AriaTextFieldProps } from "@react-types/textfield";
 import { styled } from "./colorTheme";
 
 import Hint from "./Hint";
@@ -12,7 +11,7 @@ const Box = styled.div<{ isDisabled: boolean }>`
   opacity: ${(props) => (props.isDisabled ? 0.5 : 1)};
 `;
 
-const InputComponent = styled.input`
+export const InputComponent = styled.input`
   font-family: Inter, sans-serif;
   font-size: 14px;
   padding-left: 8px;
