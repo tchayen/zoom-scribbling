@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { RecoilRoot, useRecoilState } from "recoil";
+import { BrowserRouter as Router } from "react-router-dom";
 import {
   scaleState,
   cameraState,
@@ -15,7 +16,6 @@ import Input from "./components/Input";
 import consts from "./consts";
 import {
   generateMiniature,
-  invertHex,
   screenToCameraSpace,
   translate,
   zoom,
@@ -38,7 +38,6 @@ import Thickness from "./editor/components/Thickness";
 import Tools from "./editor/components/Tools";
 import render from "./editor/render";
 import PointerPressure from "./editor/components/PointerPressure";
-import Label from "./components/Label";
 import Color from "./editor/components/Color";
 
 // download.onclick = () => {
@@ -299,7 +298,9 @@ const App = () => {
 ReactDOM.render(
   <RecoilRoot>
     <ThemeProvider>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </ThemeProvider>
   </RecoilRoot>,
   document.getElementById("root")
