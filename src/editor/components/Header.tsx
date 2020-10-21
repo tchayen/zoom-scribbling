@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import * as Icons from "../../icons";
 import { styled, useTheme } from "../../components/colorTheme";
 import ColorModeToggle from "./ColorModeToggle";
+import useOnlyOneTab from "../useOnlyOneTab";
 
 const TopBar = styled.div`
   display: flex;
@@ -16,6 +17,7 @@ const TopBar = styled.div`
 
 const Header = () => {
   const { colorMode } = useTheme();
+  const openTabs = useOnlyOneTab();
 
   return (
     <TopBar>
@@ -46,6 +48,7 @@ const Header = () => {
             <Icons.Folder color={colorMode === "dark" ? "white" : "black"} />
           </div>
         </Link>
+        You have {openTabs} open tabs
       </div>
       <ColorModeToggle />
     </TopBar>
