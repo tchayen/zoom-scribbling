@@ -4,16 +4,23 @@ import IconButton from "../../components/IconButton";
 import Label from "../../components/Label";
 import * as Icons from "../../icons";
 
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
+// const Row = styled.div`
+//   display: flex;
+//   flex-direction: row;
+// `;
 
 const Actions = () => {
   return (
-    <div style={{ marginBottom: 16 }}>
+    <div style={{ display: "flex", flexDirection: "column" }}>
       <Label>Actions</Label>
-      <Row>
+      <div
+        style={{
+          marginBottom: 16,
+          display: "grid",
+          gridGap: 8,
+          gridTemplateColumns: "24px 24px 24px",
+        }}
+      >
         <IconButton Icon={Icons.New} onPress={() => {}} tooltip="New file" />
         <IconButton Icon={Icons.Save} onPress={() => {}} tooltip="Save" />
         <IconButton
@@ -21,11 +28,10 @@ const Actions = () => {
           onPress={() => {}}
           tooltip="Import file"
         />
-      </Row>
-      <Row>
+
         <IconButton Icon={Icons.Undo} onPress={() => {}} tooltip="Undo" />
         <IconButton Icon={Icons.Redo} onPress={() => {}} tooltip="Redo" />
-      </Row>
+      </div>
     </div>
   );
 };

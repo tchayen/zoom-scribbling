@@ -11,15 +11,16 @@ import { useTooltipTrigger } from "@react-aria/tooltip";
 const Button = styled.button<{
   isFocusVisible: boolean;
   isDisabled: boolean;
+  isPressed: boolean;
 }>`
   cursor: ${(props) => (props.isDisabled ? "default" : "pointer")};
-  background-color: transparent;
+  background-color: ${(props) =>
+    props.isPressed ? props.theme.primaryDimmed : "transparent"};
   border: none;
   outline: none;
   padding: 0;
-  width: 32px;
-  height: 32px;
-  border-radius: 16px;
+  width: 24px;
+  height: 24px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -51,6 +52,7 @@ const IconButton = (props: Props) => {
         isDisabled={!!props.isDisabled}
         onClick={props.onPress}
         isFocusVisible={isFocusVisible}
+        isPressed={isPressed}
         {...mergeProps(focusProps, buttonProps, triggerProps)}
       >
         <props.Icon color={colors[colorMode].mainText} />
