@@ -59,6 +59,7 @@ const SelectedValue = styled.div.attrs<SelectedValueProps>((props) => ({
   border-radius: ${MARGIN}px;
   position: absolute;
   cursor: grab;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 `;
 
 type SelectedHueProps = {
@@ -77,6 +78,7 @@ const SelectedHue = styled.div.attrs<SelectedHueProps>((props) => ({
   position: absolute;
   top: 0px;
   cursor: grab;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 `;
 
 const ColorPicker = () => {
@@ -108,6 +110,11 @@ const ColorPicker = () => {
     [valueMouseDown]
   );
 
+  const handleValueOut = useCallback(() => {
+    setValueMouseDown(false);
+    console.log("out");
+  }, []);
+
   const handleHueDown = useCallback(() => {
     console.log("down hue");
     setHueMouseDown(true);
@@ -137,6 +144,7 @@ const ColorPicker = () => {
       value.addEventListener("mousedown", handleValueDown);
       value.addEventListener("mouseup", handleValueUp);
       value.addEventListener("mousemove", handleValueMove);
+      value.addEventListener("mouseout", handleValueOut);
       hue.addEventListener("mousedown", handleHueDown);
       hue.addEventListener("mouseup", handleHueUp);
       hue.addEventListener("mousemove", handleHueMove);
@@ -148,6 +156,7 @@ const ColorPicker = () => {
         value.removeEventListener("mouseup", handleValueUp);
         value.removeEventListener("mousemove", handleValueMove);
         hue.removeEventListener("mousedown", handleHueDown);
+        value.addEventListener("mouseout", handleValueOut);
         hue.removeEventListener("mouseup", handleHueUp);
         hue.removeEventListener("mousemove", handleHueMove);
       }
@@ -156,6 +165,7 @@ const ColorPicker = () => {
     handleValueDown,
     handleValueUp,
     handleValueMove,
+    handleValueOut,
     handleHueDown,
     handleHueUp,
     handleHueMove,
