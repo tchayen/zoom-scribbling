@@ -6,11 +6,10 @@ type Props = {
 
 const Folder = (props: Props) => {
   return (
-    <svg width="24px" height="24px" viewBox="0 0 25 24" fill="none" {...props}>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
       <path
-        d="M.5 3.5H9l1.5 4h13l-2 13H.5v-17z"
+        d="M0.5 20.5V3.5H7.5L11.5 6.5H19.5V9.5M0.5 20.5H19.5L22.5 9.5H19.5M0.5 20.5L3.5 9.5H19.5"
         stroke={props.color}
-        strokeLinecap="round"
       />
     </svg>
   );
