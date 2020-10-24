@@ -8,6 +8,7 @@ import Editor from "./editor/components/Editor";
 import Header from "./editor/components/Header";
 import Sidebar from "./editor/components/Sidebar";
 import useOnlyOneTab from "./editor/useOnlyOneTab";
+import ColorPicker from "./editor/components/ColorPicker";
 
 // download.onclick = () => {
 //   const state = exportState();
@@ -47,7 +48,7 @@ const App = () => {
             <Row>
               <Column>
                 <Header />
-                Your drawings will be listed here
+                <ColorPicker />
               </Column>
             </Row>
           </Route>
@@ -55,7 +56,7 @@ const App = () => {
             <Row>
               <Column>
                 <Header />
-                Settings
+                settings
               </Column>
             </Row>
           </Route>
