@@ -35,3 +35,10 @@ export type EditorState = {
   history: Action[];
   historyIndex: number;
 };
+
+export type File = {
+  name: string;
+  updatedAt: string;
+  createdAt: string;
+  data: string;
+};

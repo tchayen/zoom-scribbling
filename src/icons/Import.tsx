@@ -6,9 +6,9 @@ type Props = {
 
 const Import = (props: Props) => {
   return (
-    <svg width="24px" height="24px" viewBox="0 0 25 24" fill="none" {...props}>
+    <svg width="25" height="24" viewBox="0 0 25 24" fill="none" {...props}>
       <path
-        d="M23.5 17.5v6H.5V.5h23v6m0 5h-18m0 0l7-7m-7 7l7 7"
+        d="M3 11.5H18.5M18.5 11.5L12 5M18.5 11.5L12 18M22.5 4V19"
         stroke={props.color}
       />
     </svg>

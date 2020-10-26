@@ -31,6 +31,7 @@ const Actions = () => {
 
         <IconButton Icon={Icons.Undo} onPress={() => {}} tooltip="Undo" />
         <IconButton Icon={Icons.Redo} onPress={() => {}} tooltip="Redo" />
+        <IconButton Icon={Icons.Share} onPress={() => {}} tooltip="Share" />
       </div>
     </div>
   );

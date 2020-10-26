@@ -15,6 +15,14 @@ const TopBar = styled.div`
   background-color: ${(props) => props.theme.grayBackground};
 `;
 
+const IconLink = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+`;
+
 const Header = () => {
   const { colorMode } = useTheme();
   const openTabs = useOnlyOneTab();
@@ -23,30 +31,19 @@ const Header = () => {
     <TopBar>
       <div style={{ display: "flex" }}>
         <Link to="/">
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: 32,
-              height: 32,
-            }}
-          >
+          <IconLink>
             <Icons.Picture color={colorMode === "dark" ? "white" : "black"} />
-          </div>
+          </IconLink>
         </Link>
         <Link to="/directory">
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: 32,
-              height: 32,
-            }}
-          >
+          <IconLink>
             <Icons.Folder color={colorMode === "dark" ? "white" : "black"} />
-          </div>
+          </IconLink>
+        </Link>
+        <Link to="/settings">
+          <IconLink>
+            <Icons.Person color={colorMode === "dark" ? "white" : "black"} />
+          </IconLink>
         </Link>
         You have {openTabs} open tabs
       </div>

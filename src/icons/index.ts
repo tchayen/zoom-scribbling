@@ -12,3 +12,7 @@ export { default as Selection } from "./Selection";
 export { default as Sun } from "./Sun";
 export { default as Undo } from "./Undo";
 export { default as Redo } from "./Redo";
+export { default as Share } from "./Share";
+export { default as Dots } from "./Dots";
+export { default as Pin } from "./Pin";
+export { default as Person } from "./Person";
