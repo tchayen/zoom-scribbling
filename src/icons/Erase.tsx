@@ -6,9 +6,9 @@ type Props = {
 
 const Erase = (props: Props) => {
   return (
-    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" {...props}>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
       <path
-        d="M7 8l6-6 9 9-6 6M7 8l-5 5 9 9 5-5M7 8l9 9"
+        d="M5 10L13 2L22 11L14 19M5 10L2 13L11 22L14 19M5 10L14 19"
         stroke={props.color}
       />
     </svg>

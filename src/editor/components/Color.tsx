@@ -34,6 +34,7 @@ const Color = () => {
           onChange={handleChange}
           value={color}
           style={{ width: 80, border: "none" }}
+          type="color"
           ref={ref}
         />
       </div>
