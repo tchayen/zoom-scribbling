@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { StrictMode, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { RecoilRoot } from "recoil";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -79,9 +79,11 @@ const element = document.getElementById("root");
 const root = ReactDOM.unstable_createRoot(element);
 
 root.render(
-  <RecoilRoot>
-    <ThemeProvider>
-      <App />
-    </ThemeProvider>
-  </RecoilRoot>
+  <StrictMode>
+    <RecoilRoot>
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
+    </RecoilRoot>
+  </StrictMode>
 );
