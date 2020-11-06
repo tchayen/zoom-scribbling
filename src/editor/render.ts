@@ -44,6 +44,8 @@ const render = (
 
     ctx.beginPath();
     ctx.lineWidth = shape.thickness;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
     ctx.strokeStyle =
       colorMode === "dark" ? invertHex(shape.color) : shape.color;
 
