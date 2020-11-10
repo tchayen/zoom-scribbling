@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useTheme } from "../../components/colorTheme";
+import Dialog, { DialogTrigger } from "../../components/Dialog";
 import consts from "../../consts";
 import { screenToCameraSpace, translate, zoom, zoomTo } from "../helpers";
 import render from "../render";
@@ -157,15 +158,37 @@ const Editor = () => {
         // generateMiniature(canvas.current);
       }
 
-      if (event.key === "-") {
-        if (Number(thickness) > 1) {
-          setThickness(`${Number(thickness) - 1}`);
+      if (event.code === "Minus") {
+        if (event.shiftKey) {
+          const zoomed = zoom(
+            -1,
+            { x: window.innerWidth / 2, y: window.innerHeight / 2 },
+            camera,
+            scale
+          );
+          setCamera(zoomed.camera);
+          setScale(zoomed.scale);
+        } else {
+          if (Number(thickness) > 1) {
+            setThickness(`${Number(thickness) - 1}`);
+          }
         }
       }
 
-      if (event.key === "=") {
-        if (Number(thickness) < 10) {
-          setThickness(`${Number(thickness) + 1}`);
+      if (event.code === "Equal") {
+        if (event.shiftKey) {
+          const zoomed = zoom(
+            1,
+            { x: window.innerWidth / 2, y: window.innerHeight / 2 },
+            camera,
+            scale
+          );
+          setCamera(zoomed.camera);
+          setScale(zoomed.scale);
+        } else {
+          if (Number(thickness) < 10) {
+            setThickness(`${Number(thickness) + 1}`);
+          }
         }
       }
     },
@@ -229,7 +252,16 @@ const Editor = () => {
     render(getCtx(), canvas.current!, camera, scale, colorMode);
   });
 
-  return <canvas ref={canvas}></canvas>;
+  return (
+    <div>
+      <canvas ref={canvas}></canvas>
+      <DialogTrigger label="Open dialog">
+        <Dialog title="Confirm" confirmLabel="Do it" isDismissable>
+          Are you sure you want to do that?
+        </Dialog>
+      </DialogTrigger>
+    </div>
+  );
 };
 
 export default Editor;
