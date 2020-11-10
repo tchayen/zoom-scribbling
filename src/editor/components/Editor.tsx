@@ -191,8 +191,6 @@ const Editor = () => {
           }
         }
       }
-
-      console.log(event);
     },
     [
       camera,
