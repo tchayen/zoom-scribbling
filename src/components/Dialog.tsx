@@ -70,9 +70,11 @@ const Dialog = (props: any) => {
           <Header {...titleProps}>{title}</Header>
           <Paragraph>{children}</Paragraph>
           <Row>
-            <Button secondary onPress={onClose}>
-              Cancel
-            </Button>
+            {props.showCancel && (
+              <Button secondary onPress={onClose}>
+                Cancel
+              </Button>
+            )}
             <Button onPress={onClose}>{confirmLabel}</Button>
           </Row>
         </Box>
@@ -83,6 +85,12 @@ const Dialog = (props: any) => {
 
 export const DialogTrigger = ({ label, children, ...otherProps }: any) => {
   let state = useOverlayTriggerState({});
+
+  useEffect(() => {
+    if (otherProps.startOpen) {
+      state.open();
+    }
+  }, [otherProps.startOpen]);
 
   const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {

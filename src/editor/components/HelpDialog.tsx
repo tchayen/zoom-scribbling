@@ -13,8 +13,11 @@ const Key = styled.code`
 
 const HelpDialog = () => {
   return (
-    <DialogTrigger label="Open dialog">
-      <Dialog title="Help" confirmLabel="Do it" isDismissable>
+    <DialogTrigger startOpen label="Open dialog">
+      <Dialog title="Help" confirmLabel="Close" isDismissable>
+        <p>
+          <Key>h</Key> to open this dialog
+        </p>
         <p>
           <Key>d</Key> to draw
         </p>
