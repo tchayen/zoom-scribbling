@@ -9,7 +9,8 @@ import {
   FocusScope,
 } from "react-aria";
 import Button from "./Button";
-import { styled } from "./colorTheme";
+import { styled, useTheme } from "./colorTheme";
+import { ColorMode } from "./colors";
 
 const Background = styled.div`
   position: absolute;
@@ -36,10 +37,12 @@ const Paragraph = styled.div`
   color: ${(props) => props.theme.secondaryText};
 `;
 
-const Box = styled.div`
+const Box = styled.div<{ colorMode: ColorMode }>`
   outline: none;
   background-color: ${(props) => props.theme.background};
   padding: 24px;
+  border: ${(props) =>
+    props.colorMode === "dark" ? `1px solid ${props.theme.border}` : "none"};
 `;
 
 const Row = styled.div`
@@ -48,6 +51,7 @@ const Row = styled.div`
 `;
 
 const Dialog = (props: any) => {
+  const { colorMode } = useTheme();
   const { title, children, confirmLabel, onClose } = props;
 
   // Handle interacting outside the dialog and pressing
@@ -66,7 +70,7 @@ const Dialog = (props: any) => {
   return (
     <Background>
       <FocusScope contain restoreFocus autoFocus>
-        <Box {...overlayProps} {...dialogProps} ref={ref}>
+        <Box {...overlayProps} {...dialogProps} colorMode={colorMode} ref={ref}>
           <Header {...titleProps}>{title}</Header>
           <Paragraph>{children}</Paragraph>
           <Row>

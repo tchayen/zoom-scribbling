@@ -19,13 +19,13 @@ const HelpDialog = () => {
           <Key>h</Key> to open this dialog
         </p>
         <p>
-          <Key>d</Key> to draw
+          <Key>d</Key> to enter drawing mode
         </p>
         <p>
-          <Key>e</Key> to erase
+          <Key>e</Key> to enter erasing mode
         </p>
         <p>
-          <Key>t</Key> to toggle color theme
+          <Key>t</Key> to toggle between light and dark color theme
         </p>
         <p>
           <Key>shift</Key> + <Key>-</Key> to unzoom
@@ -34,10 +34,13 @@ const HelpDialog = () => {
           <Key>shift</Key> + <Key>+</Key> to zoom
         </p>
         <p>
-          <Key>-</Key> to decrease thickness
+          <Key>shift</Key> + <Key>0</Key> to reset zoom
         </p>
         <p>
-          <Key>+</Key> to increase thickness
+          <Key>-</Key> to decrease pen thickness
+        </p>
+        <p>
+          <Key>+</Key> to increase pen thickness
         </p>
       </Dialog>
     </DialogTrigger>
