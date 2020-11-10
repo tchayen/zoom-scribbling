@@ -25,10 +25,11 @@ const Background = styled.div`
 
 const Header = styled.h3`
   margin: 0;
+  color: ${(props) => props.theme.mainText};
   margin-bottom: 16px;
 `;
 
-const Paragraph = styled.p`
+const Paragraph = styled.div`
   margin-top: 16px;
   margin-bottom: 16px;
   font-size: 14px;
@@ -69,7 +70,9 @@ const Dialog = (props: any) => {
           <Header {...titleProps}>{title}</Header>
           <Paragraph>{children}</Paragraph>
           <Row>
-            <Button onPress={onClose}>Cancel</Button>
+            <Button secondary onPress={onClose}>
+              Cancel
+            </Button>
             <Button onPress={onClose}>{confirmLabel}</Button>
           </Row>
         </Box>

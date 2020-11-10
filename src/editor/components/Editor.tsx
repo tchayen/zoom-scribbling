@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useTheme } from "../../components/colorTheme";
-import Dialog, { DialogTrigger } from "../../components/Dialog";
 import consts from "../../consts";
 import { screenToCameraSpace, translate, zoom, zoomTo } from "../helpers";
 import render from "../render";
+import HelpDialog from "./HelpDialog";
 import {
   appendErase,
   appendLine,
@@ -135,7 +135,7 @@ const Editor = () => {
         }
       }
 
-      if (event.key === ")" && event.shiftKey) {
+      if (event.key === ")") {
         const zoomed = zoomTo(1, scale, canvas.current!, camera);
         setCamera(zoomed.camera);
         setScale(zoomed.scale);
@@ -191,6 +191,8 @@ const Editor = () => {
           }
         }
       }
+
+      console.log(event);
     },
     [
       camera,
@@ -255,11 +257,7 @@ const Editor = () => {
   return (
     <div>
       <canvas ref={canvas}></canvas>
-      <DialogTrigger label="Open dialog">
-        <Dialog title="Confirm" confirmLabel="Do it" isDismissable>
-          Are you sure you want to do that?
-        </Dialog>
-      </DialogTrigger>
+      <HelpDialog />
     </div>
   );
 };

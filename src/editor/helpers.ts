@@ -52,12 +52,14 @@ export const zoomTo = (
     y: canvas.height / 2,
   };
 
-  camera.x = camera.x + ((camera.x + center.x) * delta) / previous;
-  camera.y = camera.y + ((camera.y + center.y) * delta) / previous;
+  const next = {
+    x: camera.x + ((camera.x + center.x) * delta) / previous,
+    y: camera.y + ((camera.y + center.y) * delta) / previous,
+  };
 
   return {
     scale: 1,
-    camera,
+    camera: next,
   };
 };
 
