@@ -49,10 +49,14 @@ const render = (
     ctx.strokeStyle =
       colorMode === "dark" ? invertHex(shape.color) : shape.color;
 
+    // if (shape.state === "erased") {
+    //   ctx.setLineDash([consts.DASH_LENGTH, consts.DASH_LENGTH]);
+    // } else {
+    //   ctx.setLineDash([]);
+    // }
+
     if (shape.state === "erased") {
-      ctx.setLineDash([consts.DASH_LENGTH, consts.DASH_LENGTH]);
-    } else {
-      ctx.setLineDash([]);
+      ctx.strokeStyle = "#ff00ff";
     }
 
     ctx.moveTo(shape.points[0].x, shape.points[0].y);

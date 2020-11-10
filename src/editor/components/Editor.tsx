@@ -143,10 +143,13 @@ const Editor = () => {
 
       if (event.key.toLowerCase() === "e") {
         setMode("erase");
+        console.log(canvas.current.style);
+        canvas.current.style.cursor = consts.ERASE_CURSOR;
       }
 
       if (event.key.toLowerCase() === "d") {
         setMode("draw");
+        canvas.current.style.cursor = consts.DRAW_CURSOR;
       }
 
       if (event.key.toLowerCase() === "t") {
@@ -211,6 +214,14 @@ const Editor = () => {
   }, [camera, scale, colorMode]);
 
   useEffect(() => {
+    if (canvas.current === null) {
+      return;
+    }
+
+    canvas.current.style.cursor = consts.DRAW_CURSOR;
+  }, []);
+
+  useEffect(() => {
     resetSizes();
 
     if (canvas.current === null) {
@@ -237,8 +248,6 @@ const Editor = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [
-    camera,
-    scale,
     handlePointerMove,
     handlePointerDown,
     handlePointerUp,
