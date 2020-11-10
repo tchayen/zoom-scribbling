@@ -4,58 +4,117 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Editor</title>
+    <script>
+      const dashify = (string) =>
+        string
+          .trim()
+          .replace(/([a-z])([A-Z])/g, "$1-$2")
+          .replace(/\W/g, (m) => (/[À-ž]/.test(m) ? m : "-"))
+          .replace(/^-+|-+$/g, "")
+          .toLowerCase();
+
+      const palette = {
+        blue: "#0366d6",
+        blueDimmedIntense: "rgba(3, 102, 214, 0.35)",
+        blueDimmed: "rgba(3, 102, 214, 0.2)",
+        white: "#ffffff",
+        black: "#000000",
+        lightGray: "#f6f8fa",
+        gray: "#dfe2e5",
+        darkGray: "#777777",
+        darkestGray: "#24292e",
+      };
+
+      const light = {
+        primary: palette.blue,
+        primaryDimmed: palette.blueDimmed,
+        background: palette.white,
+        grayBackground: palette.lightGray,
+        mainText: palette.black,
+        border: palette.gray,
+        secondaryText: palette.darkGray,
+        secondaryButtonBackground: palette.gray,
+      };
+
+      const dark = {
+        primary: palette.blue,
+        primaryDimmed: palette.blueDimmedIntense,
+        background: palette.black,
+        grayBackground: palette.darkestGray,
+        mainText: palette.white,
+        border: palette.darkestGray,
+        secondaryText: palette.darkGray,
+        secondaryButtonBackground: palette.darkGray,
+      };
+
+      const colors = { light, dark };
+
+      const getInitialColorMode = () => {
+        const persistedColorPreference = window.localStorage.getItem(
+          "color-mode"
+        );
+
+        // If the user has explicitly chosen light or dark, let's use it. Otherwise,
+        // this value will be null.
+        if (persistedColorPreference) {
+          return persistedColorPreference;
+        }
+
+        // If they haven't been explicit, let's check the media query
+        const mql = window.matchMedia("(prefers-color-scheme: dark)");
+        const hasMediaQueryPreference = typeof mql.matches === "boolean";
+
+        if (hasMediaQueryPreference) {
+          return mql.matches ? "dark" : "light";
+        }
+
+        // If they are using a browser/OS that doesn't support color themes, let's
+        // default to 'light'.
+        return "light";
+      };
+
+      const colorMode = getInitialColorMode();
+      const root = document.documentElement;
+      root.style.setProperty("--initial-color-mode", colorMode);
+
+      Object.keys(colors[colorMode]).forEach((key) => {
+        root.style.setProperty(
+          `--color-${dashify(key)}`,
+          colors[colorMode][key]
+        );
+      });
+
+      root.style.setProperty("--const-toolbar-width", "250px");
+    </script>
     <style>
-      @import url('https://rsms.me/inter/inter.css');
+      @import url("https://rsms.me/inter/inter.css");
+      @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@600&display=swap");
 
       body {
-        background-color: #999;
+        background-color: var(--color-background);
         margin: 0px;
-        font-family: Inter, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+          "Segoe UI Symbol";
         overflow: hidden;
-        cursor: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAXCAYAAAAGAx/kAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAGCSURBVHgBvZS9ToRAEMdh7zz0wnkfOdRcznh+YGJhhTbGxtj4ArwPiY2JpbWJsfBNKEgoeAKoaWgp8T/HbMLBoUCMk/wzy8L+dmbYWUX5S8uyjJxKwlhVOppq23YPXkvT9Bl+F+ozuJUJXjxBNFmSJC8Y69BOWxiBRtCCQFEUZXEcv87n85FlWa1gYjqdjjVNOyPQarXqDOtNYPBmlld9AzabzfYxN2gCk6BLCaqB/RoZ/bEKqAusxzWqgMowPEtY1egMUWp1oDoYH+Jmqf0AG21LUzQBlWGGYdCh7VciKqcmF9UZd8CAA8lrVI5IQlzX/cLzE/QIPUD30A1kQoaSt5bYWiMJ8TzvE3N30DW9gy6gc+gEOoTGkOY4jiinZspe833/A3O30Kmu6wf0ntqFxLUZFtJSiyD6peteC4LgHWOLdx7zAvpG0O4cgQSo5WLTLoswDN/gr6BjOqStup93WN9H0BEVsdAOQmlhKkdFsOFyudyD73e6cnmR4KOwUcB/t2+MrA8pEIPvhwAAAABJRU5ErkJggg==') 3 1, auto;
+        cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAXCAYAAAAGAx/kAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAGCSURBVHgBvZS9ToRAEMdh7zz0wnkfOdRcznh+YGJhhTbGxtj4ArwPiY2JpbWJsfBNKEgoeAKoaWgp8T/HbMLBoUCMk/wzy8L+dmbYWUX5S8uyjJxKwlhVOppq23YPXkvT9Bl+F+ozuJUJXjxBNFmSJC8Y69BOWxiBRtCCQFEUZXEcv87n85FlWa1gYjqdjjVNOyPQarXqDOtNYPBmlld9AzabzfYxN2gCk6BLCaqB/RoZ/bEKqAusxzWqgMowPEtY1egMUWp1oDoYH+Jmqf0AG21LUzQBlWGGYdCh7VciKqcmF9UZd8CAA8lrVI5IQlzX/cLzE/QIPUD30A1kQoaSt5bYWiMJ8TzvE3N30DW9gy6gc+gEOoTGkOY4jiinZspe833/A3O30Kmu6wf0ntqFxLUZFtJSiyD6peteC4LgHWOLdx7zAvpG0O4cgQSo5WLTLoswDN/gr6BjOqStup93WN9H0BEVsdAOQmlhKkdFsOFyudyD73e6cnmR4KOwUcB/t2+MrA8pEIPvhwAAAABJRU5ErkJggg==")
+            3 1,
+          auto;
       }
 
-      .text {
-        color: #777;
-        padding: 5px;
-        font-weight: 400;
-        font-size: 15px;
-        user-select: none;
-      }
-
-      #scale {
+      #root {
         position: absolute;
-        right: 0px;
-        bottom: 0px;
+        top: 0px;
+        left: 0px;
       }
 
-      #download {
-        position: absolute;
-        bottom: 12px;
-        left: 12px;
-        font-family: Inter, sans-serif;
-        font-size: 15px;
-        font-weight: 700;
-        color: #000;
-        background-color: #eee;
-        border-radius: 0;
-        border: none;
-        height: 40px;
-        padding-left: 12px;
-        padding-right: 12px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        outline: none;
-        cursor: pointer;
-        user-select: none;
+      * {
+        box-sizing: border-box;
       }
     </style>
   </head>
   <body>
-      <canvas id="canvas"></canvas>
-      <span id="scale" class="text"></span>
-      <button id="download">Download</button>
-    <script src="src/index.ts"></script>
+    <div id="root"></div>
+    <script src="src/index.tsx"></script>
   </body>
 </html>

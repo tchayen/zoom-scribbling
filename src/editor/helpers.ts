@@ -1,5 +1,5 @@
-import consts from "./consts";
-import { Line, Point } from "./types";
+import consts from "../consts";
+import { Line, Point } from "../types";
 import { readFromDb, saveToDb } from "./indexedDb";
 
 export const clamp = (value: number, min: number, max: number) => {
@@ -31,31 +31,35 @@ export const zoom = (
   );
   const delta = next - previous;
 
-  camera.x = camera.x + ((camera.x + pointer.x) * delta) / previous;
-  camera.y = camera.y + ((camera.y + pointer.y) * delta) / previous;
-  scale = next;
+  const nextCamera = {
+    x: camera.x + ((camera.x + pointer.x) * delta) / previous,
+    y: camera.y + ((camera.y + pointer.y) * delta) / previous,
+  };
 
-  return { scale, camera };
+  return { scale: next, camera: nextCamera };
 };
 
 export const zoomTo = (
   targetScale: number,
   currentScale: number,
+  canvas: HTMLCanvasElement,
   camera: Point
 ) => {
   const previous = currentScale;
   const delta = targetScale - previous;
   const center = {
-    x: window.innerWidth / 2,
-    y: window.innerHeight / 2,
+    x: canvas.width / 2,
+    y: canvas.height / 2,
   };
 
-  camera.x = camera.x + ((camera.x + center.x) * delta) / previous;
-  camera.y = camera.y + ((camera.y + center.y) * delta) / previous;
+  const next = {
+    x: camera.x + ((camera.x + center.x) * delta) / previous,
+    y: camera.y + ((camera.y + center.y) * delta) / previous,
+  };
 
   return {
     scale: 1,
-    camera,
+    camera: next,
   };
 };
 
@@ -115,9 +119,19 @@ export const generateMiniature = async (canvas: HTMLCanvasElement) => {
   img.style.zIndex = "10";
   img.style.top = "0px";
   img.style.left = "0px";
-  img.width = window.innerWidth / 6;
-  img.height = window.innerHeight / 6;
+  img.width = canvas.width / 6;
+  img.height = canvas.height / 6;
   img.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.25)";
 
   document.body.appendChild(img);
+};
+
+export const invertHex = (hex: string) => {
+  const number = hex.substring(1, 7);
+  const inverted = (Number(`0x1${number}`) ^ 0xffffff)
+    .toString(16)
+    .substr(1)
+    .toUpperCase();
+
+  return `#${inverted}`;
 };

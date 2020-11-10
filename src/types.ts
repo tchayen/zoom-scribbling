@@ -1,4 +1,4 @@
-export type Mode = "draw" | "erase";
+export type Mode = "draw" | "erase" | "select";
 
 export type Point = {
   x: number;
@@ -11,6 +11,7 @@ export type Shape = {
   id: number;
   state: "invisible" | "visible" | "erased";
   color: string;
+  thickness: number;
   points: Point[];
 };
 
@@ -33,4 +34,11 @@ export type EditorState = {
   shapes: Shape[];
   history: Action[];
   historyIndex: number;
+};
+
+export type File = {
+  name: string;
+  updatedAt: string;
+  createdAt: string;
+  data: string;
 };

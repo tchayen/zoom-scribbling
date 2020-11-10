@@ -6,7 +6,7 @@ import {
   translate,
   zoom,
   zoomTo,
-} from "./helpers";
+} from "./editor/helpers";
 import { Line } from "./types";
 
 describe("clamp", () => {
