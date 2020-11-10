@@ -7,7 +7,6 @@ import { setupIndexedDb } from "./editor/indexedDb";
 import Editor from "./editor/components/Editor";
 import Header from "./editor/components/Header";
 import Sidebar from "./editor/components/Sidebar";
-import useOnlyOneTab from "./editor/useOnlyOneTab";
 import ColorPicker from "./editor/components/ColorPicker";
 
 // download.onclick = () => {

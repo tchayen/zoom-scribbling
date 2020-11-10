@@ -42,7 +42,7 @@ const Editor = () => {
   const [scale, setScale] = useRecoilState(scaleState);
   const [camera, setCamera] = useRecoilState(cameraState);
   const [mode, setMode] = useRecoilState(modeState);
-  const thickness = useRecoilValue(thicknessState);
+  const [thickness, setThickness] = useRecoilState(thicknessState);
   const color = useRecoilValue(colorState);
   const [pointerDown, setPointerDown] = useState(false);
 
@@ -156,8 +156,30 @@ const Editor = () => {
         console.log("Turned off!");
         // generateMiniature(canvas.current);
       }
+
+      if (event.key === "-") {
+        if (Number(thickness) > 1) {
+          setThickness(`${Number(thickness) - 1}`);
+        }
+      }
+
+      if (event.key === "=") {
+        if (Number(thickness) < 10) {
+          setThickness(`${Number(thickness) + 1}`);
+        }
+      }
     },
-    [camera, scale, colorMode, setCamera, setMode, setScale, setColorMode]
+    [
+      camera,
+      scale,
+      thickness,
+      setThickness,
+      colorMode,
+      setCamera,
+      setMode,
+      setScale,
+      setColorMode,
+    ]
   );
 
   const handleResize = useCallback(() => {

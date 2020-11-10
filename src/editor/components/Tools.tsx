@@ -25,12 +25,12 @@ const Tools = () => {
           tooltip="Erase"
           aria-label="Erase"
         />
-        <ToggleButton
+        {/* <ToggleButton
           value="select"
           Icon={Icons.Selection}
           tooltip="Select"
           aria-label="Select"
-        />
+        /> */}
       </ToggleButtonGroup>
     </div>
   );

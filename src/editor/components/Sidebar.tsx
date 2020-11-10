@@ -19,11 +19,11 @@ const SidebarComponent = styled.div`
 
 const Sidebar = () => (
   <SidebarComponent>
-    <Actions />
+    {/* <Actions /> */}
     <Tools />
     <Thickness />
-    <PointerPressure />
-    <Color />
+    {/* <PointerPressure /> */}
+    {/* <Color /> */}
     <Zoom />
   </SidebarComponent>
 );

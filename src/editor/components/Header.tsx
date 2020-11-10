@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import * as Icons from "../../icons";
 import { styled, useTheme } from "../../components/colorTheme";
 import ColorModeToggle from "./ColorModeToggle";
-import useOnlyOneTab from "../useOnlyOneTab";
+import IconButton from "../../components/IconButton";
+import { useHistory } from "react-router-dom";
 
 const TopBar = styled.div`
   display: flex;
@@ -25,27 +26,36 @@ const IconLink = styled.div`
 
 const Header = () => {
   const { colorMode } = useTheme();
-  const openTabs = useOnlyOneTab();
+  const history = useHistory();
+  const handleOnClick = (to: string) => () => history.push(to);
 
   return (
     <TopBar>
       <div style={{ display: "flex" }}>
-        <Link to="/">
-          <IconLink>
-            <Icons.Picture color={colorMode === "dark" ? "white" : "black"} />
-          </IconLink>
-        </Link>
-        <Link to="/directory">
-          <IconLink>
-            <Icons.Folder color={colorMode === "dark" ? "white" : "black"} />
-          </IconLink>
-        </Link>
-        <Link to="/settings">
-          <IconLink>
-            <Icons.Person color={colorMode === "dark" ? "white" : "black"} />
-          </IconLink>
-        </Link>
-        You have {openTabs} open tabs
+        {/* <IconLink>
+          <IconButton
+            Icon={Icons.Picture}
+            onPress={handleOnClick("/")}
+            tooltip="Drawing canvas"
+            isDisabled={false}
+          />
+        </IconLink>
+        <IconLink>
+          <IconButton
+            Icon={Icons.Folder}
+            onPress={handleOnClick("/directory")}
+            tooltip="Files"
+            isDisabled={false}
+          />
+        </IconLink>
+        <IconLink>
+          <IconButton
+            Icon={Icons.Person}
+            onPress={handleOnClick("/settings")}
+            tooltip="Settings"
+            isDisabled={false}
+          />
+        </IconLink> */}
       </div>
       <ColorModeToggle />
     </TopBar>
