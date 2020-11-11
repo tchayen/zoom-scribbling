@@ -115,6 +115,7 @@ export const finishErase = () => {
     type: "erase",
     shapeIndices: [...eraseBuffer],
   });
+  eraseBuffer.clear();
 
   historyIndex += 1;
 
