@@ -75,14 +75,14 @@ const App = () => {
 };
 
 const element = document.getElementById("root");
-const root = ReactDOM.unstable_createRoot(element);
 
-root.render(
+ReactDOM.render(
   <StrictMode>
     <RecoilRoot>
       <ThemeProvider>
         <App />
       </ThemeProvider>
     </RecoilRoot>
-  </StrictMode>
+  </StrictMode>,
+  element
 );
