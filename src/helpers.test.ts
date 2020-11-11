@@ -51,8 +51,8 @@ describe("zoom", () => {
 
 describe("zoomTo", () => {
   it("works", () => {
-    const result = zoomTo(2, 1, { x: 100, y: 100 });
-    expect(result).toStrictEqual({ scale: 1, camera: { x: 712, y: 584 } });
+    const result = zoomTo(2, 1, { x: 640, y: 360 }, { x: 100, y: 100 });
+    expect(result).toStrictEqual({ scale: 1, camera: { x: 840, y: 560 } });
   });
 });
 

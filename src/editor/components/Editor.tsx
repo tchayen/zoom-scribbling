@@ -136,20 +136,25 @@ const Editor = () => {
       }
 
       if (event.key === ")") {
-        const zoomed = zoomTo(1, scale, canvas.current!, camera);
+        const center = {
+          x: canvas.current!.width / 2,
+          y: canvas.current!.height / 2,
+        };
+
+        const zoomed = zoomTo(1, scale, center, camera);
         setCamera(zoomed.camera);
         setScale(zoomed.scale);
       }
 
       if (event.key.toLowerCase() === "e") {
         setMode("erase");
-        console.log(canvas.current.style);
-        canvas.current.style.cursor = consts.ERASE_CURSOR;
+        console.log(canvas.current!.style);
+        canvas.current!.style.cursor = consts.ERASE_CURSOR;
       }
 
       if (event.key.toLowerCase() === "d") {
         setMode("draw");
-        canvas.current.style.cursor = consts.DRAW_CURSOR;
+        canvas.current!.style.cursor = consts.DRAW_CURSOR;
       }
 
       if (event.key.toLowerCase() === "t") {

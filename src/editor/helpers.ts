@@ -42,15 +42,11 @@ export const zoom = (
 export const zoomTo = (
   targetScale: number,
   currentScale: number,
-  canvas: HTMLCanvasElement,
+  center: Point,
   camera: Point
 ) => {
   const previous = currentScale;
   const delta = targetScale - previous;
-  const center = {
-    x: canvas.width / 2,
-    y: canvas.height / 2,
-  };
 
   const next = {
     x: camera.x + ((camera.x + center.x) * delta) / previous,

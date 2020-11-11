@@ -1,7 +1,6 @@
 import {
   redo,
   undo,
-  shapes,
   startShape,
   finishShape,
   appendLine,
@@ -17,7 +16,7 @@ beforeEach(() => {
 
 describe("draw", () => {
   it("saves drawing to shapes", () => {
-    startShape({ x: 0, y: 0 });
+    startShape({ x: 0, y: 0 }, 1, "#000000");
     appendLine({ x: 10, y: 10 });
     finishShape();
 
@@ -25,13 +24,13 @@ describe("draw", () => {
   });
 
   it("after undo resets further history", () => {
-    startShape({ x: 0, y: 0 });
+    startShape({ x: 0, y: 0 }, 1, "#000000");
     appendLine({ x: 10, y: 10 });
     finishShape();
 
     undo();
 
-    startShape({ x: 0, y: 0 });
+    startShape({ x: 0, y: 0 }, 1, "#000000");
 
     expect(__TEST_ONLY__.history).toHaveLength(0);
   });
@@ -39,7 +38,7 @@ describe("draw", () => {
 
 describe("erase", () => {
   it("erase marks shape as erased and then invisible", () => {
-    startShape({ x: 0, y: 0 });
+    startShape({ x: 0, y: 0 }, 1, "#000000");
     appendLine({ x: 10, y: 10 });
     finishShape();
 
@@ -56,7 +55,7 @@ describe("erase", () => {
   });
 
   it("erasing previously erased shape does nothing", () => {
-    startShape({ x: 0, y: 0 });
+    startShape({ x: 0, y: 0 }, 1, "#000000");
     appendLine({ x: 10, y: 10 });
     finishShape();
 
@@ -76,7 +75,7 @@ describe("erase", () => {
 
 describe("undo", () => {
   it("sets shape as not visible", () => {
-    startShape({ x: 0, y: 0 });
+    startShape({ x: 0, y: 0 }, 1, "#000000");
     appendLine({ x: 10, y: 10 });
     finishShape();
 
@@ -86,7 +85,7 @@ describe("undo", () => {
   });
 
   it("while drawing resets the drawn shape without changing the history", () => {
-    startShape({ x: 0, y: 0 });
+    startShape({ x: 0, y: 0 }, 1, "#000000");
     appendLine({ x: 10, y: 10 });
     undo();
     expect(__TEST_ONLY__.shapes).toHaveLength(0);
@@ -94,11 +93,11 @@ describe("undo", () => {
   });
 
   it("after erasing two shapes restores both of them", () => {
-    startShape({ x: 0, y: 0 });
+    startShape({ x: 0, y: 0 }, 1, "#000000");
     appendLine({ x: 10, y: 10 });
     finishShape();
 
-    startShape({ x: 10, y: 0 });
+    startShape({ x: 10, y: 0 }, 1, "#000000");
     appendLine({ x: 20, y: 10 });
     finishShape();
 
@@ -117,7 +116,7 @@ describe("undo", () => {
   });
 
   it("while erasing leaves the shape intact also without changing the history", () => {
-    startShape({ x: 0, y: 0 });
+    startShape({ x: 0, y: 0 }, 1, "#000000");
     appendLine({ x: 10, y: 10 });
     finishShape();
 
@@ -132,7 +131,7 @@ describe("undo", () => {
 
 describe("redo", () => {
   it("sets shape as visible", () => {
-    startShape({ x: 0, y: 0 });
+    startShape({ x: 0, y: 0 }, 1, "#000000");
     appendLine({ x: 10, y: 10 });
     finishShape();
 
