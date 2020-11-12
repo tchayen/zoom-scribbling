@@ -31,10 +31,8 @@ const Editor = () => {
       return;
     }
 
-    const pixelRatio = window.devicePixelRatio;
-
-    canvas.current.width = window.innerWidth * pixelRatio;
-    canvas.current.height = window.innerHeight * pixelRatio;
+    canvas.current.width = window.innerWidth * consts.DEVICE_PIXEL_RATIO;
+    canvas.current.height = window.innerHeight * consts.DEVICE_PIXEL_RATIO;
 
     canvas.current.style.width = `${window.innerWidth}px`;
     canvas.current.style.height = `${window.innerHeight}px`;
@@ -53,8 +51,8 @@ const Editor = () => {
 
       const point = screenToCameraSpace(
         {
-          x: event.offsetX * window.devicePixelRatio,
-          y: event.offsetY * window.devicePixelRatio,
+          x: event.offsetX * consts.DEVICE_PIXEL_RATIO,
+          y: event.offsetY * consts.DEVICE_PIXEL_RATIO,
         },
         camera
       );
@@ -87,8 +85,8 @@ const Editor = () => {
       if (pointerDown) {
         const point = screenToCameraSpace(
           {
-            x: event.offsetX * window.devicePixelRatio,
-            y: event.offsetY * window.devicePixelRatio,
+            x: event.offsetX * consts.DEVICE_PIXEL_RATIO,
+            y: event.offsetY * consts.DEVICE_PIXEL_RATIO,
           },
           camera
         );
@@ -111,8 +109,8 @@ const Editor = () => {
         const zoomed = zoom(
           Math.sign(event.deltaY),
           {
-            x: event.offsetX * window.devicePixelRatio,
-            y: event.offsetY * window.devicePixelRatio,
+            x: event.offsetX * consts.DEVICE_PIXEL_RATIO,
+            y: event.offsetY * consts.DEVICE_PIXEL_RATIO,
           },
           camera
         );
