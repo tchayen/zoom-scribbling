@@ -14,6 +14,7 @@ import {
   startErase,
   startShape,
   undo,
+  reset,
 } from "../scene";
 import { cameraState, colorState, modeState, thicknessState } from "../state";
 import Tools from "./Tools";
@@ -32,10 +33,13 @@ const Editor = () => {
     }
 
     canvas.current.width = window.innerWidth * consts.DEVICE_PIXEL_RATIO;
-    canvas.current.height = window.innerHeight * consts.DEVICE_PIXEL_RATIO;
+    canvas.current.height =
+      (window.innerHeight - consts.TOPBAR_HEIGHT) * consts.DEVICE_PIXEL_RATIO;
 
     canvas.current.style.width = `${window.innerWidth}px`;
-    canvas.current.style.height = `${window.innerHeight}px`;
+    canvas.current.style.height = `${
+      window.innerHeight - consts.TOPBAR_HEIGHT
+    }px`;
   };
 
   const { colorMode, setColorMode } = useTheme();
@@ -276,7 +280,10 @@ const Editor = () => {
   return (
     <div>
       <Header
-        reset={() => {}}
+        reset={() => {
+          reset();
+          render(getCtx(), canvas.current!, camera, colorMode);
+        }}
         files={() => {}}
         save={() => {}}
         undo={() => {

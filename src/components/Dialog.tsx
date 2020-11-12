@@ -94,6 +94,7 @@ export const DialogTrigger = ({ label, children, ...otherProps }: any) => {
     if (otherProps.startOpen) {
       state.open();
     }
+    // `state` is omitted on purpose.
   }, [otherProps.startOpen]);
 
   const handleKeyPress = useCallback(

@@ -17,3 +17,4 @@ export { default as Dots } from "./Dots";
 export { default as Pin } from "./Pin";
 export { default as Person } from "./Person";
 export { default as Download } from "./Download";
+export { default as Help } from "./Help";

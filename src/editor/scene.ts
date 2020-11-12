@@ -1,4 +1,3 @@
-import consts from "../consts";
 import { intersect } from "./helpers";
 import { Action, EditorState, Line, Point, Shape } from "../types";
 
@@ -29,7 +28,7 @@ const updateClosingGuard = () => {
   }
 };
 
-const reset = () => {
+export const reset = () => {
   ids = 1;
 
   shapes.splice(0, shapes.length);
@@ -42,6 +41,8 @@ const reset = () => {
 
   lastPoint = null;
   eraseBuffer = new Set<number>();
+
+  updateClosingGuard();
 };
 
 const getShape = (id: number) => {
