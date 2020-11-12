@@ -10,7 +10,7 @@ const Zoom = () => {
       aria-label="Zoom"
       onChange={() => {}}
       value={`${(camera.scale * 100).toFixed(0)}%`}
-      style={{ width: 55, border: "none" }}
+      style={{ width: 55 }}
     />
   );
 };
