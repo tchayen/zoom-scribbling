@@ -23,6 +23,8 @@ const render = (
   camera: Point & { scale: number },
   colorMode: ColorMode
 ) => {
+  const start = performance.now();
+
   if (ctx === null) {
     console.log("No ctx");
     return;
@@ -64,6 +66,10 @@ const render = (
     ctx.stroke();
     ctx.closePath();
   }
+
+  const end = performance.now();
+
+  // console.log(`${end - start}ms`);
 };
 
 export default render;
