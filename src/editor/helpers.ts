@@ -8,24 +8,22 @@ export const clamp = (value: number, min: number, max: number) => {
 
 export const screenToCameraSpace = (
   point: Point,
-  camera: Point,
-  scale: number
+  camera: Point & { scale: number }
 ) => {
   return {
-    x: (point.x + camera.x) / scale,
-    y: (point.y + camera.y) / scale,
+    x: (point.x + camera.x) / camera.scale,
+    y: (point.y + camera.y) / camera.scale,
   };
 };
 
 export const zoom = (
   direction: number,
   pointer: Point,
-  camera: Point,
-  scale: number
+  camera: Point & { scale: number }
 ) => {
-  const previous = scale;
+  const previous = camera.scale;
   const next = clamp(
-    scale + direction * consts.SCALE_FACTOR,
+    camera.scale + direction * consts.SCALE_FACTOR,
     consts.MIN_SCALE,
     consts.MAX_SCALE
   );
@@ -36,7 +34,10 @@ export const zoom = (
     y: camera.y + ((camera.y + pointer.y) * delta) / previous,
   };
 
-  return { scale: next, camera: nextCamera };
+  return {
+    scale: next,
+    ...nextCamera,
+  };
 };
 
 export const zoomTo = (
@@ -55,15 +56,19 @@ export const zoomTo = (
 
   return {
     scale: 1,
-    camera: next,
+    ...next,
   };
 };
 
-export const translate = (camera: Point, delta: Point, scale: number) => {
+export const translate = (camera: Point & { scale: number }, delta: Point) => {
   const x =
-    delta.x !== 0 ? Math.sign(delta.x) * scale * consts.TRANSLATE_FACTOR : 0;
+    delta.x !== 0
+      ? Math.sign(delta.x) * camera.scale * consts.TRANSLATE_FACTOR
+      : 0;
   const y =
-    delta.y !== 0 ? Math.sign(delta.y) * scale * consts.TRANSLATE_FACTOR : 0;
+    delta.y !== 0
+      ? Math.sign(delta.y) * camera.scale * consts.TRANSLATE_FACTOR
+      : 0;
 
   return {
     x: camera.x + x,

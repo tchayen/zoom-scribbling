@@ -27,8 +27,7 @@ describe("screenToCameraSpace", () => {
   it("works", () => {
     const result = screenToCameraSpace(
       { x: 100, y: 100 },
-      { x: -50, y: -50 },
-      1.25
+      { x: -50, y: -50, scale: 1.25 }
     );
 
     expect(result).toStrictEqual({ x: 40, y: 40 });
@@ -37,14 +36,16 @@ describe("screenToCameraSpace", () => {
 
 describe("zoom", () => {
   it("works", () => {
-    const result = zoom(-1, { x: 100, y: 100 }, { x: -50, y: -50 }, 1.25);
+    const result = zoom(
+      -1,
+      { x: 100, y: 100 },
+      { x: -50, y: -50, scale: 1.25 }
+    );
 
     expect(result).toStrictEqual({
       scale: 1.2,
-      camera: {
-        x: -52,
-        y: -52,
-      },
+      x: -52,
+      y: -52,
     });
   });
 });
@@ -52,13 +53,13 @@ describe("zoom", () => {
 describe("zoomTo", () => {
   it("works", () => {
     const result = zoomTo(2, 1, { x: 640, y: 360 }, { x: 100, y: 100 });
-    expect(result).toStrictEqual({ scale: 1, camera: { x: 840, y: 560 } });
+    expect(result).toStrictEqual({ scale: 1, x: 840, y: 560 });
   });
 });
 
 describe("translate", () => {
   it("works", () => {
-    const result = translate({ x: 0, y: 0 }, { x: -5, y: -5 }, 2);
+    const result = translate({ x: 0, y: 0, scale: 2 }, { x: -5, y: -5 });
     expect(result).toStrictEqual({ x: -50, y: -50 });
   });
 });

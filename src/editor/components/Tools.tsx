@@ -23,7 +23,11 @@ const Tools = () => {
   const [mode, setMode] = useRecoilState(modeState);
   return (
     <Box>
-      <ToggleButtonGroup value={mode} onChange={(mode) => setMode(mode as any)}>
+      <ToggleButtonGroup
+        aria-label="Tools"
+        value={mode}
+        onChange={(mode) => setMode(mode as any)}
+      >
         <ToggleButton
           value="draw"
           Icon={Icons.Pencil}

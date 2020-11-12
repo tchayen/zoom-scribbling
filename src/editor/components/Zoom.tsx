@@ -1,14 +1,15 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
 import Input from "../../components/Input";
-import { scaleState } from "../state";
+import { cameraState } from "../state";
 
 const Zoom = () => {
-  const scale = useRecoilValue(scaleState);
+  const camera = useRecoilValue(cameraState);
   return (
     <Input
+      aria-label="Zoom"
       onChange={() => {}}
-      value={`${(scale * 100).toFixed(0)}%`}
+      value={`${(camera.scale * 100).toFixed(0)}%`}
       style={{ width: 55, border: "none" }}
     />
   );

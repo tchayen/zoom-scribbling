@@ -1,14 +1,9 @@
 import { atom } from "recoil";
 import { Mode, Point } from "../types";
 
-export const scaleState = atom<number>({
-  key: "scale",
-  default: 1,
-});
-
-export const cameraState = atom<Point>({
+export const cameraState = atom<Point & { scale: number }>({
   key: "camera",
-  default: { x: 0, y: 0 },
+  default: { x: 0, y: 0, scale: 1 },
 });
 
 export const modeState = atom<Mode>({

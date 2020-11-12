@@ -15,13 +15,7 @@ import {
   startShape,
   undo,
 } from "../scene";
-import {
-  cameraState,
-  colorState,
-  modeState,
-  scaleState,
-  thicknessState,
-} from "../state";
+import { cameraState, colorState, modeState, thicknessState } from "../state";
 import Tools from "./Tools";
 import Header from "./Header";
 
@@ -37,12 +31,16 @@ const Editor = () => {
       return;
     }
 
-    canvas.current.width = window.innerWidth;
-    canvas.current.height = window.innerHeight;
+    const pixelRatio = window.devicePixelRatio;
+
+    canvas.current.width = window.innerWidth * pixelRatio;
+    canvas.current.height = window.innerHeight * pixelRatio;
+
+    canvas.current.style.width = `${window.innerWidth}px`;
+    canvas.current.style.height = `${window.innerHeight}px`;
   };
 
   const { colorMode, setColorMode } = useTheme();
-  const [scale, setScale] = useRecoilState(scaleState);
   const [camera, setCamera] = useRecoilState(cameraState);
   const [mode, setMode] = useRecoilState(modeState);
   const [thickness, setThickness] = useRecoilState(thicknessState);
@@ -54,9 +52,11 @@ const Editor = () => {
       setPointerDown(true);
 
       const point = screenToCameraSpace(
-        { x: event.offsetX, y: event.offsetY },
-        camera,
-        scale
+        {
+          x: event.offsetX * window.devicePixelRatio,
+          y: event.offsetY * window.devicePixelRatio,
+        },
+        camera
       );
 
       if (mode === "draw") {
@@ -65,7 +65,7 @@ const Editor = () => {
         startErase(point);
       }
     },
-    [camera, mode, scale, thickness, color]
+    [camera, mode, thickness, color]
   );
 
   const handlePointerUp = useCallback(() => {
@@ -86,9 +86,11 @@ const Editor = () => {
 
       if (pointerDown) {
         const point = screenToCameraSpace(
-          { x: event.offsetX, y: event.offsetY },
-          camera,
-          scale
+          {
+            x: event.offsetX * window.devicePixelRatio,
+            y: event.offsetY * window.devicePixelRatio,
+          },
+          camera
         );
 
         if (mode === "draw") {
@@ -97,10 +99,10 @@ const Editor = () => {
           appendErase(point);
         }
 
-        render(getCtx(), canvas.current!, camera, scale, colorMode);
+        render(getCtx(), canvas.current!, camera, colorMode);
       }
     },
-    [camera, mode, pointerDown, scale, colorMode]
+    [camera, mode, pointerDown, colorMode]
   );
 
   const handleWheel = useCallback(
@@ -108,19 +110,21 @@ const Editor = () => {
       if (event.metaKey || event.ctrlKey) {
         const zoomed = zoom(
           Math.sign(event.deltaY),
-          { x: event.offsetX, y: event.offsetY },
-          camera,
-          scale
+          {
+            x: event.offsetX * window.devicePixelRatio,
+            y: event.offsetY * window.devicePixelRatio,
+          },
+          camera
         );
-        setCamera(zoomed.camera);
-        setScale(zoomed.scale);
+        setCamera(zoomed);
       } else {
-        setCamera(
-          translate(camera, { x: event.deltaX, y: event.deltaY }, scale)
-        );
+        setCamera({
+          ...translate(camera, { x: event.deltaX, y: event.deltaY }),
+          scale: camera.scale,
+        });
       }
     },
-    [camera, scale, setCamera, setScale]
+    [camera, setCamera]
   );
 
   const handleKeyPress = useCallback(
@@ -129,10 +133,10 @@ const Editor = () => {
         if (event.metaKey || event.ctrlKey) {
           if (event.shiftKey) {
             redo();
-            render(getCtx(), canvas.current!, camera, scale, colorMode);
+            render(getCtx(), canvas.current!, camera, colorMode);
           } else {
             undo();
-            render(getCtx(), canvas.current!, camera, scale, colorMode);
+            render(getCtx(), canvas.current!, camera, colorMode);
           }
         }
       }
@@ -143,9 +147,8 @@ const Editor = () => {
           y: canvas.current!.height / 2,
         };
 
-        const zoomed = zoomTo(1, scale, center, camera);
-        setCamera(zoomed.camera);
-        setScale(zoomed.scale);
+        const zoomed = zoomTo(1, camera.scale, center, camera);
+        setCamera(zoomed);
       }
 
       if (event.key.toLowerCase() === "e") {
@@ -171,12 +174,13 @@ const Editor = () => {
         if (event.shiftKey) {
           const zoomed = zoom(
             -1,
-            { x: window.innerWidth / 2, y: window.innerHeight / 2 },
-            camera,
-            scale
+            {
+              x: canvas.current!.width / 2,
+              y: canvas.current!.height / 2,
+            },
+            camera
           );
-          setCamera(zoomed.camera);
-          setScale(zoomed.scale);
+          setCamera(zoomed);
         } else {
           if (Number(thickness) > 1) {
             setThickness(`${Number(thickness) - 1}`);
@@ -188,12 +192,13 @@ const Editor = () => {
         if (event.shiftKey) {
           const zoomed = zoom(
             1,
-            { x: window.innerWidth / 2, y: window.innerHeight / 2 },
-            camera,
-            scale
+            {
+              x: canvas.current!.width / 2,
+              y: canvas.current!.height / 2,
+            },
+            camera
           );
-          setCamera(zoomed.camera);
-          setScale(zoomed.scale);
+          setCamera(zoomed);
         } else {
           if (Number(thickness) < 10) {
             setThickness(`${Number(thickness) + 1}`);
@@ -203,21 +208,19 @@ const Editor = () => {
     },
     [
       camera,
-      scale,
       thickness,
       setThickness,
       colorMode,
       setCamera,
       setMode,
-      setScale,
       setColorMode,
     ]
   );
 
   const handleResize = useCallback(() => {
     resetSizes();
-    render(getCtx(), canvas.current!, camera, scale, colorMode);
-  }, [camera, scale, colorMode]);
+    render(getCtx(), canvas.current!, camera, colorMode);
+  }, [camera, colorMode]);
 
   useEffect(() => {
     if (canvas.current === null) {
@@ -264,7 +267,7 @@ const Editor = () => {
 
   // Main render 'loop'.
   useEffect(() => {
-    render(getCtx(), canvas.current!, camera, scale, colorMode);
+    render(getCtx(), canvas.current!, camera, colorMode);
   });
 
   return (
@@ -275,11 +278,11 @@ const Editor = () => {
         save={() => {}}
         undo={() => {
           undo();
-          render(getCtx(), canvas.current!, camera, scale, colorMode);
+          render(getCtx(), canvas.current!, camera, colorMode);
         }}
         redo={() => {
           redo();
-          render(getCtx(), canvas.current!, camera, scale, colorMode);
+          render(getCtx(), canvas.current!, camera, colorMode);
         }}
       />
       <Tools />
