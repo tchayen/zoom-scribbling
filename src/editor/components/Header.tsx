@@ -1,10 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import * as Icons from "../../icons";
-import { styled, useTheme } from "../../components/colorTheme";
+import { styled } from "../../components/colorTheme";
 import ColorModeToggle from "./ColorModeToggle";
 import IconButton from "../../components/IconButton";
-import { useHistory } from "react-router-dom";
+import Zoom from "./Zoom";
 
 const TopBar = styled.div`
   display: flex;
@@ -16,48 +15,25 @@ const TopBar = styled.div`
   background-color: ${(props) => props.theme.grayBackground};
 `;
 
-const IconLink = styled.div`
+const Buttons = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 32px;
-  height: 32px;
+  gap: 4px;
+  margin-left: 4px;
+  margin-right: 4px;
 `;
 
 const Header = () => {
-  const { colorMode } = useTheme();
-  const history = useHistory();
-  const handleOnClick = (to: string) => () => history.push(to);
-
   return (
     <TopBar>
-      <div style={{ display: "flex" }}>
-        {/* <IconLink>
-          <IconButton
-            Icon={Icons.Picture}
-            onPress={handleOnClick("/")}
-            tooltip="Drawing canvas"
-            isDisabled={false}
-          />
-        </IconLink>
-        <IconLink>
-          <IconButton
-            Icon={Icons.Folder}
-            onPress={handleOnClick("/directory")}
-            tooltip="Files"
-            isDisabled={false}
-          />
-        </IconLink>
-        <IconLink>
-          <IconButton
-            Icon={Icons.Person}
-            onPress={handleOnClick("/settings")}
-            tooltip="Settings"
-            isDisabled={false}
-          />
-        </IconLink> */}
-      </div>
-      <ColorModeToggle />
+      <Buttons>
+        <IconButton Icon={Icons.New} onPress={() => {}} tooltip="New file" />
+        <IconButton Icon={Icons.Save} onPress={() => {}} tooltip="Save" />
+        <IconButton Icon={Icons.Folder} onPress={() => {}} tooltip="Files" />
+        <IconButton Icon={Icons.Undo} onPress={() => {}} tooltip="Undo" />
+        <IconButton Icon={Icons.Redo} onPress={() => {}} tooltip="Redo" />
+        <ColorModeToggle />
+      </Buttons>
+      <Zoom />
     </TopBar>
   );
 };

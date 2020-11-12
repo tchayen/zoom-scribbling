@@ -18,9 +18,9 @@ const Button = styled.button<{
     props.isPressed ? props.theme.primaryDimmed : "transparent"};
   border: none;
   outline: none;
-  padding: 0;
-  width: 24px;
-  height: 24px;
+  padding: 4px;
+  width: 32px;
+  height: 32px;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -7,9 +7,8 @@ const Zoom = () => {
   const scale = useRecoilValue(scaleState);
   return (
     <Input
-      label="Zoom"
-      value={`${(scale * 100).toFixed(0)}%`}
       onChange={() => {}}
+      value={`${(scale * 100).toFixed(0)}%`}
       style={{ width: 55, border: "none" }}
     />
   );

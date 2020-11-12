@@ -18,7 +18,7 @@ const Color = () => {
     setColor(event.target.value);
 
   return (
-    <div style={{ marginBottom: 16 }}>
+    <div>
       <Label {...labelProps}>{label}</Label>
       <div style={{ display: "flex", flexDirection: "row", marginTop: 4 }}>
         <div
@@ -34,7 +34,6 @@ const Color = () => {
           onChange={handleChange}
           value={color}
           style={{ width: 80, border: "none" }}
-          type="color"
           ref={ref}
         />
       </div>

@@ -6,8 +6,7 @@ import { styled, ThemeProvider } from "./components/colorTheme";
 import { setupIndexedDb } from "./editor/indexedDb";
 import Editor from "./editor/components/Editor";
 import Header from "./editor/components/Header";
-import Sidebar from "./editor/components/Sidebar";
-import ColorPicker from "./editor/components/ColorPicker";
+import Tools from "./editor/components/Tools";
 
 // download.onclick = () => {
 //   const state = exportState();
@@ -44,29 +43,24 @@ const App = () => {
       <Column>
         <Switch>
           <Route path="/directory">
-            <Row>
-              <Column>
-                <Header />
-                <ColorPicker />
-              </Column>
-            </Row>
+            <Column>
+              <Header />
+            </Column>
           </Route>
           <Route path="/settings">
-            <Row>
-              <Column>
-                <Header />
-                settings
-              </Column>
-            </Row>
+            <Column>
+              <Header />
+              settings
+            </Column>
           </Route>
           <Route path="/">
-            <Row>
-              <Sidebar />
-              <Column>
-                <Header />
+            <Column>
+              <Header />
+              <Row>
+                <Tools />
                 <Editor />
-              </Column>
-            </Row>
+              </Row>
+            </Column>
           </Route>
         </Switch>
       </Column>

@@ -35,8 +35,8 @@ const Editor = () => {
       return;
     }
 
-    canvas.current.width = window.innerWidth - consts.TOOLBAR_WIDTH;
-    canvas.current.height = window.innerHeight - consts.TOPBAR_HEIGHT;
+    canvas.current.width = window.innerWidth;
+    canvas.current.height = window.innerHeight;
   };
 
   const { colorMode, setColorMode } = useTheme();
@@ -148,7 +148,6 @@ const Editor = () => {
 
       if (event.key.toLowerCase() === "e") {
         setMode("erase");
-        console.log(canvas.current!.style);
         canvas.current!.style.cursor = consts.ERASE_CURSOR;
       }
 

@@ -34,8 +34,7 @@ const Row = styled.label<{ isDisabled: boolean }>`
   font-size: 14px;
   display: flex;
   align-items: center;
-  height: 24px;
-  margin-right: 8px;
+  height: 32px;
   opacity: ${(props) => (props.isDisabled ? 0.5 : 1)};
 `;
 
@@ -102,7 +101,7 @@ export const ToggleButtonGroup = (props: ToggleButtonGroupProps) => {
       <Label {...labelProps} isDisabled={props.isDisabled}>
         {label}
       </Label>
-      <div style={{ display: "flex", marginTop: 8 }}>
+      <div style={{ display: "flex", gap: 8 }}>
         <ToggleContext.Provider
           value={{ state, isDisabled: !!props.isDisabled }}
         >

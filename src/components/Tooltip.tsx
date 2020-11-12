@@ -8,7 +8,7 @@ type Props = {
   children: string;
 };
 
-const Span = styled.span`
+const Box = styled.span`
   font-size: 14px;
   font-family: ${consts.FONT_STACK};
   position: absolute;
@@ -26,7 +26,7 @@ const Span = styled.span`
 const Tooltip = (props: Props) => {
   let { tooltipProps } = useTooltip(props);
 
-  return <Span {...mergeProps(props, tooltipProps)}>{props.children}</Span>;
+  return <Box {...mergeProps(props, tooltipProps)}>{props.children}</Box>;
 };
 
 export default Tooltip;

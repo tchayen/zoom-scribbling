@@ -35,7 +35,7 @@ const Thickness = () => {
     setThickness(`${clamp(Number(thickness) + 1, 1, 10)}`);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", marginBottom: 16 }}>
+    <div style={{ display: "flex", flexDirection: "column" }}>
       <Label {...labelProps}>{label}</Label>
       <div style={{ display: "flex" }}>
         <Button
