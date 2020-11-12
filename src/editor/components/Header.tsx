@@ -22,15 +22,15 @@ const Buttons = styled.div`
   margin-right: 4px;
 `;
 
-const Header = () => {
+const Header = ({ reset, save, files, undo, redo }) => {
   return (
     <TopBar>
       <Buttons>
-        <IconButton Icon={Icons.New} onPress={() => {}} tooltip="New file" />
-        <IconButton Icon={Icons.Save} onPress={() => {}} tooltip="Save" />
-        <IconButton Icon={Icons.Folder} onPress={() => {}} tooltip="Files" />
-        <IconButton Icon={Icons.Undo} onPress={() => {}} tooltip="Undo" />
-        <IconButton Icon={Icons.Redo} onPress={() => {}} tooltip="Redo" />
+        <IconButton Icon={Icons.New} onPress={reset} tooltip="New file" />
+        <IconButton Icon={Icons.Save} onPress={save} tooltip="Save" />
+        <IconButton Icon={Icons.Folder} onPress={files} tooltip="Files" />
+        <IconButton Icon={Icons.Undo} onPress={undo} tooltip="Undo" />
+        <IconButton Icon={Icons.Redo} onPress={redo} tooltip="Redo" />
         <ColorModeToggle />
       </Buttons>
       <Zoom />

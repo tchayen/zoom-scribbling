@@ -55,9 +55,7 @@ const App = () => {
           </Route>
           <Route path="/">
             <Column>
-              <Header />
               <Row>
-                <Tools />
                 <Editor />
               </Row>
             </Column>

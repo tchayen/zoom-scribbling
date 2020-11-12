@@ -22,6 +22,8 @@ import {
   scaleState,
   thicknessState,
 } from "../state";
+import Tools from "./Tools";
+import Header from "./Header";
 
 const Editor = () => {
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -267,6 +269,20 @@ const Editor = () => {
 
   return (
     <div>
+      <Header
+        reset={() => {}}
+        files={() => {}}
+        save={() => {}}
+        undo={() => {
+          undo();
+          render(getCtx(), canvas.current!, camera, scale, colorMode);
+        }}
+        redo={() => {
+          redo();
+          render(getCtx(), canvas.current!, camera, scale, colorMode);
+        }}
+      />
+      <Tools />
       <canvas ref={canvas}></canvas>
       <HelpDialog />
     </div>
