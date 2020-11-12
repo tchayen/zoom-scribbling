@@ -50,7 +50,7 @@ const Thickness = () => {
           onChange={handleChange}
           onBlur={handleBlur}
           value={thickness.toString()}
-          style={{ width: 32, border: "none", marginRight: 8 }}
+          style={{ width: 32, marginRight: 8 }}
           ref={ref}
         />
         <Button secondary style={{ width: 32 }} onPress={handleIncrease}>

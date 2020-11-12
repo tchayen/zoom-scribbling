@@ -159,6 +159,11 @@ const Editor = () => {
         canvas.current!.style.cursor = consts.DRAW_CURSOR;
       }
 
+      if (event.key.toLowerCase() === "s") {
+        setMode("select");
+        canvas.current!.style.cursor = consts.DEFAULT_CURSOR;
+      }
+
       if (event.key.toLowerCase() === "t") {
         setColorMode(colorMode === "dark" ? "light" : "dark");
       }

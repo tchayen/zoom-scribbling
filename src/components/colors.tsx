@@ -5,8 +5,9 @@ export type ColorMode = "light" | "dark";
 
 const palette = {
   blue: "#0366d6",
-  blueDimmedIntense: "rgba(3, 102, 214, 0.35)",
   blueDimmed: "rgba(3, 102, 214, 0.2)",
+  blueDimmedIntense: "rgba(3, 102, 214, 0.35)",
+  blueDimmedStrongest: "rgba(3, 102, 214, 0.6)",
   white: "#ffffff",
   black: "#000000",
   lightGray: "#f6f8fa",
@@ -20,6 +21,7 @@ type Color = string;
 export type ThemeColors = {
   primary: Color;
   primaryDimmed: Color;
+  primaryDimmedStronger: Color;
   background: Color;
   grayBackground: Color;
   mainText: Color;
@@ -31,6 +33,7 @@ export type ThemeColors = {
 const light: ThemeColors = {
   primary: palette.blue,
   primaryDimmed: palette.blueDimmed,
+  primaryDimmedStronger: palette.blueDimmedIntense,
   background: palette.white,
   grayBackground: palette.lightGray,
   mainText: palette.black,
@@ -42,6 +45,7 @@ const light: ThemeColors = {
 const dark: ThemeColors = {
   primary: palette.blue,
   primaryDimmed: palette.blueDimmedIntense,
+  primaryDimmedStronger: palette.blueDimmedStrongest,
   background: palette.black,
   grayBackground: palette.darkestGray,
   mainText: palette.white,

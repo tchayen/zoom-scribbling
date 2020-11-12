@@ -5,7 +5,7 @@ import { useFocusRing } from "@react-aria/focus";
 import { useSwitch } from "@react-aria/switch";
 import { useToggleState } from "@react-stately/toggle";
 import { mergeProps } from "@react-aria/utils";
-import { styled } from "./colorTheme";
+import { styled, useTheme } from "./colorTheme";
 
 const Box = styled.div<{ isDisabled: boolean }>`
   position: relative;
@@ -13,24 +13,38 @@ const Box = styled.div<{ isDisabled: boolean }>`
   opacity: ${(props) => (props.isDisabled ? 0.5 : 1)};
 `;
 
-const Dot = styled.div<{ isSelected: boolean; isFocusVisible: boolean }>`
+const Dot = styled.div<{
+  isSelected: boolean;
+  isFocusVisible: boolean;
+  isDarkMode: boolean;
+}>`
   width: 16px;
   height: 16px;
   // TODO: if darkMode then gray else white (for the default case).
   background-color: ${(props) =>
-    props.isSelected ? props.theme.primary : props.theme.background};
+    props.isDarkMode
+      ? props.isSelected
+        ? props.theme.primary
+        : props.theme.mainText
+      : props.isSelected
+      ? props.theme.primary
+      : props.theme.background};
   border-radius: 8px;
   position: absolute;
   left: ${(props) => (props.isSelected ? "16px" : 0)};
   top: 0;
-  /* box-shadow: ${(props) =>
+  box-shadow: ${(props) =>
     props.isFocusVisible
-      ? `0 0 0 4px ${props.theme.primaryDimmed}`
-      : "0 1px 3px rgba(0, 0, 0, 0.25)"}; */
+      ? `0 0 0 4px ${
+          props.isDarkMode
+            ? props.theme.primaryDimmedStronger
+            : props.theme.primaryDimmed
+        }`
+      : "0 1px 3px rgba(0, 0, 0, 0.25)"};
   transition: background-color 150ms, left 150ms;
 `;
 
-const Bar = styled.div<{ isSelected: boolean }>`
+const Bar = styled.div<{ isSelected: boolean; isDarkMode: boolean }>`
   width: 32px;
   height: 12px;
   position: absolute;
@@ -38,7 +52,11 @@ const Bar = styled.div<{ isSelected: boolean }>`
   top: 2px;
   // TODO: if darkMode then darkGray, else gray (for the default case).
   background-color: ${(props) =>
-    props.isSelected ? props.theme.primaryDimmed : props.theme.border};
+    props.isSelected
+      ? props.theme.primaryDimmed
+      : props.isDarkMode
+      ? props.theme.secondaryText
+      : props.theme.border};
   border-radius: 6px;
 `;
 
@@ -49,6 +67,7 @@ const Switch = (props: Props) => {
   const ref = useRef(null);
   const { inputProps } = useSwitch(props, state, ref);
   const { isFocusVisible, focusProps } = useFocusRing();
+  const { colorMode } = useTheme();
 
   return (
     <label
@@ -59,8 +78,12 @@ const Switch = (props: Props) => {
         <input {...mergeProps(inputProps, focusProps)} ref={ref} />
       </VisuallyHidden>
       <Box isDisabled={!!props.isDisabled}>
-        <Bar isSelected={state.isSelected} />
-        <Dot isSelected={state.isSelected} isFocusVisible={isFocusVisible} />
+        <Bar isSelected={state.isSelected} isDarkMode={colorMode === "dark"} />
+        <Dot
+          isSelected={state.isSelected}
+          isFocusVisible={isFocusVisible}
+          isDarkMode={colorMode === "dark"}
+        />
       </Box>
     </label>
   );

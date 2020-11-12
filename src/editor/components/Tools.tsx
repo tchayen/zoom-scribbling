@@ -1,6 +1,7 @@
 import React from "react";
 import { useRecoilState } from "recoil";
 import { styled } from "../../components/colorTheme";
+import IconButton from "../../components/IconButton";
 import { ToggleButton, ToggleButtonGroup } from "../../components/ToggleButton";
 import * as Icons from "../../icons";
 import { modeState } from "../state";
@@ -50,6 +51,13 @@ const Tools = () => {
       {mode === "draw" && <Thickness />}
       {mode === "draw" && <Color />}
       {mode === "draw" && <PointerPressure />}
+      {mode === "select" && (
+        <IconButton
+          onPress={() => {}}
+          tooltip="Save selection as PNG"
+          Icon={Icons.Download}
+        />
+      )}
     </Box>
   );
 };

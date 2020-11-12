@@ -33,7 +33,7 @@ const Color = () => {
           {...inputProps}
           onChange={handleChange}
           value={color}
-          style={{ width: 80, border: "none" }}
+          style={{ width: 80 }}
           ref={ref}
         />
       </div>
