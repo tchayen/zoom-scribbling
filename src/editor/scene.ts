@@ -15,6 +15,20 @@ let erasing = false;
 let lastPoint: Point | null = null;
 let eraseBuffer = new Set<number>();
 
+const updateClosingGuard = () => {
+  const unsafe = shapes
+    .map((shape) => shape.state !== "invisible")
+    .reduce((a, b) => a || b, false);
+
+  if (unsafe) {
+    window.onbeforeunload = () => {
+      return true;
+    };
+  } else {
+    window.onbeforeunload = null;
+  }
+};
+
 const reset = () => {
   ids = 1;
 
@@ -71,6 +85,7 @@ export const finishShape = () => {
 
   historyIndex += 1;
   drawing = false;
+  updateClosingGuard();
 };
 
 export const startErase = (point: Point) => {
@@ -126,6 +141,7 @@ export const finishErase = () => {
   }
 
   erasing = false;
+  updateClosingGuard();
 };
 
 export const undo = () => {
@@ -160,6 +176,7 @@ export const undo = () => {
 
     historyIndex -= 1;
   }
+  updateClosingGuard();
 };
 
 export const redo = () => {
@@ -177,6 +194,7 @@ export const redo = () => {
       }
     }
   }
+  updateClosingGuard();
 };
 
 export const exportState = () => {
