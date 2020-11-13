@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { RecoilRoot } from "recoil";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ThemeProvider } from "./components/colorTheme";
-import { setupIndexedDb } from "./editor/indexedDb";
+import { setupIndexedDb } from "./helpers/indexedDb";
 import Editor from "./editor/components/Editor";
 
 // download.onclick = () => {

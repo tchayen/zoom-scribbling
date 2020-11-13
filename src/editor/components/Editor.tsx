@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useTheme } from "../../components/colorTheme";
 import consts from "../../consts";
-import { screenToCameraSpace, translate, zoom, zoomTo } from "../helpers";
+import { screenToCameraSpace, translate, zoom, zoomTo } from "../math";
 import render from "../render";
 import HelpDialog from "./HelpDialog";
 import {

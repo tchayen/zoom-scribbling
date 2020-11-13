@@ -1,4 +1,4 @@
-import { intersect } from "./helpers";
+import { intersect } from "./math";
 import { Action, EditorState, Line, Point, Shape } from "../types";
 
 let ids = 1;

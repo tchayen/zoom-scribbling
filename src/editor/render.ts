@@ -1,6 +1,6 @@
 import colors, { ColorMode } from "../components/colors";
 import { Point } from "../types";
-import { invertHex } from "./helpers";
+import { invertHex } from "../helpers/colors";
 import { shapes } from "./scene";
 
 const reset = (

@@ -6,8 +6,8 @@ import {
   translate,
   zoom,
   zoomTo,
-} from "./editor/helpers";
-import { Line } from "./types";
+} from "./math";
+import { Line } from "../types";
 
 describe("clamp", () => {
   it("truncates to the specified range", () => {

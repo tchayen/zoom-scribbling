@@ -4,7 +4,7 @@ import { useTextField } from "@react-aria/textfield";
 import { useTheme } from "../../components/colorTheme";
 import { InputComponent } from "../../components/Input";
 import Label from "../../components/Label";
-import { invertHex } from "../helpers";
+import { invertHex } from "../../helpers/colors";
 import { colorState } from "../state";
 
 const Color = () => {

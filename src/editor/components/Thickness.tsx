@@ -4,7 +4,7 @@ import { useTextField } from "@react-aria/textfield";
 import Button from "../../components/Button";
 import { InputComponent } from "../../components/Input";
 import Label from "../../components/Label";
-import { clamp } from "../helpers";
+import { clamp } from "../math";
 import { thicknessState } from "../state";
 
 const Thickness = () => {
