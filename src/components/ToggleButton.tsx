@@ -38,10 +38,15 @@ const Row = styled.label<{ isDisabled: boolean }>`
   opacity: ${(props) => (props.isDisabled ? 0.5 : 1)};
 `;
 
+const Shortcut = styled.span`
+  color: ${(props) => props.theme.secondaryText};
+`;
+
 type Props = {
   Icon: any;
   value: string;
   tooltip: string;
+  shortcut?: string;
 };
 
 export const ToggleButton = (props: Props) => {
@@ -82,7 +87,17 @@ export const ToggleButton = (props: Props) => {
       >
         <props.Icon color={colors[colorMode].mainText} />
       </ToggleButtonComponent>
-      {state.isOpen && <Tooltip {...tooltipProps}>{props.tooltip}</Tooltip>}
+      {state.isOpen && (
+        <Tooltip {...tooltipProps}>
+          {props.tooltip}
+          {props.shortcut && (
+            <>
+              {" "}
+              <Shortcut>{props.shortcut}</Shortcut>
+            </>
+          )}
+        </Tooltip>
+      )}
     </Row>
   );
 };

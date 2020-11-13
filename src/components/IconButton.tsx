@@ -29,10 +29,15 @@ const Button = styled.button<{
   opacity: ${(props) => (props.isDisabled ? 0.5 : 1)};
 `;
 
+const Shortcut = styled.span`
+  color: ${(props) => props.theme.secondaryText};
+`;
+
 type Props = {
   Icon: any;
   onPress: () => void;
   tooltip: string;
+  shortcut?: string;
   isDisabled?: boolean;
 };
 
@@ -56,7 +61,17 @@ const IconButton = (props: Props) => {
         {...mergeProps(focusProps, buttonProps, triggerProps)}
       >
         <props.Icon color={colors[colorMode].mainText} />
-        {state.isOpen && <Tooltip {...tooltipProps}>{props.tooltip}</Tooltip>}
+        {state.isOpen && (
+          <Tooltip {...tooltipProps}>
+            {props.tooltip}
+            {props.shortcut && (
+              <>
+                {" "}
+                <Shortcut>{props.shortcut}</Shortcut>
+              </>
+            )}
+          </Tooltip>
+        )}
       </Button>
     </div>
   );

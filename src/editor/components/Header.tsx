@@ -4,6 +4,7 @@ import { styled } from "../../components/colorTheme";
 import ColorModeToggle from "./ColorModeToggle";
 import IconButton from "../../components/IconButton";
 import Zoom from "./Zoom";
+import { getKeyboardTip, getOs } from "../../helpers/os";
 
 const TopBar = styled.div`
   display: flex;
@@ -23,15 +24,36 @@ const Buttons = styled.div`
 `;
 
 const Header = ({ reset, save, files, undo, redo, help }) => {
+  const tip = getKeyboardTip(getOs());
   return (
     <TopBar>
       <Buttons>
-        <IconButton Icon={Icons.New} onPress={reset} tooltip="New file ⌘N" />
+        <IconButton
+          Icon={Icons.New}
+          onPress={reset}
+          tooltip="New file"
+          // shortcut="⌘N"
+        />
         {/* <IconButton Icon={Icons.Save} onPress={save} tooltip="Save ⌘S" /> */}
         {/* <IconButton Icon={Icons.Folder} onPress={files} tooltip="Files ⌘D" /> */}
-        <IconButton Icon={Icons.Undo} onPress={undo} tooltip="Undo ⌘Z" />
-        <IconButton Icon={Icons.Redo} onPress={redo} tooltip="Redo ⇧⌘Z" />
-        <IconButton Icon={Icons.Help} onPress={help} tooltip="Files H" />
+        <IconButton
+          Icon={Icons.Undo}
+          onPress={undo}
+          tooltip="Undo"
+          shortcut={`${tip}Z`}
+        />
+        <IconButton
+          Icon={Icons.Redo}
+          onPress={redo}
+          tooltip="Redo"
+          shortcut={`⇧${tip}Z`}
+        />
+        <IconButton
+          Icon={Icons.Help}
+          onPress={help}
+          tooltip="Help"
+          shortcut="H"
+        />
         <ColorModeToggle />
       </Buttons>
       <Zoom />

@@ -12,6 +12,7 @@ const ColorModeToggle = () => {
         setColorMode(colorMode === "dark" ? "light" : "dark");
       }}
       tooltip="Toggle color mode"
+      shortcut="T"
     />
   );
 };

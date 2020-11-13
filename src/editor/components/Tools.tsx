@@ -33,18 +33,21 @@ const Tools = () => {
           value="draw"
           Icon={Icons.Pencil}
           tooltip="Draw"
+          shortcut="D"
           aria-label="Draw"
         />
         <ToggleButton
           value="erase"
           Icon={Icons.Erase}
           tooltip="Erase"
+          shortcut="E"
           aria-label="Erase"
         />
         <ToggleButton
           value="select"
           Icon={Icons.Selection}
           tooltip="Select"
+          shortcut="S"
           aria-label="Select"
         />
       </ToggleButtonGroup>

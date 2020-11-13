@@ -5,10 +5,10 @@ import { styled } from "./colorTheme";
 import consts from "../consts";
 
 type Props = {
-  children: string;
+  children: any;
 };
 
-const Box = styled.span`
+const Box = styled.div`
   font-size: 14px;
   font-family: ${consts.FONT_STACK};
   position: absolute;
