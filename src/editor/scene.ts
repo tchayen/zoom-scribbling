@@ -1,9 +1,17 @@
+import { curveToBezier } from "points-on-curve/lib/curve-to-bezier.js";
+import { pointsOnBezierCurves } from "points-on-curve";
 import { intersect } from "./math";
 import { Action, EditorState, Line, Point, Shape } from "../types";
+
+// Debug measurement of number of points saved by simplifying.
+export let __original = 0;
+export let __simplified = 0;
 
 let ids = 1;
 
 export const shapes: Shape[] = [];
+
+export const simplified: { [key: number]: Point[] } = [];
 
 export const history: Action[] = [];
 let historyIndex = -1;
@@ -18,6 +26,8 @@ export let selection: { start: Point; end: Point } | null = {
   start: { x: 200, y: 200 },
   end: { x: 300, y: 300 },
 };
+
+export const selectedIndices: number[] = [];
 
 const updateClosingGuard = () => {
   const unsafe = shapes
@@ -46,6 +56,9 @@ export const reset = () => {
 
   lastPoint = null;
   eraseBuffer = new Set<number>();
+
+  __original = 0;
+  __simplified = 0;
 
   updateClosingGuard();
 };
@@ -84,10 +97,27 @@ export const finishShape = () => {
     return;
   }
 
+  const latest = shapes[shapes.length - 1];
+
   history.push({
     type: "draw",
-    shapeIndex: shapes[shapes.length - 1].id,
+    shapeIndex: latest.id,
   });
+
+  if (latest.points.length >= 3) {
+    const config = [1, 0.5];
+    const curves = curveToBezier(latest.points.map(({ x, y }) => [x, y]));
+    simplified[latest.id] = pointsOnBezierCurves(
+      curves,
+      ...config
+    ).map(([x, y]) => ({ x, y }));
+
+    __original += latest.points.length;
+    __simplified +=
+      latest.points.length >= 3
+        ? simplified[latest.id].length
+        : latest.points.length;
+  }
 
   historyIndex += 1;
   drawing = false;

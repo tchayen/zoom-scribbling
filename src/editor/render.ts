@@ -1,7 +1,7 @@
 import colors, { ColorMode } from "../components/colors";
 import { Point } from "../types";
 import { invertHex } from "../helpers/colors";
-import { shapes, selection } from "./scene";
+import { shapes, selection, simplified } from "./scene";
 
 const reset = (
   ctx: CanvasRenderingContext2D,
@@ -26,13 +26,17 @@ const render = (
   const start = performance.now();
 
   if (ctx === null) {
-    console.log("No ctx");
-    return;
+    throw new Error("No ctx");
   }
 
   reset(ctx, canvas, camera, colorMode);
 
-  for (const shape of shapes) {
+  for (let i = 0; i < shapes.length; i++) {
+    const shape = {
+      ...shapes[i],
+      points: simplified[shapes[i].id] || shapes[i].points,
+    };
+
     if (shape.points.length < 2) {
       continue;
     }
@@ -76,12 +80,14 @@ const render = (
     ];
 
     ctx.fillStyle = "rgba(255, 0, 255, 0.25)";
+
     ctx.fillRect(...rectangle);
 
     ctx.strokeStyle = "#ff00ff";
     ctx.lineCap = "square";
     ctx.lineJoin = "bevel";
     ctx.lineWidth = 1 / camera.scale;
+
     ctx.strokeRect(...rectangle);
   }
 
