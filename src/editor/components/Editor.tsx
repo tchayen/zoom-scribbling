@@ -10,11 +10,14 @@ import {
   appendLine,
   finishErase,
   finishShape,
+  finishSelection,
   redo,
   startErase,
   startShape,
   undo,
   reset,
+  startSelection,
+  updateSelection,
 } from "../scene";
 import { cameraState, colorState, modeState, thicknessState } from "../state";
 import Tools from "./Tools";
@@ -65,6 +68,8 @@ const Editor = () => {
         startShape(point, Number(thickness), color);
       } else if (mode === "erase") {
         startErase(point);
+      } else if (mode === "select") {
+        startSelection(point);
       }
     },
     [camera, mode, thickness, color]
@@ -77,6 +82,8 @@ const Editor = () => {
       finishShape();
     } else if (mode === "erase") {
       finishErase();
+    } else if (mode === "select") {
+      finishSelection();
     }
   }, [mode]);
 
@@ -99,6 +106,8 @@ const Editor = () => {
           appendLine(point);
         } else if (mode === "erase") {
           appendErase(point);
+        } else if (mode === "select") {
+          updateSelection(point);
         }
 
         render(getCtx(), canvas.current!, camera, colorMode);

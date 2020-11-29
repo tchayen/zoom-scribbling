@@ -14,6 +14,11 @@ let erasing = false;
 let lastPoint: Point | null = null;
 let eraseBuffer = new Set<number>();
 
+export let selection: { start: Point; end: Point } | null = {
+  start: { x: 200, y: 200 },
+  end: { x: 300, y: 300 },
+};
+
 const updateClosingGuard = () => {
   const unsafe = shapes
     .map((shape) => shape.state !== "invisible")
@@ -87,6 +92,18 @@ export const finishShape = () => {
   historyIndex += 1;
   drawing = false;
   updateClosingGuard();
+};
+
+export const startSelection = (point: Point) => {
+  // TODO
+};
+
+export const updateSelection = (point: Point) => {
+  // TODO
+};
+
+export const finishSelection = () => {
+  // TODO
 };
 
 export const startErase = (point: Point) => {

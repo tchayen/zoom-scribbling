@@ -1,7 +1,7 @@
 import colors, { ColorMode } from "../components/colors";
 import { Point } from "../types";
 import { invertHex } from "../helpers/colors";
-import { shapes } from "./scene";
+import { shapes, selection } from "./scene";
 
 const reset = (
   ctx: CanvasRenderingContext2D,
@@ -65,6 +65,24 @@ const render = (
 
     ctx.stroke();
     ctx.closePath();
+  }
+
+  if (selection !== null) {
+    const rectangle = [
+      selection.start.x,
+      selection.start.y,
+      selection.end.x - selection.start.x,
+      selection.end.y - selection.start.y,
+    ];
+
+    ctx.fillStyle = "rgba(255, 0, 255, 0.25)";
+    ctx.fillRect(...rectangle);
+
+    ctx.strokeStyle = "#ff00ff";
+    ctx.lineCap = "square";
+    ctx.lineJoin = "bevel";
+    ctx.lineWidth = 1 / camera.scale;
+    ctx.strokeRect(...rectangle);
   }
 
   const end = performance.now();
