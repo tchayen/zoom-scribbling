@@ -109,7 +109,7 @@ const Editor = () => {
 
   const handleWheel = useCallback(
     (event: WheelEvent) => {
-      if (event.metaKey || event.ctrlKey) {
+      if (event.ctrlKey) {
         const zoomed = zoom(
           Math.sign(event.deltaY),
           {
@@ -131,8 +131,10 @@ const Editor = () => {
 
   const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {
+      event.preventDefault();
+
       if (event.key.toLowerCase() === "z") {
-        if (event.metaKey || event.ctrlKey) {
+        if (event.ctrlKey) {
           if (event.shiftKey) {
             redo();
             render(getCtx(), canvas.current!, camera, colorMode);

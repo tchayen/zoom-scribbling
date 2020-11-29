@@ -27,7 +27,10 @@ const Tools = () => {
       <ToggleButtonGroup
         aria-label="Tools"
         value={mode}
-        onChange={(mode) => setMode(mode as any)}
+        onChange={(mode) => {
+          setMode(mode as any);
+          // TODO: update cursor.
+        }}
       >
         <ToggleButton
           value="draw"
