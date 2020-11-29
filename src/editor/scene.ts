@@ -1,4 +1,4 @@
-import { curveToBezier } from "points-on-curve/lib/curve-to-bezier.js";
+import { curveToBezier } from "points-on-curve/lib/curve-to-bezier";
 import { pointsOnBezierCurves } from "points-on-curve";
 import { intersect } from "./math";
 import { Action, EditorState, Line, Point, Shape } from "../types";
@@ -125,15 +125,19 @@ export const finishShape = () => {
 };
 
 export const startSelection = (point: Point) => {
-  // TODO
+  selection = { start: point, end: point };
 };
 
 export const updateSelection = (point: Point) => {
-  // TODO
+  if (selection === null) {
+    throw new Error("Selection not started");
+  }
+
+  selection.end = point;
 };
 
 export const finishSelection = () => {
-  // TODO
+  // noop?
 };
 
 export const startErase = (point: Point) => {

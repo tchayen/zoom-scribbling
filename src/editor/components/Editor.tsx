@@ -183,11 +183,6 @@ const Editor = () => {
         setColorMode(colorMode === "dark" ? "light" : "dark");
       }
 
-      if (event.key.toLowerCase() === "m") {
-        console.log("Turned off!");
-        // generateMiniature(canvas.current);
-      }
-
       if (event.code === "Minus") {
         if (event.shiftKey) {
           const zoomed = zoom(

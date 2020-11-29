@@ -12,6 +12,7 @@ const Key = styled.code`
 `;
 
 const HelpDialog = () => {
+  // TODO: add info about scrolling with CMD to zoom and undo/redo
   return (
     <DialogTrigger label="Open dialog">
       <Dialog title="Help" confirmLabel="Close" isDismissable>

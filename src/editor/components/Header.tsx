@@ -40,13 +40,13 @@ const Header = ({ reset, save, files, undo, redo, help }) => {
           Icon={Icons.Undo}
           onPress={undo}
           tooltip="Undo"
-          shortcut={`${tip}Z`}
+          shortcut={`${tip}+Z`}
         />
         <IconButton
           Icon={Icons.Redo}
           onPress={redo}
           tooltip="Redo"
-          shortcut={`⇧${tip}Z`}
+          shortcut={`SHIFT+${tip}+Z`}
         />
         <IconButton
           Icon={Icons.Help}

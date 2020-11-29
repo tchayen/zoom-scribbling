@@ -23,11 +23,13 @@ export const getOs = () => {
 };
 
 export const getKeyboardTip = (os: string) => {
-  if (os === "MacOS") {
-    return "⌘";
-  } else if (os === "Windows" || os === "Linux") {
-    return "CTRL";
-  } else {
-    return "";
-  }
+  return "CTRL";
+
+  // if (os === "MacOS") {
+  //   return "⌘";
+  // } else if (os === "Windows" || os === "Linux") {
+  //   return "CTRL";
+  // } else {
+  //   return "";
+  // }
 };
