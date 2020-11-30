@@ -11,7 +11,7 @@ let ids = 1;
 
 export const shapes: Shape[] = [];
 
-export const simplified: { [key: number]: Point[] } = [];
+export const simplified: { [key: number]: Point[] | undefined } = [];
 
 export const history: Action[] = [];
 let historyIndex = -1;
@@ -56,6 +56,10 @@ export const reset = () => {
 
   lastPoint = null;
   eraseBuffer = new Set<number>();
+
+  Object.keys(simplified).forEach(
+    (key) => (simplified[Number(key)] = undefined)
+  );
 
   __original = 0;
   __simplified = 0;
