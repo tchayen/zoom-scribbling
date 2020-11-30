@@ -16,6 +16,11 @@ export const pointerPressureState = atom<boolean>({
   default: false,
 });
 
+export const smoothingState = atom<boolean>({
+  key: "smoothing",
+  default: false,
+});
+
 export const thicknessState = atom<string>({
   key: "thickness",
   default: "1",

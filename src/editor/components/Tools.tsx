@@ -7,6 +7,7 @@ import * as Icons from "../../icons";
 import { modeState } from "../state";
 import Color from "./Color";
 import PointerPressure from "./PointerPressure";
+import Smoothing from "./Smoothing";
 import Thickness from "./Thickness";
 
 const Box = styled.div`
@@ -57,6 +58,7 @@ const Tools = () => {
       {mode === "draw" && <Thickness />}
       {mode === "draw" && <Color />}
       {mode === "draw" && <PointerPressure />}
+      {mode === "draw" && <Smoothing />}
       {mode === "select" && (
         <IconButton
           onPress={() => {}}
