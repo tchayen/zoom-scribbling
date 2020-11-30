@@ -21,7 +21,8 @@ const render = (
   ctx: CanvasRenderingContext2D | null,
   canvas: HTMLCanvasElement,
   camera: Point & { scale: number },
-  colorMode: ColorMode
+  colorMode: ColorMode,
+  cleanMode?: boolean
 ) => {
   const start = performance.now();
 
@@ -58,8 +59,12 @@ const render = (
     //   ctx.setLineDash([]);
     // }
 
-    if (shape.state === "erased") {
+    if (!cleanMode && shape.state === "erased") {
       ctx.strokeStyle = "#ff00ff";
+    }
+
+    if (!cleanMode && shape.state === "selected") {
+      ctx.strokeStyle = "#0000ff";
     }
 
     ctx.moveTo(shape.points[0].x, shape.points[0].y);
@@ -71,7 +76,7 @@ const render = (
     ctx.closePath();
   }
 
-  if (selection !== null) {
+  if (!cleanMode && selection !== null) {
     const rectangle = [
       selection.start.x,
       selection.start.y,

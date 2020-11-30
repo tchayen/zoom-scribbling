@@ -18,6 +18,8 @@ import {
   reset,
   startSelection,
   updateSelection,
+  removeSelection,
+  selection,
 } from "../scene";
 import { cameraState, colorState, modeState, thicknessState } from "../state";
 import Tools from "./Tools";
@@ -51,6 +53,51 @@ const Editor = () => {
   const [thickness, setThickness] = useRecoilState(thicknessState);
   const color = useRecoilValue(colorState);
   const [pointerDown, setPointerDown] = useState(false);
+
+  const downloadSelection = () => {
+    if (selection === null) {
+      return;
+    }
+
+    const width =
+      (selection.end.x - selection.start.x + 1) * consts.DEVICE_PIXEL_RATIO;
+    const height =
+      (selection.end.y - selection.start.y + 1) * consts.DEVICE_PIXEL_RATIO;
+
+    const copy = document.createElement("canvas");
+
+    copy.width = width;
+    copy.height = height;
+
+    const copyCtx = copy.getContext("2d");
+
+    if (copyCtx === null) {
+      throw new Error("Failed to create a copy context");
+    }
+
+    render(
+      copyCtx,
+      copy,
+      {
+        ...camera,
+        x: camera.x + selection.start.x,
+        y: camera.y + selection.start.y,
+      },
+      colorMode,
+      true
+    );
+
+    const url = copy.toDataURL("image/png");
+
+    const element = document.createElement("a");
+    element.setAttribute("href", url);
+    element.setAttribute("download", "selection.png");
+    element.style.display = "none";
+
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  };
 
   const handlePointerDown = useCallback(
     (event: PointerEvent) => {
@@ -230,6 +277,12 @@ const Editor = () => {
     ]
   );
 
+  const handleKeyUp = useCallback((event: KeyboardEvent) => {
+    if (event.key === "Backspace") {
+      // removeSelection()
+    }
+  }, []);
+
   const handleResize = useCallback(() => {
     resetSizes();
     render(getCtx(), canvas.current!, camera, colorMode);
@@ -258,6 +311,7 @@ const Editor = () => {
     canvasNode.addEventListener("wheel", handleWheel);
 
     window.addEventListener("keypress", handleKeyPress);
+    window.addEventListener("keyup", handleKeyUp);
     window.addEventListener("resize", handleResize);
 
     return () => {
@@ -267,6 +321,7 @@ const Editor = () => {
       canvasNode.removeEventListener("wheel", handleWheel);
 
       window.removeEventListener("keypress", handleKeyPress);
+      window.removeEventListener("keyup", handleKeyUp);
       window.removeEventListener("resize", handleResize);
     };
   }, [
@@ -275,6 +330,7 @@ const Editor = () => {
     handlePointerUp,
     handleWheel,
     handleKeyPress,
+    handleKeyUp,
     handleResize,
   ]);
 
@@ -301,7 +357,13 @@ const Editor = () => {
           render(getCtx(), canvas.current!, camera, colorMode);
         }}
       />
-      <Tools />
+      <Tools
+        removeSelection={() => {
+          removeSelection();
+          render(getCtx(), canvas.current!, camera, colorMode);
+        }}
+        downloadSelection={downloadSelection}
+      />
       <canvas ref={canvas}></canvas>
       <HelpDialog />
     </div>

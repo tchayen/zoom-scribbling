@@ -1,6 +1,6 @@
 import { curveToBezier } from "points-on-curve/lib/curve-to-bezier";
 import { pointsOnBezierCurves } from "points-on-curve";
-import { intersect } from "./math";
+import { intersect, rectangleContains } from "./math";
 import { Action, EditorState, Line, Point, Shape } from "../types";
 
 // Debug measurement of number of points saved by simplifying.
@@ -118,8 +118,8 @@ export const finishShape = () => {
 
     __original += latest.points.length;
     __simplified +=
-      latest.points.length >= 3
-        ? simplified[latest.id].length
+      latest.points.length >= 3 && simplified[latest.id] !== undefined
+        ? simplified[latest.id]!.length
         : latest.points.length;
   }
 
@@ -142,6 +142,55 @@ export const updateSelection = (point: Point) => {
 
 export const finishSelection = () => {
   // noop?
+  if (selection === null) {
+    throw new Error("Selection unavailable");
+  }
+
+  for (const shape of shapes) {
+    if (shape.state === "selected") {
+      shape.state = "visible";
+    }
+  }
+
+  const rectangle = {
+    x: selection.start.x,
+    y: selection.start.y,
+    width: selection.end.x - selection.start.x,
+    height: selection.end.y - selection.start.y,
+  };
+
+  for (const shape of shapes) {
+    if (shape.state !== "visible") {
+      continue;
+    }
+
+    const contained = shape.points.some((point) =>
+      rectangleContains(point, rectangle)
+    );
+
+    if (contained) {
+      shape.state = "selected";
+    }
+  }
+};
+
+export const removeSelection = () => {
+  const removed: number[] = [];
+
+  for (const shape of shapes) {
+    if (shape.state === "selected") {
+      shape.state = "invisible";
+      removed.push(shape.id);
+    }
+  }
+
+  history.push({
+    type: "erase",
+    shapeIndices: removed,
+  });
+  historyIndex += 1;
+
+  selection = null;
 };
 
 export const startErase = (point: Point) => {

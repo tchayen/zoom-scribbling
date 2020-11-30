@@ -21,7 +21,7 @@ const Box = styled.div`
   flex-direction: column;
 `;
 
-const Tools = () => {
+const Tools = ({ removeSelection, downloadSelection }) => {
   const [mode, setMode] = useRecoilState(modeState);
   return (
     <Box>
@@ -55,16 +55,27 @@ const Tools = () => {
           aria-label="Select"
         />
       </ToggleButtonGroup>
-      {mode === "draw" && <Thickness />}
-      {mode === "draw" && <Color />}
-      {mode === "draw" && <PointerPressure />}
-      {mode === "draw" && <Smoothing />}
+      {mode === "draw" && (
+        <>
+          <Thickness />
+          <Color />
+          <PointerPressure />
+          <Smoothing />
+        </>
+      )}
       {mode === "select" && (
-        <IconButton
-          onPress={() => {}}
-          tooltip="Save selection as PNG"
-          Icon={Icons.Download}
-        />
+        <>
+          <IconButton
+            onPress={downloadSelection}
+            tooltip="Save selection as PNG"
+            Icon={Icons.Download}
+          />
+          <IconButton
+            onPress={removeSelection}
+            tooltip="Remove selected"
+            Icon={Icons.Remove}
+          />
+        </>
       )}
     </Box>
   );

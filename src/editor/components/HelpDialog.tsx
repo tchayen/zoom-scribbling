@@ -17,25 +17,34 @@ const HelpDialog = () => {
     <DialogTrigger label="Open dialog">
       <Dialog title="Help" confirmLabel="Close" isDismissable>
         <p>
-          <Key>h</Key> to open this dialog
+          <Key>H</Key> to open this dialog
         </p>
         <p>
-          <Key>d</Key> to enter drawing mode
+          <Key>D</Key> to enter drawing mode
         </p>
         <p>
-          <Key>e</Key> to enter erasing mode
+          <Key>E</Key> to enter erasing mode
         </p>
         <p>
-          <Key>t</Key> to toggle between light and dark color theme
+          <Key>T</Key> to toggle between light and dark color theme
         </p>
         <p>
-          <Key>shift</Key> + <Key>-</Key> to unzoom
+          <Key>CTRL</Key> + <Key>Z</Key> to undo
         </p>
         <p>
-          <Key>shift</Key> + <Key>+</Key> to zoom
+          <Key>SHIFT</Key> + <Key>CTRL</Key> + <Key>Z</Key> to redo
         </p>
         <p>
-          <Key>shift</Key> + <Key>0</Key> to reset zoom
+          <Key>CTRL</Key> + <Key>SCROLL</Key> to zoom
+        </p>
+        <p>
+          <Key>SHIFT</Key> + <Key>-</Key> to unzoom
+        </p>
+        <p>
+          <Key>SHIFT</Key> + <Key>+</Key> to zoom
+        </p>
+        <p>
+          <Key>SHIFT</Key> + <Key>0</Key> to reset zoom
         </p>
         <p>
           <Key>-</Key> to decrease pen thickness

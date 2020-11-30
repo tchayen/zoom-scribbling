@@ -94,3 +94,15 @@ export const intersect = ([a, b]: Line, [c, d]: Line) => {
     return 0 < lambda && lambda < 1 && 0 < gamma && gamma < 1;
   }
 };
+
+export const rectangleContains = (
+  point: Point,
+  rectangle: { x: number; y: number; width: number; height: number }
+) => {
+  return (
+    point.x >= rectangle.x &&
+    point.x <= rectangle.x + rectangle.width &&
+    point.y >= rectangle.y &&
+    point.y <= rectangle.y + rectangle.height
+  );
+};
