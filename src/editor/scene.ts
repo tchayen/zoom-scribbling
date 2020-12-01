@@ -1,6 +1,11 @@
 import { curveToBezier } from "points-on-curve/lib/curve-to-bezier";
 import { pointsOnBezierCurves } from "points-on-curve";
-import { intersect, rectangleContains } from "./math";
+import {
+  getRectangle,
+  intersect,
+  rectangleContains,
+  subtractPoints,
+} from "./math";
 import { Action, EditorState, Line, Point, Shape } from "../types";
 
 // Debug measurement of number of points saved by simplifying.
@@ -11,8 +16,6 @@ let ids = 1;
 
 export const shapes: Shape[] = [];
 
-export const simplified: { [key: number]: Point[] | undefined } = [];
-
 export const history: Action[] = [];
 let historyIndex = -1;
 
@@ -22,14 +25,13 @@ let erasing = false;
 let lastPoint: Point | null = null;
 let eraseBuffer = new Set<number>();
 
-export let selection: { start: Point; end: Point } | null = {
-  start: { x: 200, y: 200 },
-  end: { x: 300, y: 300 },
-};
-
+export let selection: { start: Point; end: Point } | null = null;
 export const selectedIndices: number[] = [];
+let previousSelectionPoint: Point | null = null;
 
 const updateClosingGuard = () => {
+  return;
+
   const unsafe = shapes
     .map((shape) => shape.state !== "invisible")
     .reduce((a, b) => a || b, false);
@@ -57,10 +59,6 @@ export const reset = () => {
   lastPoint = null;
   eraseBuffer = new Set<number>();
 
-  Object.keys(simplified).forEach(
-    (key) => (simplified[Number(key)] = undefined)
-  );
-
   __original = 0;
   __simplified = 0;
 
@@ -83,6 +81,7 @@ export const startShape = (point: Point, thickness: number, color: string) => {
     points: [point],
     thickness,
     state: "visible",
+    simplified: null,
   });
 
   history.splice(historyIndex + 1, history.length - historyIndex - 1);
@@ -96,7 +95,7 @@ export const appendLine = (point: Point) => {
   shapes[shapes.length - 1].points.push(point);
 };
 
-export const finishShape = () => {
+export const finishShape = (smoothing: boolean) => {
   if (!drawing) {
     return;
   }
@@ -108,18 +107,20 @@ export const finishShape = () => {
     shapeIndex: latest.id,
   });
 
-  if (latest.points.length >= 3) {
+  console.log(smoothing);
+
+  if (smoothing && latest.points.length >= 3) {
     const config = [1, 0.5];
     const curves = curveToBezier(latest.points.map(({ x, y }) => [x, y]));
-    simplified[latest.id] = pointsOnBezierCurves(
+    latest.simplified = pointsOnBezierCurves(
       curves,
       ...config
     ).map(([x, y]) => ({ x, y }));
 
     __original += latest.points.length;
     __simplified +=
-      latest.points.length >= 3 && simplified[latest.id] !== undefined
-        ? simplified[latest.id]!.length
+      latest.points.length >= 3
+        ? latest.simplified.length
         : latest.points.length;
   }
 
@@ -141,7 +142,6 @@ export const updateSelection = (point: Point) => {
 };
 
 export const finishSelection = () => {
-  // noop?
   if (selection === null) {
     throw new Error("Selection unavailable");
   }
@@ -152,12 +152,7 @@ export const finishSelection = () => {
     }
   }
 
-  const rectangle = {
-    x: selection.start.x,
-    y: selection.start.y,
-    width: selection.end.x - selection.start.x,
-    height: selection.end.y - selection.start.y,
-  };
+  const rectangle = getRectangle(selection.start, selection.end);
 
   for (const shape of shapes) {
     if (shape.state !== "visible") {
@@ -191,6 +186,49 @@ export const removeSelection = () => {
   historyIndex += 1;
 
   selection = null;
+};
+
+export const startSelectionMove = (point: Point) => {
+  previousSelectionPoint = point;
+};
+
+export const updateSelectionMove = (point: Point) => {
+  if (selection === null) {
+    throw new Error("Selection is null");
+  }
+
+  if (previousSelectionPoint === null) {
+    throw new Error("No previous selection point");
+  }
+
+  const delta = subtractPoints(point, previousSelectionPoint);
+
+  for (const shape of shapes) {
+    if (shape.state === "selected") {
+      for (const point of shape.points) {
+        point.x += delta.x;
+        point.y += delta.y;
+      }
+
+      if (shape.simplified) {
+        for (const point of shape.simplified) {
+          point.x += delta.x;
+          point.y += delta.y;
+        }
+      }
+    }
+  }
+
+  selection.start.x += delta.x;
+  selection.start.y += delta.y;
+  selection.end.x += delta.x;
+  selection.end.y += delta.y;
+
+  previousSelectionPoint = point;
+};
+
+export const finishSelectionMove = () => {
+  previousSelectionPoint = null;
 };
 
 export const startErase = (point: Point) => {

@@ -2,7 +2,14 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useTheme } from "../../components/colorTheme";
 import consts from "../../consts";
-import { screenToCameraSpace, translate, zoom, zoomTo } from "../math";
+import {
+  getRectangle,
+  rectangleContains,
+  screenToCameraSpace,
+  translate,
+  zoom,
+  zoomTo,
+} from "../math";
 import render from "../render";
 import HelpDialog from "./HelpDialog";
 import {
@@ -20,10 +27,22 @@ import {
   updateSelection,
   removeSelection,
   selection,
+  updateSelectionMove,
+  startSelectionMove,
+  finishSelectionMove,
 } from "../scene";
-import { cameraState, colorState, modeState, thicknessState } from "../state";
+import {
+  cameraState,
+  colorState,
+  modeState,
+  smoothingState,
+  thicknessState,
+} from "../state";
 import Tools from "./Tools";
 import Header from "./Header";
+import { Point } from "../../types";
+
+let isMoving = false;
 
 const Editor = () => {
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -51,6 +70,7 @@ const Editor = () => {
   const [camera, setCamera] = useRecoilState(cameraState);
   const [mode, setMode] = useRecoilState(modeState);
   const [thickness, setThickness] = useRecoilState(thicknessState);
+  const smoothing = useRecoilValue(smoothingState);
   const color = useRecoilValue(colorState);
   const [pointerDown, setPointerDown] = useState(false);
 
@@ -99,6 +119,16 @@ const Editor = () => {
     document.body.removeChild(element);
   };
 
+  const isPointInSelection = (point: Point) => {
+    if (selection === null) {
+      return false;
+    }
+
+    const rectangle = getRectangle(selection.start, selection.end);
+
+    return rectangleContains(point, rectangle);
+  };
+
   const handlePointerDown = useCallback(
     (event: PointerEvent) => {
       setPointerDown(true);
@@ -116,7 +146,12 @@ const Editor = () => {
       } else if (mode === "erase") {
         startErase(point);
       } else if (mode === "select") {
-        startSelection(point);
+        if (isPointInSelection(point)) {
+          isMoving = true;
+          startSelectionMove(point);
+        } else {
+          startSelection(point);
+        }
       }
     },
     [camera, mode, thickness, color]
@@ -126,13 +161,18 @@ const Editor = () => {
     setPointerDown(false);
 
     if (mode === "draw") {
-      finishShape();
+      finishShape(smoothing);
     } else if (mode === "erase") {
       finishErase();
     } else if (mode === "select") {
-      finishSelection();
+      if (isMoving) {
+        finishSelectionMove();
+        isMoving = false;
+      } else {
+        finishSelection();
+      }
     }
-  }, [mode]);
+  }, [mode, smoothing]);
 
   const handlePointerMove = useCallback(
     (event: PointerEvent) => {
@@ -140,25 +180,37 @@ const Editor = () => {
         return;
       }
 
-      if (pointerDown) {
-        const point = screenToCameraSpace(
-          {
-            x: event.offsetX * consts.DEVICE_PIXEL_RATIO,
-            y: event.offsetY * consts.DEVICE_PIXEL_RATIO,
-          },
-          camera
-        );
+      const point = screenToCameraSpace(
+        {
+          x: event.offsetX * consts.DEVICE_PIXEL_RATIO,
+          y: event.offsetY * consts.DEVICE_PIXEL_RATIO,
+        },
+        camera
+      );
 
+      if (pointerDown) {
         if (mode === "draw") {
           appendLine(point);
         } else if (mode === "erase") {
           appendErase(point);
         } else if (mode === "select") {
-          updateSelection(point);
+          if (isMoving) {
+            updateSelectionMove(point);
+          } else {
+            updateSelection(point);
+          }
         }
 
         render(getCtx(), canvas.current!, camera, colorMode);
       }
+
+      // if (mode === "select" && selection !== null) {
+      //   if (isPointInSelection(point)) {
+      //     canvas.current!.style.cursor = consts.ERASE_CURSOR;
+      //   } else {
+      //     canvas.current!.style.cursor = consts.DEFAULT_CURSOR;
+      //   }
+      // }
     },
     [camera, mode, pointerDown, colorMode]
   );

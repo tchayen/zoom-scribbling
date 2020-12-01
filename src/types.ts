@@ -13,6 +13,7 @@ export type Shape = {
   color: string;
   thickness: number;
   points: Point[];
+  simplified: Point[] | null;
 };
 
 export type Tile = {

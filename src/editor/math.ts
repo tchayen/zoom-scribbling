@@ -95,6 +95,20 @@ export const intersect = ([a, b]: Line, [c, d]: Line) => {
   }
 };
 
+export const getRectangle = (a: Point, b: Point) => {
+  const start = { x: Math.min(a.x, b.x), y: Math.min(a.y, b.y) };
+  const end = { x: Math.max(a.x, b.x), y: Math.max(a.y, b.y) };
+
+  const rectangle = {
+    x: start.x,
+    y: start.y,
+    width: end.x - start.x,
+    height: end.y - start.y,
+  };
+
+  return rectangle;
+};
+
 export const rectangleContains = (
   point: Point,
   rectangle: { x: number; y: number; width: number; height: number }
@@ -105,4 +119,8 @@ export const rectangleContains = (
     point.y >= rectangle.y &&
     point.y <= rectangle.y + rectangle.height
   );
+};
+
+export const subtractPoints = (a: Point, b: Point) => {
+  return { x: a.x - b.x, y: a.y - b.y };
 };

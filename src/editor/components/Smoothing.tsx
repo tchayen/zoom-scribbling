@@ -10,7 +10,13 @@ const Smoothing = () => {
     <div>
       <Label>Smoothing</Label>
       <div style={{ marginTop: 4 }}>
-        <Switch aria-label="Pointer pressure" value={smoothing} />
+        <Switch
+          aria-label="Pointer pressure"
+          value={smoothing}
+          onChange={(value) => {
+            setSmoothing(value);
+          }}
+        />
       </div>
     </div>
   );

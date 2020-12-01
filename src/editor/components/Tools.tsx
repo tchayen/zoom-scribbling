@@ -64,7 +64,7 @@ const Tools = ({ removeSelection, downloadSelection }) => {
         </>
       )}
       {mode === "select" && (
-        <>
+        <div style={{ display: "flex" }}>
           <IconButton
             onPress={downloadSelection}
             tooltip="Save selection as PNG"
@@ -75,7 +75,7 @@ const Tools = ({ removeSelection, downloadSelection }) => {
             tooltip="Remove selected"
             Icon={Icons.Remove}
           />
-        </>
+        </div>
       )}
     </Box>
   );
