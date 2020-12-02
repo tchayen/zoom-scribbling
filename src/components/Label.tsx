@@ -1,6 +1,8 @@
 import { styled } from "./colorTheme";
 
 const Label = styled.label<{ isDisabled?: boolean }>`
+  display: flex;
+  align-items: center;
   color: ${(props) => props.theme.mainText};
   margin-bottom: 4px;
   font-weight: 600;

@@ -11,6 +11,7 @@ type Props = {
 const Box = styled.div`
   font-size: 14px;
   font-family: ${consts.FONT_STACK};
+  font-weight: 400;
   position: absolute;
   left: 0;
   top: 100%;

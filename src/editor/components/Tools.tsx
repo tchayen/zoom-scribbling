@@ -58,7 +58,7 @@ const Tools = ({ removeSelection, downloadSelection }) => {
       {mode === "draw" && (
         <>
           <Thickness />
-          <Color />
+          {/* <Color /> */}
           <PointerPressure />
           <Smoothing />
         </>
