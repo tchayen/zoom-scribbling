@@ -41,6 +41,7 @@ import {
 import Tools from "./Tools";
 import Header from "./Header";
 import { Point } from "../../types";
+import { useOverlayTriggerState } from "react-stately";
 
 let isMoving = false;
 
@@ -73,6 +74,7 @@ const Editor = () => {
   const smoothing = useRecoilValue(smoothingState);
   const color = useRecoilValue(colorState);
   const [pointerDown, setPointerDown] = useState(false);
+  const helpDialogState = useOverlayTriggerState({});
 
   const downloadSelection = () => {
     if (selection === null) {
@@ -253,6 +255,10 @@ const Editor = () => {
         }
       }
 
+      if (event.key.toLowerCase() === "h") {
+        helpDialogState.toggle();
+      }
+
       if (event.key === ")") {
         const center = {
           x: canvas.current!.width / 2,
@@ -326,6 +332,7 @@ const Editor = () => {
       setCamera,
       setMode,
       setColorMode,
+      helpDialogState,
     ]
   );
 
@@ -408,6 +415,9 @@ const Editor = () => {
           redo();
           render(getCtx(), canvas.current!, camera, colorMode);
         }}
+        help={() => {
+          helpDialogState.open();
+        }}
       />
       <Tools
         removeSelection={() => {
@@ -417,7 +427,7 @@ const Editor = () => {
         downloadSelection={downloadSelection}
       />
       <canvas ref={canvas}></canvas>
-      <HelpDialog />
+      <HelpDialog state={helpDialogState} />
     </div>
   );
 };

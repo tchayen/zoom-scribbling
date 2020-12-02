@@ -87,16 +87,7 @@ const Dialog = (props: any) => {
   );
 };
 
-export const DialogTrigger = ({ label, children, ...otherProps }: any) => {
-  let state = useOverlayTriggerState({});
-
-  useEffect(() => {
-    if (otherProps.startOpen) {
-      state.open();
-    }
-    // `state` is omitted on purpose.
-  }, [otherProps.startOpen]);
-
+export const DialogTrigger = ({ label, children, state }: any) => {
   const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {
       if (event.key.toLowerCase() === "h") {

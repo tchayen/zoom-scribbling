@@ -11,10 +11,10 @@ const Key = styled.code`
   padding: 0 4px;
 `;
 
-const HelpDialog = () => {
+const HelpDialog = ({ state }) => {
   // TODO: add info about scrolling with CMD to zoom and undo/redo
   return (
-    <DialogTrigger label="Open dialog">
+    <DialogTrigger label="Open dialog" state={state}>
       <Dialog title="Help" confirmLabel="Close" isDismissable>
         <p>
           <Key>H</Key> to open this dialog
