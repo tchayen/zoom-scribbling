@@ -107,8 +107,6 @@ export const finishShape = (smoothing: boolean) => {
     shapeIndex: latest.id,
   });
 
-  console.log(smoothing);
-
   if (smoothing && latest.points.length >= 3) {
     const config = [1, 0.5];
     const curves = curveToBezier(latest.points.map(({ x, y }) => [x, y]));
