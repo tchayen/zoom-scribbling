@@ -271,17 +271,14 @@ const Editor = () => {
 
       if (event.key.toLowerCase() === "e") {
         setMode("erase");
-        canvas.current!.style.cursor = consts.ERASE_CURSOR;
       }
 
       if (event.key.toLowerCase() === "d") {
         setMode("draw");
-        canvas.current!.style.cursor = consts.DRAW_CURSOR;
       }
 
       if (event.key.toLowerCase() === "s") {
         setMode("select");
-        canvas.current!.style.cursor = consts.DEFAULT_CURSOR;
       }
 
       if (event.key.toLowerCase() === "t") {
@@ -351,8 +348,6 @@ const Editor = () => {
     if (canvas.current === null) {
       return;
     }
-
-    canvas.current.style.cursor = consts.DRAW_CURSOR;
   }, []);
 
   useEffect(() => {
