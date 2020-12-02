@@ -16,7 +16,7 @@ const PointerPressure = () => {
         <LabelTooltip tooltip="If device providing pointer events provides it, drawn lines will take pointer pressure into account." />
       </Label>
       <div style={{ marginTop: 4 }}>
-        <Switch aria-label="Pointer pressure" value={pointerPressure} />
+        <Switch aria-label="Pointer pressure" isSelected={pointerPressure} />
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ const Smoothing = () => {
       <div style={{ marginTop: 4 }}>
         <Switch
           aria-label="Pointer pressure"
-          value={smoothing}
+          isSelected={smoothing}
           onChange={(value) => {
             setSmoothing(value);
           }}

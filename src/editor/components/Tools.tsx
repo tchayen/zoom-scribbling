@@ -59,7 +59,7 @@ const Tools = ({ removeSelection, downloadSelection }) => {
         <>
           <Thickness />
           {/* <Color /> */}
-          <PointerPressure />
+          {/* <PointerPressure /> */}
           <Smoothing />
         </>
       )}
