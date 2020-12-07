@@ -9,6 +9,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@babel/preset-typescript": "^7.12.7",
     "@svgr/parcel-plugin-svgr": "^5.4.0",
     "dashify": "^2.0.0",
     "points-on-curve": "^0.2.0",

@@ -20,7 +20,7 @@ describe("draw", () => {
   it("saves drawing to shapes", () => {
     startShape({ x: 0, y: 0 }, 1, BLACK);
     appendLine({ x: 10, y: 10 });
-    finishShape();
+    finishShape(false);
 
     expect(__TEST_ONLY__.history).toHaveLength(1);
   });
@@ -28,7 +28,7 @@ describe("draw", () => {
   it("after undo resets further history", () => {
     startShape({ x: 0, y: 0 }, 1, BLACK);
     appendLine({ x: 10, y: 10 });
-    finishShape();
+    finishShape(false);
 
     undo();
 
@@ -42,7 +42,7 @@ describe("erase", () => {
   it("marks shape as erased and then invisible", () => {
     startShape({ x: 0, y: 0 }, 1, BLACK);
     appendLine({ x: 10, y: 10 });
-    finishShape();
+    finishShape(false);
 
     startErase({ x: 10, y: 0 });
     appendErase({ x: 0, y: 10 });
@@ -59,7 +59,7 @@ describe("erase", () => {
   it("done on previously erased shape does nothing", () => {
     startShape({ x: 0, y: 0 }, 1, BLACK);
     appendLine({ x: 10, y: 10 });
-    finishShape();
+    finishShape(false);
 
     startErase({ x: 0, y: 5 });
     appendErase({ x: 10, y: 5 });
@@ -79,7 +79,7 @@ describe("undo", () => {
   it("sets shape as not visible", () => {
     startShape({ x: 0, y: 0 }, 1, BLACK);
     appendLine({ x: 10, y: 10 });
-    finishShape();
+    finishShape(false);
 
     undo();
 
@@ -97,11 +97,11 @@ describe("undo", () => {
   it("after erasing two shapes restores both of them", () => {
     startShape({ x: 0, y: 0 }, 1, BLACK);
     appendLine({ x: 10, y: 10 });
-    finishShape();
+    finishShape(false);
 
     startShape({ x: 10, y: 0 }, 1, BLACK);
     appendLine({ x: 20, y: 10 });
-    finishShape();
+    finishShape(false);
 
     startErase({ x: 0, y: 5 });
     appendErase({ x: 20, y: 5 });
@@ -120,7 +120,7 @@ describe("undo", () => {
   it("while erasing leaves the shape intact also without changing the history", () => {
     startShape({ x: 0, y: 0 }, 1, BLACK);
     appendLine({ x: 10, y: 10 });
-    finishShape();
+    finishShape(false);
 
     startErase({ x: 0, y: 5 });
     appendErase({ x: 20, y: 5 });
@@ -133,11 +133,11 @@ describe("undo", () => {
   it("after erasing restores only the most recently erased shape", () => {
     startShape({ x: 0, y: 0 }, 1, BLACK);
     appendLine({ x: 10, y: 10 });
-    finishShape();
+    finishShape(false);
 
     startShape({ x: 20, y: 20 }, 1, BLACK);
     appendLine({ x: 30, y: 30 });
-    finishShape();
+    finishShape(false);
 
     startErase({ x: 0, y: 5 });
     appendErase({ x: 10, y: 5 });
@@ -159,7 +159,7 @@ describe("redo", () => {
   it("sets shape as visible", () => {
     startShape({ x: 0, y: 0 }, 1, BLACK);
     appendLine({ x: 10, y: 10 });
-    finishShape();
+    finishShape(false);
 
     undo();
 
