@@ -50,7 +50,7 @@ const HelpDialog = ({ state }) => {
           <Key>-</Key> to decrease pen thickness
         </p>
         <p>
-          <Key>+</Key> to increase pen thickness
+          <Key>=</Key> to increase pen thickness
         </p>
       </Dialog>
     </DialogTrigger>
