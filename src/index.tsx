@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ThemeProvider } from "./components/colorTheme";
 import { setupIndexedDb } from "./helpers/indexedDb";
 import Editor from "./editor/components/Editor";
-import Cursor from "./editor/components/Cursor";
 
 const App = () => {
   useEffect(() => {
@@ -23,7 +22,6 @@ const App = () => {
           </Route>
         </Switch>
       </Router>
-      <Cursor />
     </>
   );
 };

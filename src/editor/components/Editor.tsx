@@ -34,6 +34,7 @@ import {
 import {
   cameraState,
   colorState,
+  isCursorInSelectionState,
   modeState,
   smoothingState,
   thicknessState,
@@ -42,8 +43,9 @@ import Tools from "./Tools";
 import Header from "./Header";
 import { Point } from "../../types";
 import { useOverlayTriggerState } from "react-stately";
+import Cursor from "./Cursor";
 
-let isMoving = false;
+let isMovingSelection = false;
 
 const Editor = () => {
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -73,6 +75,9 @@ const Editor = () => {
   const [thickness, setThickness] = useRecoilState(thicknessState);
   const smoothing = useRecoilValue(smoothingState);
   const color = useRecoilValue(colorState);
+  const [isCursorInSelection, setIsCursorInSelection] = useRecoilState(
+    isCursorInSelectionState
+  );
   const [pointerDown, setPointerDown] = useState(false);
   const helpDialogState = useOverlayTriggerState({});
 
@@ -149,7 +154,7 @@ const Editor = () => {
         startErase(point);
       } else if (mode === "select") {
         if (isPointInSelection(point)) {
-          isMoving = true;
+          isMovingSelection = true;
           startSelectionMove(point);
         } else {
           startSelection(point);
@@ -167,9 +172,9 @@ const Editor = () => {
     } else if (mode === "erase") {
       finishErase();
     } else if (mode === "select") {
-      if (isMoving) {
+      if (isMovingSelection) {
         finishSelectionMove();
-        isMoving = false;
+        isMovingSelection = false;
       } else {
         finishSelection();
       }
@@ -190,13 +195,19 @@ const Editor = () => {
         camera
       );
 
+      if (isPointInSelection(point) && !isCursorInSelection) {
+        setIsCursorInSelection(true);
+      } else if (!isPointInSelection(point) && isCursorInSelection) {
+        setIsCursorInSelection(false);
+      }
+
       if (pointerDown) {
         if (mode === "draw") {
           appendLine(point);
         } else if (mode === "erase") {
           appendErase(point);
         } else if (mode === "select") {
-          if (isMoving) {
+          if (isMovingSelection) {
             updateSelectionMove(point);
           } else {
             updateSelection(point);
@@ -214,7 +225,14 @@ const Editor = () => {
       //   }
       // }
     },
-    [camera, mode, pointerDown, colorMode]
+    [
+      camera,
+      mode,
+      pointerDown,
+      colorMode,
+      isCursorInSelection,
+      setIsCursorInSelection,
+    ]
   );
 
   const handleWheel = useCallback(
@@ -423,6 +441,7 @@ const Editor = () => {
       />
       <canvas ref={canvas}></canvas>
       <HelpDialog state={helpDialogState} />
+      <Cursor canvas={canvas.current} />
     </div>
   );
 };

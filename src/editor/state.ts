@@ -30,3 +30,8 @@ export const colorState = atom<string>({
   key: "color",
   default: "#000000",
 });
+
+export const isCursorInSelectionState = atom<boolean>({
+  key: "isCursorInSelection",
+  default: false,
+});
