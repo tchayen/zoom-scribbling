@@ -50,8 +50,10 @@ const Dot = styled.div<{ size: number; color: string }>`
   height: ${(props) => props.size}px;
   border-radius: 100%;
   border: 1px solid ${(props) => props.color};
-  left: ${(props) => 1 - props.size / 2}px;
-  bottom: ${(props) => 4 - props.size / 2}px;
+  translate: (
+    ${(props) => 1 - props.size / 2}px,
+    ${(props) => 4 - props.size / 2}px
+  );
   position: absolute;
   mix-blend-mode: difference;
 `;
