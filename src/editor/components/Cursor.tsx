@@ -38,10 +38,11 @@ const cursors = {
   },
 };
 
-const Element = styled.div`
+const Element = styled.div<{ hidden: boolean }>`
   pointer-events: none;
   z-index: 10000;
   position: fixed;
+  opacity: ${(props) => (props.hidden ? 0 : 1)};
 `;
 
 const Dot = styled.div<{ size: number; color: string }>`
@@ -152,12 +153,8 @@ const Cursor = ({ canvas }) => {
 
   const Component = modeToCursor(mode).component;
 
-  if (hidden) {
-    return null;
-  }
-
   return (
-    <Element ref={ref}>
+    <Element ref={ref} hidden={hidden}>
       {mode === "draw" && <Dot color={color} size={Number(thickness)} />}
       <Component />
     </Element>
