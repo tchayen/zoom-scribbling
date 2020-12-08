@@ -36,6 +36,7 @@ import {
   colorState,
   isCursorInSelectionState,
   modeState,
+  movingSelectionState,
   smoothingState,
   thicknessState,
 } from "../state";
@@ -44,8 +45,6 @@ import Header from "./Header";
 import { Point } from "../../types";
 import { useOverlayTriggerState } from "react-stately";
 import Cursor from "./Cursor";
-
-let isMovingSelection = false;
 
 const Editor = () => {
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -73,6 +72,9 @@ const Editor = () => {
   const [camera, setCamera] = useRecoilState(cameraState);
   const [mode, setMode] = useRecoilState(modeState);
   const [thickness, setThickness] = useRecoilState(thicknessState);
+  const [movingSelection, setMovingSelection] = useRecoilState(
+    movingSelectionState
+  );
   const smoothing = useRecoilValue(smoothingState);
   const color = useRecoilValue(colorState);
   const [isCursorInSelection, setIsCursorInSelection] = useRecoilState(
@@ -154,14 +156,14 @@ const Editor = () => {
         startErase(point);
       } else if (mode === "select") {
         if (isPointInSelection(point)) {
-          isMovingSelection = true;
+          setMovingSelection(true);
           startSelectionMove(point);
         } else {
           startSelection(point);
         }
       }
     },
-    [camera, mode, thickness, color]
+    [camera, mode, thickness, color, setMovingSelection]
   );
 
   const handlePointerUp = useCallback(() => {
@@ -172,14 +174,14 @@ const Editor = () => {
     } else if (mode === "erase") {
       finishErase();
     } else if (mode === "select") {
-      if (isMovingSelection) {
+      if (movingSelection) {
         finishSelectionMove();
-        isMovingSelection = false;
+        setMovingSelection(false);
       } else {
         finishSelection();
       }
     }
-  }, [mode, smoothing]);
+  }, [mode, smoothing, movingSelection, setMovingSelection]);
 
   const handlePointerMove = useCallback(
     (event: PointerEvent) => {
@@ -207,7 +209,7 @@ const Editor = () => {
         } else if (mode === "erase") {
           appendErase(point);
         } else if (mode === "select") {
-          if (isMovingSelection) {
+          if (movingSelection) {
             updateSelectionMove(point);
           } else {
             updateSelection(point);
@@ -232,6 +234,7 @@ const Editor = () => {
       colorMode,
       isCursorInSelection,
       setIsCursorInSelection,
+      movingSelection,
     ]
   );
 

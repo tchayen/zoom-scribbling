@@ -31,6 +31,11 @@ export const colorState = atom<string>({
   default: "#000000",
 });
 
+export const movingSelectionState = atom<boolean>({
+  key: "movingSelection",
+  default: false,
+});
+
 export const isCursorInSelectionState = atom<boolean>({
   key: "isCursorInSelection",
   default: false,

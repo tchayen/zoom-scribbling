@@ -6,6 +6,7 @@ import {
   colorState,
   isCursorInSelectionState,
   modeState,
+  movingSelectionState,
   thicknessState,
 } from "../state";
 
@@ -78,6 +79,7 @@ const Cursor = ({ canvas }) => {
   const position = useRef({ x: 0, y: 0 });
   const mode = useRecoilValue(modeState);
   const isCursorInSelection = useRecoilValue(isCursorInSelectionState);
+  const movingSelection = useRecoilValue(movingSelectionState);
   const thickness = useRecoilValue(thicknessState);
   const color = useRecoilValue(colorState);
   const [hidden, setHidden] = useState(false);
@@ -92,7 +94,9 @@ const Cursor = ({ canvas }) => {
           return cursors.erase;
         case "select":
           // TODO: add also moving state so there is a grabbable and grabbed cursors
-          if (isCursorInSelection) {
+          if (movingSelection) {
+            return cursors.draw;
+          } else if (isCursorInSelection) {
             return cursors.erase;
           } else {
             return cursors.default;
@@ -101,7 +105,7 @@ const Cursor = ({ canvas }) => {
           return cursors.default;
       }
     },
-    [isCursorInSelection]
+    [isCursorInSelection, movingSelection]
   );
 
   const handleMouseLeave = useCallback(() => {
