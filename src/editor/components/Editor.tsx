@@ -240,6 +240,8 @@ const Editor = () => {
 
   const handleWheel = useCallback(
     (event: WheelEvent) => {
+      event.preventDefault();
+
       if (event.ctrlKey) {
         const zoomed = zoom(
           Math.sign(event.deltaY),
