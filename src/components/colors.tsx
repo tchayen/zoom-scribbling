@@ -3,6 +3,9 @@ export type ColorMode = "light" | "dark";
 // NOTE:
 // Every time anything here is changed, it should be synced to index.html.
 
+// TODO:
+// Find out if copying palette to index.html is actually useful for anything.
+
 const palette = {
   blue: "#0366d6",
   blueDimmed: "rgba(3, 102, 214, 0.2)",

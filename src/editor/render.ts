@@ -17,6 +17,7 @@ const reset = (
   ctx.scale(camera.scale, camera.scale);
 };
 
+// TODO: replace with config object.
 const render = (
   ctx: CanvasRenderingContext2D | null,
   canvas: HTMLCanvasElement,

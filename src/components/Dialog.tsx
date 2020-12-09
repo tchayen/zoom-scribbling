@@ -1,13 +1,12 @@
 import React, { cloneElement, useCallback, useEffect, useRef } from "react";
-import { useOverlayTriggerState } from "react-stately";
 import {
   useOverlay,
   usePreventScroll,
   useModal,
   OverlayContainer,
-  useDialog,
-  FocusScope,
-} from "react-aria";
+} from "@react-aria/overlays";
+import { useDialog } from "@react-aria/dialog";
+import { FocusScope } from "@react-aria/focus";
 import Button from "./Button";
 import { styled, useTheme } from "./colorTheme";
 import { ColorMode } from "./colors";

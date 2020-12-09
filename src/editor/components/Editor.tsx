@@ -43,7 +43,7 @@ import {
 import Tools from "./Tools";
 import Header from "./Header";
 import { Point } from "../../types";
-import { useOverlayTriggerState } from "react-stately";
+import { useOverlayTriggerState } from "@react-stately/overlays";
 import Cursor from "./Cursor";
 
 const Editor = () => {
@@ -83,6 +83,7 @@ const Editor = () => {
   const [pointerDown, setPointerDown] = useState(false);
   const helpDialogState = useOverlayTriggerState({});
 
+  // TODO: extract to separate file.
   const downloadSelection = () => {
     if (selection === null) {
       return;
