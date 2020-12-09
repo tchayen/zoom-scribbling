@@ -48,18 +48,12 @@ const render = (
     ctx.strokeStyle =
       colorMode === "dark" ? invertHex(shape.color) : shape.color;
 
-    // if (shape.state === "erased") {
-    //   ctx.setLineDash([consts.DASH_LENGTH, consts.DASH_LENGTH]);
-    // } else {
-    //   ctx.setLineDash([]);
-    // }
-
     if (!cleanMode && shape.state === "erased") {
-      ctx.strokeStyle = "#ff00ff";
-    }
-
-    if (!cleanMode && shape.state === "selected") {
-      ctx.strokeStyle = "#0000ff";
+      ctx.setLineDash([10, 10]);
+    } else if (!cleanMode && shape.state === "selected") {
+      ctx.setLineDash([3, 3]);
+    } else {
+      ctx.setLineDash([]);
     }
 
     const points = shape.simplified || shape.points;
@@ -74,6 +68,8 @@ const render = (
   }
 
   if (!cleanMode && selection !== null) {
+    ctx.setLineDash([]);
+
     const rectangle = [
       selection.start.x,
       selection.start.y,
@@ -81,11 +77,11 @@ const render = (
       selection.end.y - selection.start.y,
     ];
 
-    ctx.fillStyle = "rgba(255, 0, 255, 0.25)";
+    ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
 
     ctx.fillRect(...rectangle);
 
-    ctx.strokeStyle = "#ff00ff";
+    ctx.strokeStyle = "#000";
     ctx.lineCap = "square";
     ctx.lineJoin = "bevel";
     ctx.lineWidth = 1 / camera.scale;
