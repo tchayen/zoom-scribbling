@@ -12,6 +12,7 @@
     "@babel/preset-typescript": "^7.12.7",
     "@react-aria/button": "^3.3.0",
     "@react-aria/checkbox": "^3.2.1",
+    "@react-aria/dialog": "^3.1.2",
     "@react-aria/focus": "^3.2.3",
     "@react-aria/interactions": "^3.3.2",
     "@react-aria/listbox": "^3.2.3",
