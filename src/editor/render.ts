@@ -49,9 +49,9 @@ const render = (
       colorMode === "dark" ? invertHex(shape.color) : shape.color;
 
     if (!cleanMode && shape.state === "erased") {
-      ctx.setLineDash([10, 10]);
+      ctx.setLineDash([10, 10 + shape.thickness]);
     } else if (!cleanMode && shape.state === "selected") {
-      ctx.setLineDash([3, 3]);
+      ctx.setLineDash([3, 3 + shape.thickness]);
     } else {
       ctx.setLineDash([]);
     }

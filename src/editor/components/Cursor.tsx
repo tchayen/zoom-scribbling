@@ -42,6 +42,8 @@ const Element = styled.div<{ hidden: boolean }>`
   pointer-events: none;
   z-index: 10000;
   position: fixed;
+  left: 0;
+  top: 0;
   opacity: ${(props) => (props.hidden ? 0 : 1)};
 `;
 
@@ -50,10 +52,8 @@ const Dot = styled.div<{ size: number; color: string }>`
   height: ${(props) => props.size}px;
   border-radius: 100%;
   border: 1px solid ${(props) => props.color};
-  translate: (
-    ${(props) => 1 - props.size / 2}px,
-    ${(props) => 4 - props.size / 2}px
-  );
+  left: ${(props) => 1 - props.size / 2}px;
+  bottom: ${(props) => 4 - props.size / 2}px;
   position: absolute;
   mix-blend-mode: difference;
 `;
@@ -110,8 +110,7 @@ const Cursor = ({ canvas }) => {
   const updateMousePosition = useCallback(() => {
     const x = position.current.x + modeToCursor(mode).offset.x;
     const y = position.current.y + modeToCursor(mode).offset.y;
-    ref.current!.style.top = `${y}px`;
-    ref.current!.style.left = `${x}px`;
+    ref.current!.style.transform = `translate(${x}px, ${y}px)`;
   }, [mode, modeToCursor]);
 
   const handleMouseMove = useCallback(
